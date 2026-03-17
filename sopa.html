@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sopa de Letras do Fado — Casa da Adelaide</title>
+<meta name="description" content="Sopa de letras interactiva sobre o fado com 10 quadros temáticos. Ao encontrar cada palavra, aparece um facto educativo. Para crianças dos 8 aos 14 anos.">
+<link rel="canonical" href="https://casadaadelaide.pt/sopa.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="nav.css">
+<style>
+.wrap{position:relative;z-index:1;padding:40px 24px 80px;max-width:1100px;margin:0 auto}
+.page-hero{text-align:center;margin-bottom:32px}
+.page-hero h1{font-family:var(--font-title);font-size:clamp(2rem,6vw,4rem);background:linear-gradient(135deg,var(--verde-c),var(--ambar-c));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:10px 0 8px}
+.page-hero p{font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--cinza-1);max-width:460px;margin:0 auto}
+
+/* PROGRESSO QUADROS */
+.quadros-prog{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.qp-dot{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.58rem;font-weight:600;color:rgba(255,255,255,.25);transition:all .3s;cursor:default}
+.qp-dot.feito{border-color:var(--verde-c);background:rgba(48,192,120,.2);color:var(--verde-c)}
+.qp-dot.atual{border-color:var(--ambar-c);background:var(--ambar-pale);color:var(--ambar-c)}
+
+/* TEMA */
+.quadro-tema{text-align:center;margin-bottom:20px}
+.tema-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 20px;border-radius:20px;font-family:var(--font-body);font-size:.78rem;font-weight:600}
+.tema-desc{font-family:var(--font-display);font-style:italic;font-size:.88rem;color:var(--cinza-1);opacity:.5;margin-top:6px}
+
+/* LAYOUT JOGO */
+.jogo-layout{display:grid;grid-template-columns:1fr 250px;gap:28px;align-items:start}
+
+/* GRELHA */
+.grelha-wrap{overflow-x:auto}
+.grelha{display:inline-grid;gap:3px;user-select:none}
+.cell{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.88rem;font-weight:500;color:var(--branco);cursor:pointer;border:1px solid rgba(255,255,255,.05);border-radius:5px;transition:background .12s,color .12s,border-color .12s;text-transform:uppercase}
+.cell:hover{background:rgba(48,192,120,.1);border-color:rgba(48,192,120,.2)}
+.cell.sel{background:var(--ambar-pale);border-color:var(--ambar-c);color:var(--ambar-c)}
+.cell.f1{background:rgba(48,192,120,.2);border-color:var(--verde-c);color:var(--verde-c)}
+.cell.f2{background:rgba(245,176,64,.2);border-color:var(--ambar-c);color:var(--ambar-c)}
+.cell.f3{background:rgba(144,96,224,.2);border-color:var(--roxo-c);color:var(--roxo-c)}
+.cell.f4{background:rgba(192,48,80,.2);border-color:var(--vinho-c);color:var(--vinho-c)}
+.cell.f5{background:rgba(72,128,208,.2);border-color:var(--azul-c);color:var(--azul-c)}
+.cell.f6{background:rgba(224,96,64,.2);border-color:var(--terra-c);color:var(--terra-c)}
+.cell.f7{background:rgba(48,192,168,.2);border-color:#30c0a8;color:#30c0a8}
+.cell.f8{background:rgba(208,96,192,.2);border-color:#d060c0;color:#d060c0}
+.cell.f9{background:rgba(168,208,48,.2);border-color:#a8d030;color:#a8d030}
+.cell.f10{background:rgba(96,96,208,.2);border-color:#6060d0;color:#6060d0}
+
+/* PAINEL */
+.palavras-panel{background:var(--preto-3);border:1px solid var(--borda);border-radius:14px;padding:20px 18px}
+.palavras-titulo{font-family:var(--font-mono);font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--verde-c);opacity:.6;margin-bottom:16px;display:block}
+.palavra-item{font-family:var(--font-body);font-size:.78rem;font-weight:500;color:var(--branco);opacity:.55;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.06em;transition:opacity .3s}
+.palavra-item:last-child{border-bottom:none}
+.palavra-item.enc{opacity:.9;text-decoration:line-through;text-decoration-color:rgba(48,192,120,.5)}
+.palavra-item .pw-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.12);transition:background .3s}
+.palavra-item.enc .pw-dot{background:var(--verde-c)}
+.prog-palavras{margin-top:14px;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;opacity:.3;color:var(--branco)}
+
+/* FACTO AO ENCONTRAR */
+.facto-descoberta{margin-top:20px;padding:14px 16px;background:rgba(48,192,120,.08);border:1px solid rgba(48,192,120,.25);border-radius:10px;font-family:var(--font-display);font-style:italic;font-size:.9rem;color:var(--verde-c);line-height:1.6;min-height:20px;transition:all .3s;display:none}
+.facto-descoberta.vis{display:block}
+.facto-palavra{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--verde-c);font-style:normal;font-weight:600;display:block;margin-bottom:6px;opacity:.8}
+
+/* MENSAGENS */
+.msg-quadro{margin-top:20px;text-align:center;background:var(--verde-pale);border:1px solid rgba(48,192,120,.25);border-radius:14px;padding:24px;display:none}
+.msg-quadro.vis{display:block}
+.msg-quadro h3{font-family:var(--font-title);font-size:1.3rem;color:var(--verde-c);margin-bottom:8px}
+.msg-quadro p{font-family:var(--font-display);font-style:italic;font-size:.9rem;color:var(--cinza-1);margin-bottom:16px;line-height:1.6}
+
+.msg-final{text-align:center;max-width:480px;margin:40px auto 0;display:none}
+.msg-final.vis{display:block}
+.msg-final h2{font-family:var(--font-title);font-size:2.4rem;background:linear-gradient(135deg,var(--verde-c),var(--ambar-c));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.msg-final p{font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--cinza-1);margin-bottom:24px;line-height:1.7}
+
+@media(max-width:700px){.jogo-layout{grid-template-columns:1fr}.cell{width:28px;height:28px;font-size:.72rem}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap" id="conteudo-principal">
+  <div class="page-hero">
+    <p class="label reveal" style="opacity:.8">Sala III · Jogo</p>
+    <h1 class="reveal">Sopa de Letras</h1>
+    <p class="reveal">10 quadros sobre o fado. Ao encontrar cada palavra, descobres um facto. Completa todos para ganhar.</p>
+  </div>
+
+  <div class="quadros-prog" id="quadros-prog" aria-label="Progresso nos quadros" role="list"></div>
+
+  <div class="quadro-tema">
+    <div class="tema-badge" id="tema-badge" role="status" aria-live="polite"></div>
+    <p class="tema-desc" id="tema-desc"></p>
+  </div>
+
+  <div class="jogo-layout" id="jogo-layout">
+    <div>
+      <div class="grelha-wrap" role="application" aria-label="Grelha da sopa de letras — clica em duas letras para seleccionar uma palavra">
+        <div class="grelha" id="grelha" role="grid"></div>
+      </div>
+      <div class="facto-descoberta" id="facto-box" aria-live="polite"></div>
+      <div class="msg-quadro" id="msg-quadro" role="alert">
+        <h3 id="msg-quadro-h"></h3>
+        <p id="msg-quadro-p"></p>
+        <button class="btn btn-primary" id="btn-prox-quadro">Próximo quadro →</button>
+      </div>
+    </div>
+    <div class="palavras-panel" aria-label="Palavras a encontrar">
+      <span class="palavras-titulo">Palavras a encontrar</span>
+      <div id="lista-palavras" role="list"></div>
+      <p class="prog-palavras" id="prog-palavras" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="msg-final" id="msg-final" role="alert">
+    <h2>🎉 Parabéns!</h2>
+    <p>Completaste os 10 quadros da sopa de letras da Casa da Adelaide. O fado já tem um lugar em ti.</p>
+    <button class="btn btn-primary" onclick="recomecar()">Jogar outra vez</button>
+  </div>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <a href="index.html" class="site-footer__logo">Casa da Adelaide</a>
+  <div class="site-footer__centre">
+    <span class="site-footer__centre-label">Uma iniciativa</span>
+    <a href="https://onofriana.pt" class="site-footer__centre-nome" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+  <span class="site-footer__copy">© 2025 Onofriana</span>
+</footer>
+
+<script>
+var QUADROS=[
+  {
+    tema:'🎸 Instrumentos',cor:'rgba(48,192,120,.18)',borda:'var(--verde-c)',
+    desc:'Os instrumentos que fazem o som do fado',
+    msg:'Conheces os instrumentos do fado!',
+    N:12,
+    entradas:[
+      {p:'GUITARRA', cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7]], facto:'A guitarra portuguesa tem 12 cordas metálicas em 6 pares — um instrumento único no mundo, símbolo do fado.'},
+      {p:'VIOLA',    cells:[[2,1],[2,2],[2,3],[2,4],[2,5]], facto:'A viola de fado (semelhante à guitarra clássica) dá a base harmónica ao fado — é o segundo instrumento essencial.'},
+      {p:'CORDAS',   cells:[[4,0],[4,1],[4,2],[4,3],[4,4],[4,5]], facto:'As cordas da guitarra portuguesa são metálicas — ao contrário das de nylon da guitarra clássica — e produzem um som brilhante e penetrante.'},
+      {p:'ROSETA',   cells:[[6,0],[6,1],[6,2],[6,3],[6,4],[6,5]], facto:'A roseta é o ornamento redondo no centro da guitarra portuguesa. Cada guitarreiro tem o seu estilo próprio — é uma espécie de assinatura.'},
+      {p:'CRAVELHA', cells:[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7]], facto:'As cravelhas são os mecanismos de afinação da guitarra portuguesa. A guitarra de Lisboa usa um tipo único em forma de leque.'},
+      {p:'CAVALETE', cells:[[10,1],[10,2],[10,3],[10,4],[10,5],[10,6],[10,7],[10,8]], facto:'O cavalete é a peça de madeira ou osso que segura as cordas no corpo da guitarra e transmite a vibração para a madeira.'},
+      {p:'BAIXO',    cells:[[1,5],[1,6],[1,7],[1,8],[1,9]], facto:'A viola baixo (ou contrabaixo) aparece frequentemente nos trios de fado modernos, dando profundidade ao som do conjunto.'},
+      {p:'TRASTE',   cells:[[3,3],[3,4],[3,5],[3,6],[3,7],[3,8]], facto:'Os trastes são as barras metálicas no braço da guitarra que dividem o escala em semitons — permitem tocar diferentes notas.'},
+    ]
+  },
+  {
+    tema:'🏘️ Bairros de Lisboa',cor:'rgba(245,176,64,.18)',borda:'var(--ambar-c)',
+    desc:'As ruas onde o fado cresceu',
+    msg:'Conheces os bairros do fado!',
+    N:12,
+    entradas:[
+      {p:'MOURARIA',   cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7]], facto:'A Mouraria é o bairro mais ligado às origens do fado — foi aqui que Maria Severa Onofriana viveu e morreu em 1846.'},
+      {p:'ALFAMA',     cells:[[2,2],[2,3],[2,4],[2,5],[2,6],[2,7]], facto:'Alfama é o bairro mais antigo de Lisboa. As suas ruelas estreitas e miradouros são palco de fado desde o século XIX.'},
+      {p:'MADRAGOA',   cells:[[4,0],[4,1],[4,2],[4,3],[4,4],[4,5],[4,6],[4,7]], facto:'A Madragoa, perto do rio Tejo, foi onde nasceu Maria Severa Onofriana em 1820. A sua mãe tinha uma taberna na Rua Vicente Borga.'},
+      {p:'CAPELAO',    cells:[[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[6,7]], facto:'A Rua do Capelão, na Mouraria, é onde Maria Severa morreu em 1846. O Largo da Severa com a sua placa commemorativa fica aqui.'},
+      {p:'LISBOA',     cells:[[8,3],[8,4],[8,5],[8,6],[8,7],[8,8]], facto:'Lisboa foi o berço do fado — uma cidade multicultural com influências africanas, brasileiras e europeias que se fundiram nesta música única.'},
+      {p:'TEJO',       cells:[[10,0],[10,1],[10,2],[10,3]], facto:'O rio Tejo é uma presença constante no fado — o rio das partidas e dos regressos, símbolo de uma Lisboa aberta ao mundo.'},
+      {p:'BAIRROALTO', cells:[[1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,9]], facto:'O Bairro Alto foi, especialmente a partir dos anos 1930, o centro das casas de fado de Lisboa — a Adega Machado (1937) e o Café Luso estão aqui.'},
+      {p:'INTENDENTE', cells:[[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[3,9]], facto:'O Intendente é um largo histórico próximo da Mouraria — parte do mesmo território de bairros populares onde o fado cresceu no século XIX.'},
+    ]
+  },
+  {
+    tema:'😢 Sentimentos do Fado',cor:'rgba(144,96,224,.18)',borda:'var(--roxo-c)',
+    desc:'O que o fado sente e canta',
+    msg:'Sentes as palavras do fado!',
+    N:12,
+    entradas:[
+      {p:'SAUDADE',  cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6]], facto:'A saudade é o sentimento mais característico do fado — uma palavra que não tem tradução exacta noutras línguas. É a falta de alguém ou de um tempo que passou.'},
+      {p:'DESTINO',  cells:[[2,2],[2,3],[2,4],[2,5],[2,6],[2,7],[2,8]], facto:'O destino é um tema central do fado — a palavra "fado" vem do latim fatum, que significa exatamente isso. A ideia de que há um caminho traçado.'},
+      {p:'MAGOA',    cells:[[4,1],[4,2],[4,3],[4,4],[4,5]], facto:'A mágoa no fado não é fraqueza — é a matéria com que se constrói a beleza. O fado transforma a dor em canção.'},
+      {p:'SILENCIO', cells:[[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[6,7]], facto:'O silêncio é parte do fado. Nas casas de fado, quando um fadista canta, não se conversa — o silêncio do público é sinal de respeito e atenção.'},
+      {p:'MEMORIA',  cells:[[8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7]], facto:'A memória no fado é uma forma de presença — cantar alguém que partiu é uma maneira de o manter vivo.'},
+      {p:'AMOR',     cells:[[10,4],[10,5],[10,6],[10,7]], facto:'O amor é o tema mais cantado no fado — o amor correspondido, o impossível, o perdido, o que fica na memória.'},
+      {p:'SOLIDAO',  cells:[[1,4],[1,5],[1,6],[1,7],[1,8],[1,9],[1,10]], facto:'A solidão no fado é uma presença muito específica — não é ausência de pessoas, é um estado interior. Uma forma de estar com os próprios pensamentos.'},
+      {p:'ESPERA',   cells:[[3,0],[3,1],[3,2],[3,3],[3,4],[3,5]], facto:'A espera é um tema muito presente no fado — esperar quem partiu, esperar que as coisas mudem, esperar o regresso.'},
+    ]
+  },
+  {
+    tema:'👩 Fadistas Históricas',cor:'rgba(192,48,80,.18)',borda:'var(--vinho-c)',
+    desc:'As vozes que fizeram o fado',
+    msg:'Conheces as grandes fadistas!',
+    N:12,
+    entradas:[
+      {p:'SEVERA',    cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5]], facto:'Maria Severa Onofriana (1820–1846) é a primeira fadista de que há memória. Morreu aos 26 anos na Rua do Capelão, na Mouraria, e tornou-se um mito.'},
+      {p:'AMALIA',    cells:[[2,3],[2,4],[2,5],[2,6],[2,7],[2,8]], facto:'Amália Rodrigues (1920–1999), a Rainha do Fado, foi a fadista mais conhecida no mundo. Quando morreu, Portugal decretou três dias de luto nacional.'},
+      {p:'CELESTE',   cells:[[4,0],[4,1],[4,2],[4,3],[4,4],[4,5],[4,6]], facto:'Celeste Rodrigues (1923–2023), irmã de Amália, foi uma fadista castiça inconfundível. Cantou até perto dos 90 anos — os últimos concertos foram em 2018.'},
+      {p:'HERMINIA',  cells:[[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[6,7],[6,8]], facto:'Hermínia Silva (1913–1993) foi uma das figuras mais populares do fado — combinou o canto com a comédia e o teatro de revista.'},
+      {p:'MARIZA',    cells:[[8,4],[8,5],[8,6],[8,7],[8,8],[8,9]], facto:'Mariza (n. 1973, Moçambique) cresceu na Mouraria e é hoje uma das fadistas mais reconhecidas internacionalmente. BBC World Music Awards, 2003.'},
+      {p:'ADELAIDE',  cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5],[10,6],[10,7]], facto:'Adelaide da Volta foi fadista no século XIX — cantou antes de haver casas de fado e antes de o fado ter nome. É quem dá nome à Casa da Adelaide.'},
+      {p:'LUCILIA',   cells:[[1,5],[1,6],[1,7],[1,8],[1,9],[1,10],[1,11]], facto:'Lucília do Carmo (1922–2008) foi uma grande fadista e fundou a casa de fado O Faia no Bairro Alto em 1947. Era mãe de Carlos do Carmo.'},
+      {p:'CARMINHO',  cells:[[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[3,6],[3,7]], facto:'Carminho (n. 1984) cresceu numa casa de fado, filha da fadista Teresa Siqueira. Estreou-se em público aos 12 anos e é hoje uma das vozes mais respeitadas do fado actual.'},
+    ]
+  },
+  {
+    tema:'📜 Vocabulário da Poesia',cor:'rgba(72,128,208,.18)',borda:'var(--azul-c)',
+    desc:'As palavras que constroem a poesia do fado',
+    msg:'Dominas o vocabulário do fado!',
+    N:12,
+    entradas:[
+      {p:'QUADRA',   cells:[[0,2],[0,3],[0,4],[0,5],[0,6],[0,7]], facto:'A quadra é a forma poética mais comum no fado — quatro versos, com o 2.º a rimar com o 4.º. Simples na estrutura, infinita nos sentimentos.'},
+      {p:'VERSO',    cells:[[2,0],[2,1],[2,2],[2,3],[2,4]], facto:'Um verso é cada linha de um poema. No fado, os versos seguem um ritmo específico — geralmente de sete ou oito sílabas.'},
+      {p:'RIMA',     cells:[[4,4],[4,5],[4,6],[4,7]], facto:'A rima é quando o final de dois versos soa semelhante — como "mar" e "cantar", ou "saudade" e "verdade". É o que dá musicalidade à quadra de fado.'},
+      {p:'POESIA',   cells:[[6,0],[6,1],[6,2],[6,3],[6,4],[6,5]], facto:'O fado é inseparável da poesia — as suas letras foram escritas por grandes poetas como Ary dos Santos, David Mourão-Ferreira e Pedro Homem de Mello.'},
+      {p:'DECIMA',   cells:[[8,1],[8,2],[8,3],[8,4],[8,5],[8,6]], facto:'A décima é uma forma poética avançada do fado — uma estrofe de dez versos que glosa (comenta) uma quadra inicial. Exige grande habilidade poética.'},
+      {p:'LETRA',    cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5]], facto:'A letra de fado é tão importante quanto a melodia. Muitos fadistas cantam letras de outros — mas os melhores escolhem as que se parecem com eles.'},
+      {p:'MELODIA',  cells:[[1,4],[1,5],[1,6],[1,7],[1,8],[1,9],[1,10]], facto:'A melodia do fado é frequentemente improvisada ou variada pelo fadista — os guitarristas acompanham em tempo real, num diálogo musical único a cada actuação.'},
+      {p:'CANTICO',  cells:[[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[3,6]], facto:'O cântico no fado é a expressão mais elevada do canto — quando a voz e a emoção se tornam uma coisa só, o público fica em silêncio total.'},
+    ]
+  },
+  {
+    tema:'🌊 Mar e Lisboa',cor:'rgba(96,96,208,.18)',borda:'#6060d0',
+    desc:'O fado e a cidade junto ao Tejo',
+    msg:'Conheces a Lisboa do fado!',
+    N:12,
+    entradas:[
+      {p:'VARANDA',  cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6]], facto:'As varandas das casas de fado são um símbolo de Lisboa — lugares de espreitar a rua, de ouvir a voz que vem lá de baixo, de esperar quem não voltou.'},
+      {p:'JANELA',   cells:[[2,3],[2,4],[2,5],[2,6],[2,7],[2,8]], facto:'A janela no fado é um limite entre o dentro e o fora — entre a saudade e o mundo, entre quem espera e quem parte.'},
+      {p:'BECO',     cells:[[4,5],[4,6],[4,7],[4,8]], facto:'Os becos da Mouraria e de Alfama — ruas estreitas que parecem não ter saída — são o cenário físico onde o fado nasceu.'},
+      {p:'NOITE',    cells:[[6,1],[6,2],[6,3],[6,4],[6,5]], facto:'O fado é uma música da noite — cantava-se depois do trabalho, nas tabernas, quando as guardas baixavam e os sentimentos vinham ao de cima.'},
+      {p:'MADRUGADA',cells:[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7],[8,8]], facto:'A madrugada é o momento mais puro do fado — quando só ficam os que realmente querem ouvir. Muitas casas de fado só chegam ao melhor depois da meia-noite.'},
+      {p:'PEDRA',    cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5]], facto:'A calçada portuguesa — pedra branca e preta em padrões geométricos — é o chão onde o fado cresceu. No Largo da Severa, uma guitarra está gravada na calçada.'},
+      {p:'CANDEEIRO',cells:[[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,9],[1,10],[1,11]], facto:'Os candeeiros de ferro dos becos de Alfama e Mouraria iluminam a Lisboa do fado — uma luz fraca, que mais esconde do que revela.'},
+      {p:'CASTELO',  cells:[[3,4],[3,5],[3,6],[3,7],[3,8],[3,9],[3,10]], facto:'O Castelo de São Jorge, no cimo da colina de Alfama, é o ponto mais alto da Lisboa do fado — a vista que os fadistas guardam na memória.'},
+    ]
+  },
+  {
+    tema:'🎤 Fadistas de Hoje',cor:'rgba(224,96,64,.18)',borda:'var(--terra-c)',
+    desc:'As vozes que continuam a história',
+    msg:'Conheces as vozes actuais do fado!',
+    N:12,
+    entradas:[
+      {p:'MARTA',    cells:[[0,0],[0,1],[0,2],[0,3],[0,4]], facto:'Marta Rosa, voz e viola de fado da Onofriana, licenciou-se em Ciências Musicais pela Universidade Nova de Lisboa. É uma das poucas mulheres a tocar viola de fado profissionalmente.'},
+      {p:'CARMINHO', cells:[[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[2,9],[2,10]], facto:'Carminho colaborou com Rosalía na canção "Memória" e lançou em 2025 o álbum "Eu Vou Morrer de Amor ou Resistir" — fado que dialoga com o mundo.'},
+      {p:'MOURA',    cells:[[4,6],[4,7],[4,8],[4,9],[4,10]], facto:'Ana Moura colaborou com Prince e Mick Jagger — levando o fado aos palcos do rock internacional sem nunca perder a sua identidade.'},
+      {p:'SILVANA',  cells:[[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[6,6]], facto:'Silvana Peres, residente no Clube de Fado em Alfama, levou o tema "Não Tem Fim" ao Festival da Canção 2026 — escrito por ela e Rita Dias.'},
+      {p:'TANIA',    cells:[[8,2],[8,3],[8,4],[8,5],[8,6]], facto:'Tânia Oleiro é uma das vozes mais rigorosas da nova geração — actuou no Kennedy Center em Washington com Marco Oliveira.'},
+      {p:'GISELA',   cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5]], facto:'Gisela João é conhecida pela intensidade vocal e pela forma como reinterpreta o fado castiço com uma presença em palco única.'},
+      {p:'ZAMBUJO',  cells:[[1,5],[1,6],[1,7],[1,8],[1,9],[1,10],[1,11]], facto:'António Zambujo é um dos fadistas masculinos mais inovadores da sua geração — cruza o fado com o jazz e a bossa nova com naturalidade.'},
+      {p:'CANANE',   cells:[[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[3,6]], facto:'Camané é considerado um dos maiores fadistas vivos — a sua voz combina rigor técnico com uma profundidade emocional rara no fado actual.'},
+    ]
+  },
+  {
+    tema:'🎭 O Fado ao Vivo',cor:'rgba(48,192,168,.18)',borda:'#30c0a8',
+    desc:'O fado como espetáculo e ritual',
+    msg:'O fado está em palco!',
+    N:12,
+    entradas:[
+      {p:'FADISTA',    cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6]], facto:'A fadista é a voz do fado — não apenas quem canta, mas quem habita o fado. Há um ditado: ou se é fadista, ou não se é.'},
+      {p:'PALCO',      cells:[[2,4],[2,5],[2,6],[2,7],[2,8]], facto:'Nas casas de fado mais tradicionais, não há palco elevado — o fadista canta no mesmo nível que o público, criando uma intimidade única.'},
+      {p:'SILENCIO',   cells:[[4,0],[4,1],[4,2],[4,3],[4,4],[4,5],[4,6],[4,7]], facto:'O silêncio é a maior homenagem que um público pode dar a um fadista. Nas casas de fado, quando alguém começa a cantar, toda a conversa para.'},
+      {p:'FADOVADIO',  cells:[[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[6,7],[6,8]], facto:'O "fado vadio" é o fado improvisado e espontâneo — qualquer pessoa do público pode levantar-se e cantar. É a forma mais pura e democrática do fado.'},
+      {p:'CASADEFADO', cells:[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,6],[8,7],[8,8],[8,9]], facto:'A casa de fado é o espaço onde o fado vive ao vivo. As mais antigas de Lisboa incluem o Café Luso (1927) e a Adega Machado (1937).'},
+      {p:'REPERTORIO', cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5],[10,6],[10,7],[10,8],[10,9]], facto:'Um bom guitarrista de fado sabe de memória mais de cem fados diferentes, em qualquer tonalidade — pronto para acompanhar qualquer fadista em qualquer momento.'},
+      {p:'APLAUSO',    cells:[[1,5],[1,6],[1,7],[1,8],[1,9],[1,10],[1,11]], facto:'Após um bom fado, o público grita "É fadista!" — a mais alta homenagem que se pode fazer a quem acabou de cantar.'},
+      {p:'TRIO',       cells:[[3,0],[3,1],[3,2],[3,3]], facto:'O trio de fado — voz, guitarra portuguesa e viola de fado — é a formação clássica. Simples e poderosa.'},
+    ]
+  },
+  {
+    tema:'🌹 Símbolos do Fado',cor:'rgba(208,96,192,.18)',borda:'#d060c0',
+    desc:'Imagens e objectos ligados ao fado',
+    msg:'Conheces os símbolos do fado!',
+    N:12,
+    entradas:[
+      {p:'XAILE',    cells:[[0,0],[0,1],[0,2],[0,3],[0,4]], facto:'O xaile negro das fadistas é símbolo de identidade e de pertença ao fado. Cobre os ombros e emoldura a voz — uma presença visual tão reconhecível como o próprio som.'},
+      {p:'GUITARRA', cells:[[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[2,9],[2,10]], facto:'A guitarra portuguesa é o instrumento mais iconicamente associado ao fado — o seu som metálico e inconfundível reconhece-se nos primeiros segundos.'},
+      {p:'CRAVO',    cells:[[4,5],[4,6],[4,7],[4,8],[4,9]], facto:'O cravo (cravinho) é a flor dos Cravos da Liberdade — símbolo da Revolução de 25 de Abril de 1974. Nos anos seguintes, o fado ganhou liberdade para cantar temas políticos.'},
+      {p:'AZULEJO',  cells:[[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[6,6]], facto:'Os azulejos portugueses — painéis de cerâmica azul e branca — decoram as paredes de muitas casas de fado e becos de Alfama e Mouraria.'},
+      {p:'LUA',      cells:[[8,0],[8,1],[8,2]], facto:'A lua no fado é testemunha silenciosa — ilumina a noite dos fadistas, acompanha a saudade, observa os becos da Mouraria.'},
+      {p:'SARDINHA', cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5],[10,6],[10,7]], facto:'A sardinha assada é o símbolo das festas de Lisboa em Junho — as Festas de Santo António — onde o fado e a sardinha se encontram nas ruas.'},
+      {p:'SOMBRA',   cells:[[1,3],[1,4],[1,5],[1,6],[1,7],[1,8]], facto:'A sombra no fado é metáfora de ausência e de presença ao mesmo tempo — a memória de quem não está, que ainda assim se faz sentir.'},
+      {p:'CANDEEIRO',cells:[[3,0],[3,1],[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[3,9]], facto:'O candeeiro dos becos é a luz do fado — fraca mas persistente, como a saudade. Aparece em muitas letras e pinturas sobre Lisboa nocturna.'},
+    ]
+  },
+  {
+    tema:'📜 História e Herança',cor:'rgba(168,208,48,.18)',borda:'#a8d030',
+    desc:'Datas e factos que moldaram o fado',
+    msg:'Dominas a história do fado!',
+    N:12,
+    entradas:[
+      {p:'UNESCO',    cells:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5]], facto:'A 27 de novembro de 2011, em Bali, a UNESCO inscreveu o fado na Lista Representativa do Património Cultural Imaterial da Humanidade — unanimidade entre os 24 países do júri.'},
+      {p:'HERANCA',   cells:[[2,2],[2,3],[2,4],[2,5],[2,6],[2,7],[2,8]], facto:'O fado é uma herança — não uma curiosidade ou um produto. Transmite-se de voz em voz, de geração em geração, desde o século XIX.'},
+      {p:'SECULO',    cells:[[4,0],[4,1],[4,2],[4,3],[4,4],[4,5]], facto:'O fado surgiu no século XIX — provavelmente entre 1820 e 1840 — nos bairros populares de Lisboa. As origens exactas são incertas e mitificadas.'},
+      {p:'TRADICAO',  cells:[[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[6,7],[6,8]], facto:'A tradição do fado assenta na transmissão oral — os mais velhos ensinam os mais novos nos espaços de fado, sem recurso a partituras ou manuais.'},
+      {p:'MEMORIA',   cells:[[8,3],[8,4],[8,5],[8,6],[8,7],[8,8],[8,9]], facto:'O Museu do Fado (inaugurado em 1998, em Alfama) preserva a memória do fado — instrumentos, vestuário, documentos e gravações históricas.'},
+      {p:'ORIGEM',    cells:[[10,0],[10,1],[10,2],[10,3],[10,4],[10,5]], facto:'As origens do fado são debatidas: influências africanas, brasileiras, árabes, medievais. O que é certo é que nasceu em Lisboa — e pertence ao mundo.'},
+      {p:'SALVAGUARDA',cells:[[1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,9],[1,10]], facto:'O Plano de Salvaguarda do Fado, activado após a candidatura UNESCO, criou o Arquivo Digital de Fonogramas de Fado e um programa educativo abrangente.'},
+      {p:'ARQUIVO',   cells:[[3,4],[3,5],[3,6],[3,7],[3,8],[3,9],[3,10]], facto:'O Arquivo Sonoro Digital do Museu do Fado preserva gravações históricas de fado disponíveis online — da voz de Alfredo Marceneiro às primeiras gravações do século XX.'},
+    ]
+  }
+];
+
+var ALFA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var quadroActual=0,feitos=[],grid=[],selInicio=null,encontradas={},totalEnc=0;
+
+function letraAleat(){return ALFA[Math.floor(Math.random()*ALFA.length)]}
+
+function construirGrid(q){
+  var N=q.N;grid=[];
+  for(var r=0;r<N;r++){grid.push([]);for(var c=0;c<N;c++)grid[r].push('')}
+  q.entradas.forEach(function(e){e.p.split('').forEach(function(ch,i){grid[e.cells[i][0]][e.cells[i][1]]=ch})});
+  for(var r=0;r<N;r++)for(var c=0;c<N;c++)if(!grid[r][c])grid[r][c]=letraAleat();
+}
+
+function renderProg(){
+  var el=document.getElementById('quadros-prog');
+  el.innerHTML=QUADROS.map(function(q,i){
+    var cls='qp-dot';
+    if(feitos.indexOf(i)!==-1)cls+=' feito';
+    else if(i===quadroActual)cls+=' atual';
+    return '<div class="'+cls+'" role="listitem" aria-label="Quadro '+(i+1)+(feitos.indexOf(i)!==-1?' — concluído':i===quadroActual?' — actual':'')+'">'+(i+1)+'</div>';
+  }).join('');
+}
+
+function renderTema(){
+  var q=QUADROS[quadroActual];
+  var badge=document.getElementById('tema-badge');
+  badge.textContent=q.tema;
+  badge.style.background=q.cor;
+  badge.style.border='1px solid '+q.borda;
+  badge.style.color='#f8f5f0';
+  document.getElementById('tema-desc').textContent=q.desc;
+}
+
+function renderGrelha(){
+  var q=QUADROS[quadroActual];
+  var N=q.N;
+  var el=document.getElementById('grelha');
+  el.style.gridTemplateColumns='repeat('+N+',1fr)';
+  el.innerHTML='';
+  for(var r=0;r<N;r++){
+    for(var c=0;c<N;c++){
+      var cell=document.createElement('button');
+      cell.className='cell';
+      cell.textContent=grid[r][c];
+      cell.dataset.r=r;cell.dataset.c=c;
+      cell.setAttribute('aria-label','Letra '+grid[r][c]+', linha '+(r+1)+', coluna '+(c+1));
+      cell.addEventListener('click',clicarCell);
+      el.appendChild(cell);
+    }
+  }
+}
+
+function renderLista(){
+  var q=QUADROS[quadroActual];
+  var el=document.getElementById('lista-palavras');
+  el.innerHTML=q.entradas.map(function(e){
+    var enc=!!encontradas[e.p];
+    return '<div class="palavra-item'+(enc?' enc':'')+'" role="listitem" aria-label="'+e.p+(enc?' — encontrada':'')+'"><span class="pw-dot" aria-hidden="true"></span>'+e.p+'</div>';
+  }).join('');
+  document.getElementById('prog-palavras').textContent=totalEnc+' de '+q.entradas.length+' encontrada'+(totalEnc!==1?'s':'');
+}
+
+function celulasEntre(r1,c1,r2,c2){
+  var cells=[],dr=0,dc=0;
+  if(r2>r1)dr=1;else if(r2<r1)dr=-1;
+  if(c2>c1)dc=1;else if(c2<c1)dc=-1;
+  var r=r1,c=c1;
+  while(true){cells.push([r,c]);if(r===r2&&c===c2)break;r+=dr;c+=dc;if(cells.length>20)break}
+  return cells;
+}
+
+function clicarCell(e){
+  var r=parseInt(e.target.dataset.r),c=parseInt(e.target.dataset.c);
+  if(!selInicio){
+    selInicio=[r,c];
+    e.target.classList.add('sel');
+    return;
+  }
+  var cells=celulasEntre(selInicio[0],selInicio[1],r,c);
+  var texto=cells.map(function(rc){return grid[rc[0]][rc[1]]}).join('');
+  var textoRev=texto.split('').reverse().join('');
+  document.querySelectorAll('.cell.sel').forEach(function(el){el.classList.remove('sel')});
+  var q=QUADROS[quadroActual];
+  var match=null,matchIdx=-1,matchFact='';
+  q.entradas.forEach(function(e,i){
+    if(!encontradas[e.p]&&(texto===e.p||textoRev===e.p)){match=e.p;matchIdx=i;matchFact=e.facto}
+  });
+  if(match){
+    encontradas[match]=true;totalEnc++;
+    var corClass='f'+(matchIdx+1);
+    cells.forEach(function(rc){
+      var idx=rc[0]*q.N+rc[1];
+      document.querySelectorAll('.cell')[idx].className='cell '+corClass;
+    });
+    // Mostrar facto
+    var fb=document.getElementById('facto-box');
+    fb.innerHTML='<span class="facto-palavra">'+match+'</span>'+matchFact;
+    fb.classList.add('vis');
+    renderLista();
+    if(totalEnc===q.entradas.length)setTimeout(mostrarSucesso,600);
+  }
+  selInicio=null;
+}
+
+function mostrarSucesso(){
+  var q=QUADROS[quadroActual];
+  var msg=document.getElementById('msg-quadro');
+  document.getElementById('msg-quadro-h').textContent=q.msg;
+  var frases=['Passas ao quadro seguinte!','Continua — o fado tem muito mais para descobrir.','Cada palavra é uma porta para o fado.','Excelente! O fado agradece.','Muito bem! Avança para o próximo tema.'];
+  document.getElementById('msg-quadro-p').textContent=frases[quadroActual%frases.length];
+  if(quadroActual===QUADROS.length-1)document.getElementById('btn-prox-quadro').textContent='Ver resultado final →';
+  msg.classList.add('vis');
+}
+
+function proximoQuadro(){
+  feitos.push(quadroActual);
+  if(quadroActual===QUADROS.length-1){
+    document.getElementById('jogo-layout').style.display='none';
+    document.getElementById('msg-quadro').classList.remove('vis');
+    document.getElementById('msg-final').classList.add('vis');
+    renderProg();return;
+  }
+  quadroActual++;
+  carregarQuadro();
+}
+
+function carregarQuadro(){
+  var q=QUADROS[quadroActual];
+  encontradas={};totalEnc=0;selInicio=null;
+  construirGrid(q);
+  document.getElementById('msg-quadro').classList.remove('vis');
+  document.getElementById('facto-box').classList.remove('vis');
+  document.getElementById('jogo-layout').style.display='grid';
+  document.getElementById('msg-final').classList.remove('vis');
+  renderProg();renderTema();renderGrelha();renderLista();
+}
+
+function recomecar(){quadroActual=0;feitos=[];carregarQuadro()}
+
+document.getElementById('btn-prox-quadro').addEventListener('click',proximoQuadro);
+carregarQuadro();
+</script>
+</body>
+</html>

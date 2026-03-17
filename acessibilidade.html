@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Declaração de Acessibilidade — Casa da Adelaide</title>
+<meta name="description" content="Declaração de acessibilidade da Casa da Adelaide — portal de fado para crianças, famílias e escolas. Conformidade com WCAG 2.1 nível AA.">
+<link rel="canonical" href="https://casadaadelaide.pt/acessibilidade.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="nav.css">
+<style>
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:48px 24px 80px}
+.page-hero{margin-bottom:40px}
+.page-hero h1{font-family:var(--font-title);font-size:clamp(1.8rem,5vw,3rem);color:var(--verde-c);margin:10px 0 12px}
+.page-hero p{font-family:var(--font-display);font-style:italic;font-size:1.02rem;color:var(--cinza-1);line-height:1.7}
+.secao{margin-bottom:40px}
+.secao h2{font-family:var(--font-title);font-size:1.2rem;color:var(--branco);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.secao p,.secao li{font-family:var(--font-display);font-size:.98rem;line-height:1.8;color:var(--cinza-1);margin-bottom:10px}
+.secao ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.secao li{padding-left:20px;position:relative}
+.secao li::before{content:'✓';position:absolute;left:0;color:var(--verde-c);font-weight:700;font-family:var(--font-body)}
+.secao li.x::before{content:'○';color:var(--ambar-c)}
+.conf-badge{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;background:var(--verde-pale);border:1px solid rgba(48,192,120,.3);border-radius:12px;font-family:var(--font-body);font-size:.8rem;font-weight:600;color:var(--verde-c);margin-bottom:24px}
+.contacto-a{color:var(--verde-c);text-underline-offset:4px}
+.divider-a{height:1px;background:var(--borda);margin:32px 0}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<main id="conteudo-principal">
+<div class="wrap">
+  <div class="page-hero">
+    <p class="label">Acessibilidade</p>
+    <h1>Declaração de Acessibilidade</h1>
+    <p>A Casa da Adelaide compromete-se com a acessibilidade digital para todas as pessoas — incluindo aquelas que utilizam tecnologias de apoio como leitores de ecrã, ampliação ou navegação por teclado.</p>
+  </div>
+
+  <div class="conf-badge" role="note" aria-label="Nível de conformidade WCAG 2.1 AA">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+    Conformidade WCAG 2.1 — Nível AA (objectivo)
+  </div>
+
+  <div class="secao">
+    <h2>📋 Identificação</h2>
+    <p><strong>Nome do portal:</strong> Casa da Adelaide — Portal de Fado para Crianças</p>
+    <p><strong>URL:</strong> <a href="https://casadaadelaide.pt" class="contacto-a">casadaadelaide.pt</a></p>
+    <p><strong>Responsável:</strong> Onofriana — fado@onofriana.pt</p>
+    <p><strong>Data da declaração:</strong> 2025</p>
+    <p><strong>Tecnologia utilizada:</strong> HTML5, CSS3, JavaScript — sem dependências de terceiros para a estrutura principal.</p>
+  </div>
+
+  <div class="divider-a"></div>
+
+  <div class="secao">
+    <h2>✅ Medidas implementadas</h2>
+    <ul>
+      <li>Skip link "Saltar para o conteúdo" visível ao foco — permite ignorar a navegação</li>
+      <li>Todos os elementos interactivos têm foco visível com contorno âmbar de 2px</li>
+      <li>Estrutura de cabeçalhos hierárquica (h1 → h2 → h3) em todas as páginas</li>
+      <li>Atributos <code>aria-label</code>, <code>aria-live</code>, <code>aria-current</code> e <code>role</code> implementados nos elementos dinâmicos</li>
+      <li>Todas as imagens têm atributo <code>alt</code> descritivo; imagens decorativas marcadas com <code>aria-hidden="true"</code></li>
+      <li>Navegação completa por teclado em todas as páginas, incluindo menus, jogos e formulários</li>
+      <li>Contraste de cor superior a 4.5:1 entre texto e fundo em toda a interface</li>
+      <li>Textos dimensionados em unidades relativas — compatíveis com ampliação do navegador até 200%</li>
+      <li>O quiz anuncia as respostas correctas e incorrectas com <code>aria-live="assertive"</code></li>
+      <li>A sopa de letras tem instruções de utilização acessíveis no atributo <code>aria-label</code> do elemento de jogo</li>
+      <li>Os PDFs das fichas pedagógicas são gerados com estrutura legível</li>
+      <li>O menu mobile fecha com a tecla Escape e restitui o foco correctamente</li>
+    </ul>
+  </div>
+
+  <div class="divider-a"></div>
+
+  <div class="secao">
+    <h2>○ Limitações conhecidas</h2>
+    <ul>
+      <li class="x">Os vídeos incorporados são do YouTube — as legendas estão disponíveis no próprio YouTube mas não são controladas por este portal</li>
+      <li class="x">A sopa de letras requer interacção por clique — não existe ainda uma alternativa por teclado para a selecção de células individuais. Está planeada para versão futura.</li>
+      <li class="x">Alguns PDFs podem não ser totalmente acessíveis com leitores de ecrã — estamos a melhorar progressivamente</li>
+    </ul>
+  </div>
+
+  <div class="divider-a"></div>
+
+  <div class="secao">
+    <h2>📬 Contacto e feedback</h2>
+    <p>Se encontrar uma barreira de acessibilidade neste portal — conteúdo que não consiga ler, funcionalidade que não consiga usar, ou qualquer outro problema — pedimos que nos informe.</p>
+    <p>Respondemos e actuamos. A acessibilidade não é uma caixa para marcar — é um compromisso contínuo.</p>
+    <p><strong>Email:</strong> <a href="mailto:fado@onofriana.pt" class="contacto-a">fado@onofriana.pt</a><br>
+    Indique "Acessibilidade" no assunto e descreva o que encontrou e em que página.</p>
+  </div>
+
+  <div class="divider-a"></div>
+
+  <div class="secao">
+    <h2>🔗 Referências</h2>
+    <p>Este portal foi construído seguindo as directrizes:</p>
+    <ul>
+      <li>WCAG 2.1 — <em>Web Content Accessibility Guidelines</em>, W3C</li>
+      <li>WAI-ARIA 1.1 — <em>Accessible Rich Internet Applications</em>, W3C</li>
+      <li>Decreto-Lei n.º 83/2018 — transposição da Directiva UE 2016/2102 (acessibilidade de sítios web e aplicações móveis do sector público)</li>
+    </ul>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <a href="index.html" class="site-footer__logo">Casa da Adelaide</a>
+  <div class="site-footer__centre">
+    <span class="site-footer__centre-label">Uma iniciativa</span>
+    <a href="https://onofriana.pt" class="site-footer__centre-nome" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+  <span class="site-footer__copy">© 2025 Onofriana</span>
+</footer>
+</body>
+</html>

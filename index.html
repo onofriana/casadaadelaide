@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa da Adelaide — O fado para crescer | Onofriana</title>
+<meta name="description" content="Portal de fado para crianças, famílias e escolas. Atividades, quiz, vídeos curados e fichas pedagógicas sobre o fado e a sua história. Uma iniciativa Onofriana.">
+<meta name="keywords" content="fado crianças, portal fado educativo, guitarra portuguesa crianças, Maria Severa, Mouraria, Alfama, UNESCO fado, Onofriana">
+<meta name="author" content="Onofriana">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://casadaadelaide.pt/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://casadaadelaide.pt/">
+<meta property="og:title" content="Casa da Adelaide — O fado para crescer">
+<meta property="og:description" content="Portal de fado para crianças e famílias. Quiz, sopa de letras, vídeos curados, fichas pedagógicas. Uma iniciativa Onofriana.">
+<meta property="og:image" content="https://casadaadelaide.pt/og-image.jpg">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:site_name" content="Casa da Adelaide">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Casa da Adelaide — O fado para crescer">
+<meta name="twitter:description" content="Portal de fado para crianças e famílias. Uma iniciativa Onofriana.">
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Casa da Adelaide",
+  "alternateName": "Portal de Fado para Crianças",
+  "url": "https://casadaadelaide.pt",
+  "description": "Portal educativo de fado para crianças, famílias e escolas. Uma iniciativa Onofriana.",
+  "inLanguage": "pt-PT",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Onofriana",
+    "url": "https://onofriana.pt",
+    "description": "Empresa de espetáculos de fado baseada em Lisboa",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "fado@onofriana.pt",
+      "contactType": "customer service"
+    }
+  },
+  "educationalAlignment": {
+    "@type": "AlignmentObject",
+    "alignmentType": "educationalLevel",
+    "targetName": "1.º ao 3.º ciclo do ensino básico"
+  },
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student",
+    "audienceType": "Crianças dos 6 aos 14 anos"
+  }
+}
+</script>
+
+<!-- Fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="nav.css">
+
+<style>
+/* ── HERO ── */
+#hero{position:relative;min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;overflow:hidden;z-index:1}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(107,16,32,.4) 0%,transparent 65%),radial-gradient(ellipse 45% 40% at 15% 80%,rgba(201,125,16,.2) 0%,transparent 60%),radial-gradient(ellipse 40% 35% at 85% 20%,rgba(26,56,112,.25) 0%,transparent 60%);pointer-events:none}
+
+/* Imagem de fundo hero */
+#hero::after{content:'';position:absolute;inset:0;background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Alfama_neighbourhood_-_Lisbon_%2836830558461%29.jpg/1280px-Alfama_neighbourhood_-_Lisbon_%2836830558461%29.jpg') center/cover no-repeat;opacity:.08;pointer-events:none;z-index:-1}
+
+.hero-supra{position:relative;z-index:1;margin-bottom:20px}
+.hero-de{display:block;font-family:var(--font-script);font-size:clamp(1rem,2.5vw,1.5rem);color:var(--branco);opacity:.35;margin-bottom:4px}
+.hero-title{position:relative;z-index:1;font-family:var(--font-title);font-size:clamp(3.2rem,11vw,7.5rem);line-height:.9;letter-spacing:.01em;background:linear-gradient(135deg,var(--ambar-c) 0%,#ff9040 45%,var(--vinho-c) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:hue-drift 10s ease-in-out infinite alternate}
+@keyframes hue-drift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(12deg)}}
+.hero-tagline{position:relative;z-index:1;margin-top:22px;font-family:var(--font-display);font-style:italic;font-size:clamp(1.05rem,2.5vw,1.4rem);color:var(--branco);opacity:.6;max-width:440px;line-height:1.55}
+.hero-publico{position:relative;z-index:1;margin-top:32px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.3;animation:bob 2s ease-in-out infinite}
+.hero-scroll span{font-family:var(--font-mono);font-size:.4rem;letter-spacing:.28em;text-transform:uppercase;color:var(--branco)}
+.hero-scroll svg{color:var(--branco)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ── FADOS FACTOS ── */
+#factos{position:relative;z-index:1;padding:0 24px;margin-top:-1px}
+.factos-inner{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--borda);border:1px solid var(--borda);border-radius:16px;overflow:hidden}
+.facto{background:var(--preto-2);padding:28px 20px;text-align:center;transition:background var(--t-mid)}
+.facto:hover{background:var(--preto-3)}
+.facto-num{font-family:var(--font-title);font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--ambar-c);line-height:1;margin-bottom:6px}
+.facto-desc{font-family:var(--font-display);font-style:italic;font-size:.88rem;color:var(--cinza-1);line-height:1.4}
+
+/* ── O QUE É O FADO ── */
+#fado{position:relative;z-index:1;padding:88px 24px}
+.fado-grid{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:72px;align-items:center}
+.fado-imagem{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/5}
+.fado-imagem img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.fado-imagem:hover img{transform:scale(1.03)}
+.fado-imagem-credito{position:absolute;bottom:10px;right:10px;font-family:var(--font-mono);font-size:.36rem;letter-spacing:.12em;color:rgba(255,255,255,.4);background:rgba(0,0,0,.5);padding:3px 8px;border-radius:3px}
+.fado-conteudo{}
+.fado-label{margin-bottom:20px}
+.fado-titulo{font-family:var(--font-display);font-weight:300;font-size:clamp(2rem,4vw,3rem);color:var(--branco);line-height:1.1;margin-bottom:24px}
+.fado-titulo em{font-style:italic;color:var(--ambar-c)}
+.fado-p{font-family:var(--font-display);font-size:1.05rem;line-height:1.88;color:var(--cinza-1);margin-bottom:16px}
+.fado-p strong{color:var(--branco);font-weight:600}
+.fado-p em{font-style:italic;color:var(--ambar-c)}
+.fado-p:last-of-type{margin-bottom:0}
+.fado-bairros{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.bairro-tag{font-family:var(--font-body);font-size:.68rem;font-weight:500;padding:6px 14px;border-radius:20px;border:1px solid var(--borda-vinho);color:var(--vinho-c);background:var(--vinho-pale);transition:all var(--t-mid)}
+.bairro-tag:hover{background:rgba(107,16,32,.22);border-color:var(--vinho-c)}
+.fado-unescos{margin-top:28px;padding:18px 20px;background:var(--ambar-pale);border:1px solid var(--borda-ambar);border-radius:12px;display:flex;align-items:center;gap:14px}
+.fado-unescos svg{flex-shrink:0;color:var(--ambar-c)}
+.fado-unescos p{font-family:var(--font-display);font-size:.92rem;line-height:1.55;color:var(--cinza-1)}
+.fado-unescos strong{color:var(--ambar-c);font-weight:600}
+
+/* ── SALAS ── */
+#salas{position:relative;z-index:1;padding:80px 24px 96px}
+.salas-header{text-align:center;margin-bottom:56px}
+.salas-titulo{font-family:var(--font-display);font-weight:300;font-size:clamp(2rem,4vw,2.8rem);color:var(--branco);margin-top:12px}
+.salas-grid{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sala-card{display:block;text-decoration:none;color:var(--branco);border-radius:16px;padding:28px 24px 24px;position:relative;overflow:hidden;border:1px solid var(--borda);transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+.sala-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,.5)}
+.sala-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-acento,var(--ambar-c));transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.sala-card:hover::before,.sala-card:focus-visible::before{transform:scaleX(1)}
+.sc-colorir{background:linear-gradient(145deg,#2a1206,#3d1a08);--card-acento:#ff7840}
+.sc-quiz{background:linear-gradient(145deg,#1a1600,#2e2800);--card-acento:var(--ambar-c)}
+.sc-sopa{background:linear-gradient(145deg,#071510,#0e2818);--card-acento:var(--verde-c)}
+.sc-poema{background:linear-gradient(145deg,#140a1e,#201030);--card-acento:var(--roxo-c)}
+.sc-sala{background:linear-gradient(145deg,#06101e,#0e1e38);--card-acento:var(--azul-c)}
+.sc-workshop{background:linear-gradient(145deg,#141006,#20180a);--card-acento:var(--ambar-2)}
+.sc-escola{background:linear-gradient(145deg,#140608,#221010);--card-acento:var(--vinho-c)}
+.sala-card-icon{font-size:2.4rem;display:block;margin-bottom:16px;line-height:1}
+.sala-card-num{font-family:var(--font-mono);font-size:.46rem;letter-spacing:.3em;text-transform:uppercase;color:var(--card-acento,var(--ambar-c));opacity:.6;margin-bottom:8px}
+.sala-card-nome{font-family:var(--font-title);font-size:1.3rem;color:var(--branco);margin-bottom:8px;line-height:1.1}
+.sala-card-desc{font-family:var(--font-display);font-style:italic;font-size:.88rem;color:var(--cinza-1);line-height:1.55;opacity:.8}
+.sala-card-cta{display:inline-block;margin-top:16px;font-family:var(--font-body);font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--card-acento,var(--ambar-c));opacity:.8}
+.sala-card.largo{grid-column:span 3;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;padding:22px 28px}
+.sala-card.largo .sala-card-icon{font-size:2.8rem;margin:0}
+.sala-card.largo .sala-card-cta{margin:0}
+
+/* ── SOBRE ADELAIDE ── */
+#adelaide{position:relative;z-index:1;padding:80px 24px;background:var(--preto-2);border-top:1px solid var(--borda);border-bottom:1px solid var(--borda)}
+.adelaide-grid{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.adelaide-quote{padding-left:28px;border-left:3px solid var(--vinho-c)}
+.adelaide-quote blockquote{font-family:var(--font-display);font-style:italic;font-size:clamp(1.1rem,2.5vw,1.5rem);line-height:1.7;color:var(--branco);opacity:.7}
+.adelaide-quote cite{display:block;margin-top:14px;font-family:var(--font-mono);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ambar-c);opacity:.7;font-style:normal}
+.adelaide-texto .fado-label{margin-bottom:14px}
+.adelaide-texto h2{font-family:var(--font-display);font-weight:300;font-size:clamp(1.8rem,3.5vw,2.5rem);color:var(--branco);margin-bottom:20px}
+.adelaide-texto p{font-family:var(--font-display);font-size:1.02rem;line-height:1.85;color:var(--cinza-1);margin-bottom:14px}
+.adelaide-texto em{font-style:italic;color:var(--ambar-c)}
+
+/* ── ACESSIBILIDADE BADGE ── */
+#acesso{position:relative;z-index:1;padding:60px 24px}
+.acesso-inner{max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;padding:32px 40px;background:var(--verde-pale);border:1px solid rgba(30,96,64,.3);border-radius:16px;flex-wrap:wrap}
+.acesso-texto h3{font-family:var(--font-title);font-size:1.1rem;color:var(--verde-c);margin-bottom:8px}
+.acesso-texto p{font-family:var(--font-display);font-size:.95rem;color:var(--cinza-1);line-height:1.6}
+.acesso-badges{display:flex;gap:10px;flex-wrap:wrap}
+.acesso-badge{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;background:rgba(30,96,64,.2);border:1px solid rgba(48,192,120,.25);font-family:var(--font-body);font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--verde-c)}
+
+/* ── ONOFRIANA ── */
+#onofriana{position:relative;z-index:1;padding:80px 24px 96px;text-align:center}
+.ono-inner{max-width:600px;margin:0 auto}
+.ono-label{margin-bottom:16px}
+.ono-nome{font-family:var(--font-script);font-size:clamp(2.5rem,6vw,4rem);color:var(--branco);opacity:.4;display:block;text-decoration:none;transition:opacity var(--t-mid);margin-bottom:16px}
+.ono-nome:hover{opacity:.85}
+.ono-tag{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:var(--vinho-c);opacity:.6}
+.ono-p{font-family:var(--font-display);font-style:italic;font-size:1.05rem;line-height:1.85;color:var(--cinza-1);margin-top:20px;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* ── RESPONSIVO ── */
+@media(max-width:1000px){.fado-grid{grid-template-columns:1fr}.fado-imagem{display:none}.adelaide-grid{grid-template-columns:1fr;gap:36px}}
+@media(max-width:900px){.factos-inner{grid-template-columns:repeat(2,1fr)}.salas-grid{grid-template-columns:repeat(2,1fr)}.sala-card.largo{grid-column:span 2;grid-template-columns:auto 1fr}.sala-card.largo .sala-card-cta{display:none}.acesso-inner{flex-direction:column;align-items:flex-start}}
+@media(max-width:580px){.factos-inner{grid-template-columns:repeat(2,1fr)}.salas-grid{grid-template-columns:1fr}.sala-card.largo{grid-column:span 1;grid-template-columns:1fr}.hero-publico{gap:8px}#factos{padding:0 16px}#fado,#salas,#adelaide,#acesso,#onofriana{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<main id="conteudo-principal">
+
+  <!-- HERO -->
+  <section id="hero" aria-labelledby="hero-titulo">
+    <p class="hero-supra">
+      <a href="https://onofriana.pt" target="_blank" rel="noopener" class="label" style="opacity:.8">Onofriana</a>
+      <span class="label" style="opacity:.3; margin:0 8px">·</span>
+      <span class="label" style="opacity:.4">apresenta</span>
+    </p>
+    <h1 id="hero-titulo" class="hero-title">
+      <span class="hero-de">a</span>Casa da Adelaide
+    </h1>
+    <p class="hero-tagline">O fado tem raízes. Aqui crescem.</p>
+    <div class="hero-publico" role="list" aria-label="Destinatários">
+      <span class="badge badge-ambar" role="listitem">Para crianças</span>
+      <span class="badge badge-vinho" role="listitem">Para famílias</span>
+      <span class="badge badge-verde" role="listitem">Para escolas</span>
+    </div>
+    <div class="hero-scroll" aria-hidden="true">
+      <span>Explorar</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- FACTOS RÁPIDOS -->
+  <section id="factos" aria-label="O fado em números">
+    <div class="factos-inner">
+      <div class="facto reveal">
+        <p class="facto-num">+200</p>
+        <p class="facto-desc">anos de história viva em Lisboa</p>
+      </div>
+      <div class="facto reveal">
+        <p class="facto-num">12</p>
+        <p class="facto-desc">cordas metálicas na guitarra portuguesa</p>
+      </div>
+      <div class="facto reveal">
+        <p class="facto-num">2011</p>
+        <p class="facto-desc">reconhecido pela UNESCO como Património da Humanidade</p>
+      </div>
+      <div class="facto reveal">
+        <p class="facto-num">3</p>
+        <p class="facto-desc">bairros históricos — Alfama, Mouraria, Madragoa</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- O QUE É O FADO -->
+  <section id="fado" aria-labelledby="fado-titulo">
+    <div class="fado-grid">
+      <div class="fado-imagem reveal" aria-hidden="true">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Guitarra_portuguesa.jpg/640px-Guitarra_portuguesa.jpg"
+          alt="Guitarra portuguesa — instrumento de doze cordas metálicas, símbolo do fado"
+          width="640" height="853"
+          loading="lazy">
+        <span class="fado-imagem-credito">Tiago J. G. Fernandes, CC BY 2.0, Wikimedia Commons</span>
+      </div>
+      <div class="fado-conteudo">
+        <p class="fado-label label reveal">O que é o fado</p>
+        <h2 id="fado-titulo" class="fado-titulo reveal">Uma música que<br><em>nasceu nas ruas de Lisboa.</em></h2>
+        <p class="fado-p reveal">O fado é um género musical nascido em Lisboa no século XIX, nos bairros populares da cidade. Cresceu em tabernas, largos e encontros informais, cantado por pessoas que queriam contar as suas histórias e dar voz aos seus sentimentos.</p>
+        <p class="fado-p reveal">É cantado por uma só voz, acompanhada pela <strong>guitarra portuguesa</strong> — com as suas doze cordas metálicas e o som inconfundível — e pela <strong>viola de fado</strong>. Três elementos. Cada um necessário.</p>
+        <p class="fado-p reveal">O fado canta o amor, a saudade, Lisboa, o mar, a partida, o regresso. Canta o que é difícil de dizer de outra forma. A palavra <em>"fado"</em> vem do latim <em>fatum</em> — destino.</p>
+        <p class="fado-p reveal">Pertence a toda a gente que cresce em português. Não é um museu, não é um espetáculo para turistas. É uma herança viva — transmitida de voz em voz, de geração em geração.</p>
+        <div class="fado-bairros reveal" aria-label="Bairros históricos do fado">
+          <span class="bairro-tag">Alfama</span>
+          <span class="bairro-tag">Mouraria</span>
+          <span class="bairro-tag">Madragoa</span>
+          <span class="bairro-tag">Bairro Alto</span>
+        </div>
+        <div class="fado-unescos reveal" role="note" aria-label="Reconhecimento UNESCO">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <p>A <strong>27 de novembro de 2011</strong>, em Bali, a UNESCO inscreveu o fado na Lista Representativa do <strong>Património Cultural Imaterial da Humanidade</strong>. Foi a primeira expressão artística portuguesa a receber este reconhecimento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SALAS -->
+  <section id="salas" aria-labelledby="salas-titulo">
+    <div class="salas-header u-relative">
+      <p class="label reveal">Entra e explora</p>
+      <h2 id="salas-titulo" class="salas-titulo reveal">Sete salas para descobrir o fado</h2>
+    </div>
+    <div class="salas-grid">
+
+      <a href="colorir.html" class="sala-card sc-colorir reveal" aria-label="Para Colorir — desenhos SVG do mundo do fado para imprimir e pintar">
+        <span class="sala-card-icon" aria-hidden="true">🎨</span>
+        <p class="sala-card-num" aria-hidden="true">Sala I</p>
+        <h3 class="sala-card-nome">Para Colorir</h3>
+        <p class="sala-card-desc">Quatro desenhos do mundo do fado para imprimir e pintar — guitarra portuguesa, fadista, roseta e Mouraria.</p>
+        <span class="sala-card-cta" aria-hidden="true">Imprimir →</span>
+      </a>
+
+      <a href="quiz.html" class="sala-card sc-quiz reveal" aria-label="Quiz do Fado — três níveis de dificuldade adaptados à idade">
+        <span class="sala-card-icon" aria-hidden="true">🎵</span>
+        <p class="sala-card-num" aria-hidden="true">Sala II</p>
+        <h3 class="sala-card-nome">Quiz do Fado</h3>
+        <p class="sala-card-desc">Três níveis adaptados à tua idade — Principiante, Explorador e Conhecedor. Quantas perguntas acertas?</p>
+        <span class="sala-card-cta" aria-hidden="true">Jogar →</span>
+      </a>
+
+      <a href="sopa.html" class="sala-card sc-sopa reveal" aria-label="Sopa de Letras — dez quadros temáticos sobre o fado">
+        <span class="sala-card-icon" aria-hidden="true">🔍</span>
+        <p class="sala-card-num" aria-hidden="true">Sala III</p>
+        <h3 class="sala-card-nome">Sopa de Letras</h3>
+        <p class="sala-card-desc">Dez quadros temáticos sobre o fado. Encontra todas as palavras de cada quadro para avançar para o seguinte.</p>
+        <span class="sala-card-cta" aria-hidden="true">Jogar →</span>
+      </a>
+
+      <a href="poema.html" class="sala-card sc-poema reveal" aria-label="Faz um Poema — escreve a tua quadra de fado com rima obrigatória">
+        <span class="sala-card-icon" aria-hidden="true">✍️</span>
+        <p class="sala-card-num" aria-hidden="true">Sala IV</p>
+        <h3 class="sala-card-nome">Faz um Poema</h3>
+        <p class="sala-card-desc">Escreve a tua quadra de fado com rima a sério. Assina com o teu nome e descarrega em PDF.</p>
+        <span class="sala-card-cta" aria-hidden="true">Criar →</span>
+      </a>
+
+      <a href="sala.html" class="sala-card sc-sala reveal" aria-label="Sala de Fado — vídeos curados pela Onofriana para ouvir e sentir o fado">
+        <span class="sala-card-icon" aria-hidden="true">🎬</span>
+        <p class="sala-card-num" aria-hidden="true">Sala V</p>
+        <h3 class="sala-card-nome">Sala de Fado</h3>
+        <p class="sala-card-desc">Vídeos curados pela Onofriana — fado clássico, fado hoje, para a escola e para escutar em família.</p>
+        <span class="sala-card-cta" aria-hidden="true">Ver &amp; Ouvir →</span>
+      </a>
+
+      <a href="workshop.html" class="sala-card sc-workshop reveal" aria-label="Workshop em Casa — fichas pedagógicas para descarregar e fazer com um adulto">
+        <span class="sala-card-icon" aria-hidden="true">📄</span>
+        <p class="sala-card-num" aria-hidden="true">Sala VI</p>
+        <h3 class="sala-card-nome">Workshop em Casa</h3>
+        <p class="sala-card-desc">Quatro fichas pedagógicas para descarregar e fazer com um adulto — o fado explicado, a guitarra, Maria Severa e poesia.</p>
+        <span class="sala-card-cta" aria-hidden="true">Descarregar →</span>
+      </a>
+
+      <a href="escola.html" class="sala-card sc-escola largo reveal" aria-label="Para Escolas e Instituições — espetáculos e workshops de fado presenciais pela Onofriana">
+        <span class="sala-card-icon" aria-hidden="true">🏫</span>
+        <div>
+          <p class="sala-card-num" aria-hidden="true">Sala VII</p>
+          <h3 class="sala-card-nome">Para Escolas &amp; Instituições</h3>
+          <p class="sala-card-desc">Espetáculos e workshops de fado presenciais, concebidos pela Onofriana para escolas, câmaras municipais e festivais.</p>
+        </div>
+        <span class="sala-card-cta" aria-hidden="true">Saber mais →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ADELAIDE -->
+  <section id="adelaide" aria-labelledby="adelaide-titulo">
+    <div class="adelaide-grid u-container">
+      <div class="adelaide-quote reveal">
+        <blockquote>
+          "O fado tem raízes. Aqui crescem."
+        </blockquote>
+        <cite>Casa da Adelaide — portal de fado para crianças</cite>
+      </div>
+      <div class="adelaide-texto">
+        <p class="fado-label label reveal">Adelaide da Volta</p>
+        <h2 id="adelaide-titulo" class="reveal">O nome que escolhemos</h2>
+        <p class="reveal">Adelaide da Volta foi fadista em Lisboa no século XIX. Cantou antes de haver casas de fado, antes de haver gravações, antes de o fado ter nome. <em>O nome ficou.</em></p>
+        <p class="reveal">A Casa da Adelaide é um lugar para crescer com o fado — não para aprender como se aprende uma matéria, mas para sentir que ele existe, que tem história, que tem voz, que pertence a toda a gente que cresce em português.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACESSIBILIDADE -->
+  <section id="acesso" aria-label="Acessibilidade do portal">
+    <div class="acesso-inner reveal">
+      <div class="acesso-texto">
+        <h3>Portal acessível</h3>
+        <p>A Casa da Adelaide foi construída com acessibilidade como prioridade — não como opção. <a href="acessibilidade.html" style="color:var(--verde-c);text-underline-offset:3px">Consultar declaração de acessibilidade →</a></p>
+      </div>
+      <div class="acesso-badges" role="list" aria-label="Certificações de acessibilidade">
+        <div class="acesso-badge" role="listitem">✓ WCAG 2.1 AA</div>
+        <div class="acesso-badge" role="listitem">✓ Navegação por teclado</div>
+        <div class="acesso-badge" role="listitem">✓ Leitores de ecrã</div>
+        <div class="acesso-badge" role="listitem">✓ Alto contraste</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ONOFRIANA -->
+  <section id="onofriana" aria-label="Sobre a Onofriana">
+    <div class="ono-inner u-center">
+      <p class="ono-label label reveal">Uma iniciativa</p>
+      <a href="https://onofriana.pt" class="ono-nome reveal" target="_blank" rel="noopener" aria-label="Visitar onofriana.pt">Onofriana</a>
+      <p class="ono-tag reveal">A herança feminina do fado</p>
+      <p class="ono-p reveal">A Onofriana é uma empresa de espetáculos de fado baseada em Lisboa, formada por Marta Rosa (voz e viola de fado) e Fernanda Maciel (guitarra portuguesa). O nome homenageia Maria Severa Onofriana — a primeira fadista da história.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <a href="index.html" class="site-footer__logo">Casa da Adelaide</a>
+  <div class="site-footer__centre">
+    <span class="site-footer__centre-label">Uma iniciativa</span>
+    <a href="https://onofriana.pt" class="site-footer__centre-nome" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+  <span class="site-footer__copy">© 2025 Onofriana · fado@onofriana.pt</span>
+</footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e,i){
+      if(e.isIntersecting){
+        setTimeout(function(){e.target.classList.add('visible')},i*60);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.07});
+  els.forEach(function(el){obs.observe(el)});
+})();
+</script>
+</body>
+</html>

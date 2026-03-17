@@ -1,0 +1,104 @@
+/* ============================================================
+   CASA DA ADELAIDE — Design System v3
+   Onofriana · 2025
+   ============================================================ */
+
+:root {
+  --preto:       #08070a;
+  --preto-2:     #0f0e12;
+  --preto-3:     #161420;
+  --preto-4:     #1e1c28;
+  --vinho:       #6b1020;
+  --vinho-2:     #8a1a2e;
+  --vinho-c:     #c03050;
+  --vinho-pale:  rgba(107,16,32,.12);
+  --ambar:       #c97d10;
+  --ambar-2:     #e09020;
+  --ambar-c:     #f5b040;
+  --ambar-pale:  rgba(201,125,16,.12);
+  --terra:       #b84020;
+  --terra-c:     #e06040;
+  --verde:       #1e6040;
+  --verde-c:     #30c078;
+  --verde-pale:  rgba(30,96,64,.15);
+  --azul:        #1a3870;
+  --azul-c:      #4880d0;
+  --azul-pale:   rgba(26,56,112,.15);
+  --roxo:        #4a2080;
+  --roxo-c:      #9060e0;
+  --roxo-pale:   rgba(74,32,128,.15);
+  --branco:      #f8f5f0;
+  --branco-2:    #ece8e0;
+  --cinza-1:     #a09890;
+  --cinza-2:     #605850;
+  --borda:       rgba(255,255,255,.07);
+  --borda-ambar: rgba(201,125,16,.22);
+  --borda-vinho: rgba(107,16,32,.35);
+  --font-display:'Cormorant Garamond', Georgia, serif;
+  --font-title:  'Fredoka One', sans-serif;
+  --font-body:   'Fredoka', sans-serif;
+  --font-mono:   'DM Mono', monospace;
+  --font-script: 'Petit Formal Script', cursive;
+  --nav-h:       64px;
+  --r-sm:        8px;
+  --r-md:        14px;
+  --r-lg:        20px;
+  --shadow-md:   0 8px 24px rgba(0,0,0,.4);
+  --shadow-lg:   0 20px 56px rgba(0,0,0,.5);
+  --t-mid:       .28s ease;
+  --max-w:       1160px;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px;-webkit-text-size-adjust:100%}
+body{background:var(--preto);color:var(--branco);font-family:var(--font-body);font-weight:400;line-height:1.6;overflow-x:hidden;min-height:100vh;padding-top:var(--nav-h)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.16}
+h1,h2,h3,h4{line-height:1.1}
+p{line-height:1.75}
+a{color:inherit}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer}
+input,textarea{font-family:inherit}
+ul,ol{list-style:none}
+
+.u-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.u-container{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+.u-container--narrow{max-width:760px;margin:0 auto;padding:0 24px}
+.u-relative{position:relative;z-index:1}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+.label{display:inline-block;font-family:var(--font-mono);font-size:.58rem;font-weight:400;letter-spacing:.35em;text-transform:uppercase;color:var(--ambar-c);opacity:.75}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;padding:12px 28px;border-radius:var(--r-sm);transition:all var(--t-mid)}
+.btn-primary{background:var(--ambar-c);color:var(--preto)}
+.btn-primary:hover{background:var(--ambar-2);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-secondary{background:transparent;color:var(--branco);border:1px solid var(--borda)}
+.btn-secondary:hover{border-color:var(--ambar-c);color:var(--ambar-c)}
+.btn-vinho{background:var(--vinho-c);color:var(--branco)}
+.btn-vinho:hover{background:var(--vinho-2);transform:translateY(-2px)}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none!important}
+
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+.badge-ambar{background:var(--ambar-pale);color:var(--ambar-c);border:1px solid rgba(201,125,16,.3)}
+.badge-vinho{background:var(--vinho-pale);color:var(--vinho-c);border:1px solid rgba(107,16,32,.3)}
+.badge-verde{background:var(--verde-pale);color:var(--verde-c);border:1px solid rgba(30,96,64,.3)}
+.badge-azul{background:var(--azul-pale);color:var(--azul-c);border:1px solid rgba(26,56,112,.3)}
+.badge-roxo{background:var(--roxo-pale);color:var(--roxo-c);border:1px solid rgba(74,32,128,.3)}
+
+.skip-link{position:absolute;top:-100%;left:0;background:var(--ambar-c);color:var(--preto);padding:12px 24px;font-weight:700;z-index:9999;text-decoration:none;border-radius:0 0 var(--r-sm) 0;transition:top .2s}
+.skip-link:focus{top:0}
+
+:focus-visible{outline:2px solid var(--ambar-c);outline-offset:3px;border-radius:3px}
+
+.site-footer{position:relative;z-index:1;border-top:1px solid var(--borda);padding:40px 24px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
+.site-footer__logo{font-family:var(--font-title);font-size:1.1rem;color:var(--ambar-c);text-decoration:none}
+.site-footer__centre{display:flex;flex-direction:column;align-items:center;gap:4px}
+.site-footer__centre-label{font-family:var(--font-mono);font-size:.38rem;letter-spacing:.28em;text-transform:uppercase;color:var(--cinza-2);opacity:.7}
+.site-footer__centre-nome{font-family:var(--font-script);font-style:italic;font-size:1.15rem;color:var(--ambar);opacity:.6;text-decoration:none;transition:opacity var(--t-mid)}
+.site-footer__centre-nome:hover{opacity:1}
+.site-footer__copy{font-family:var(--font-mono);font-size:.38rem;letter-spacing:.16em;color:var(--cinza-2);opacity:.4;text-align:right}
+
+@media(max-width:768px){:root{--nav-h:60px}.site-footer{grid-template-columns:1fr;text-align:center}.site-footer__copy{text-align:center}}
+@media(max-width:480px){.u-container,.u-container--narrow{padding:0 16px}}

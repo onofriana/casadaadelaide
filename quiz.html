@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz do Fado — Casa da Adelaide | Testa os teus conhecimentos</title>
+<meta name="description" content="Quiz interactivo sobre o fado com três níveis de dificuldade: Principiante (6-9 anos), Explorador (10-13 anos) e Conhecedor (14+). Perguntas sobre história, instrumentos e fadistas.">
+<link rel="canonical" href="https://casadaadelaide.pt/quiz.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="nav.css">
+<style>
+body.nivel-a::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 20%,rgba(30,96,64,.22) 0%,transparent 65%);pointer-events:none;z-index:0}
+body.nivel-b::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 20%,rgba(201,125,16,.2) 0%,transparent 65%);pointer-events:none;z-index:0}
+body.nivel-c::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 20%,rgba(107,16,32,.3) 0%,transparent 65%);pointer-events:none;z-index:0}
+
+.wrap{position:relative;z-index:1;min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:48px 24px 72px}
+
+/* ── SELECÇÃO ── */
+#selecao{width:100%;max-width:720px;text-align:center}
+.sel-label{margin-bottom:14px}
+.sel-h1{font-family:var(--font-title);font-size:clamp(2.2rem,7vw,4.2rem);background:linear-gradient(135deg,var(--ambar-c),#ff9040);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;line-height:1}
+.sel-sub{font-family:var(--font-display);font-style:italic;font-size:1.02rem;color:var(--cinza-1);margin-bottom:48px;line-height:1.6}
+
+.niveis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
+.nivel-card{border-radius:16px;padding:28px 22px;cursor:pointer;border:2px solid transparent;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;overflow:hidden}
+.nivel-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.nivel-card:focus-visible{outline:3px solid var(--ambar-c);outline-offset:3px}
+.nc-a{background:linear-gradient(145deg,#0a1e14,#122a1c)}.nc-a:hover{border-color:var(--verde-c)}
+.nc-b{background:linear-gradient(145deg,#1e1600,#2e2200)}.nc-b:hover{border-color:var(--ambar-c)}
+.nc-c{background:linear-gradient(145deg,#1e0808,#2a1010)}.nc-c:hover{border-color:var(--vinho-c)}
+.nc-emoji{font-size:2.6rem;display:block;margin-bottom:14px}
+.nc-nome{font-family:var(--font-title);font-size:1.35rem;color:var(--branco);margin-bottom:8px}
+.nc-age{display:inline-block;margin-bottom:10px}
+.nc-desc{font-family:var(--font-display);font-style:italic;font-size:.88rem;color:var(--cinza-1);line-height:1.55}
+.nc-n{position:absolute;top:14px;right:16px;font-family:var(--font-mono);font-size:.46rem;letter-spacing:.18em;color:var(--cinza-1);opacity:.4}
+
+/* ── QUIZ ── */
+#quiz-area{width:100%;max-width:600px;display:none;flex-direction:column;align-items:stretch}
+.quiz-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+.quiz-nivel-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;font-family:var(--font-body);font-size:.7rem;font-weight:600;cursor:pointer;transition:opacity .2s;text-decoration:none}
+.quiz-nivel-pill:hover{opacity:.7}
+.qnp-a{background:var(--verde-pale);color:var(--verde-c);border:1px solid rgba(48,192,120,.3)}
+.qnp-b{background:var(--ambar-pale);color:var(--ambar-c);border:1px solid rgba(201,125,16,.3)}
+.qnp-c{background:var(--vinho-pale);color:var(--vinho-c);border:1px solid rgba(107,16,32,.3)}
+.quiz-pts{font-family:var(--font-mono);font-size:.7rem;color:var(--ambar-c);font-weight:600}
+
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-label{font-family:var(--font-body);font-size:.65rem;color:var(--cinza-1);opacity:.6}
+.prog-bar{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin-bottom:24px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--ambar),var(--ambar-c));border-radius:3px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+
+.quiz-card{background:var(--preto-3);border:1px solid var(--borda);border-radius:18px;padding:32px 28px;margin-bottom:18px}
+.q-num{font-family:var(--font-mono);font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:var(--cinza-1);opacity:.45;margin-bottom:12px;display:block}
+.q-emoji{font-size:2.2rem;display:block;margin-bottom:12px;line-height:1}
+.q-txt{font-family:var(--font-body);font-size:1.12rem;font-weight:500;line-height:1.45;color:var(--branco);margin-bottom:22px}
+
+.opcoes{display:flex;flex-direction:column;gap:10px;list-style:none}
+.opcao{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);color:var(--branco);padding:13px 16px;border-radius:10px;cursor:pointer;transition:background .2s,border-color .2s,transform .15s;display:flex;align-items:center;gap:12px;text-align:left;font-family:var(--font-body);font-size:.9rem;font-weight:400;line-height:1.4}
+.opcao:hover:not(:disabled){background:var(--ambar-pale);border-color:var(--borda-ambar);transform:translateX(4px)}
+.opcao:focus-visible{outline:2px solid var(--ambar-c);outline-offset:2px}
+.opcao-letra{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;font-family:var(--font-mono)}
+.opcao.certa{background:rgba(48,192,120,.18);border-color:var(--verde-c);color:var(--verde-c)}
+.opcao.certa .opcao-letra{background:rgba(48,192,120,.25);color:var(--verde-c)}
+.opcao.errada{background:rgba(200,64,48,.15);border-color:#d04030;color:#e07060}
+.opcao.errada .opcao-letra{background:rgba(200,64,48,.2);color:#e07060}
+.opcao:disabled{cursor:default}
+
+.feedback{margin-top:16px;font-family:var(--font-display);font-style:italic;font-size:.96rem;line-height:1.68;padding:14px 18px;border-radius:10px;display:none}
+.feedback.certa{background:rgba(48,192,120,.1);color:var(--verde-c);border-left:3px solid var(--verde-c);display:block}
+.feedback.errada{background:rgba(200,64,48,.1);color:#e07060;border-left:3px solid #d04030;display:block}
+.feedback strong{font-style:normal;font-weight:600}
+
+.btn-prox{align-self:flex-end;margin-top:6px;visibility:hidden}
+.btn-prox.vis{visibility:visible}
+
+/* ── RESULTADO ── */
+#resultado{text-align:center;max-width:500px;display:none}
+.res-emoji{font-size:4.5rem;display:block;margin-bottom:14px;line-height:1}
+.res-pts{font-family:var(--font-title);font-size:5.5rem;line-height:1;margin-bottom:4px}
+.res-col-a{color:var(--verde-c)}.res-col-b{color:var(--ambar-c)}.res-col-c{color:var(--vinho-c)}
+.res-total{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--cinza-1);opacity:.4;margin-bottom:24px}
+.res-msg{font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--cinza-1);line-height:1.75;margin-bottom:36px;max-width:400px}
+.res-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+@media(max-width:660px){.niveis-grid{grid-template-columns:1fr}.quiz-card{padding:22px 18px}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <!-- SELECÇÃO -->
+  <div id="selecao" role="main">
+    <p class="sel-label label reveal">Sala II · Jogo</p>
+    <h1 class="sel-h1 reveal">Quiz do Fado</h1>
+    <p class="sel-sub reveal">Escolhe o teu nível e começa. Cada resposta tem uma explicação — mesmo quando acertas.</p>
+    <div class="niveis-grid reveal" role="list" aria-label="Níveis disponíveis">
+      <div class="nivel-card nc-a" role="listitem" tabindex="0" data-nivel="a" aria-label="Nível Principiante — 6 a 9 anos — 10 perguntas">
+        <span class="nc-emoji" aria-hidden="true">🌱</span>
+        <p class="nc-nome">Principiante</p>
+        <span class="nc-age badge badge-verde">6 – 9 anos</span>
+        <p class="nc-desc">O fado explicado de forma simples — sons, bairros e sentimentos.</p>
+        <span class="nc-n">10 perguntas</span>
+      </div>
+      <div class="nivel-card nc-b" role="listitem" tabindex="0" data-nivel="b" aria-label="Nível Explorador — 10 a 13 anos — 12 perguntas">
+        <span class="nc-emoji" aria-hidden="true">🎵</span>
+        <p class="nc-nome">Explorador</p>
+        <span class="nc-age badge badge-ambar">10 – 13 anos</span>
+        <p class="nc-desc">História, instrumentos e as pessoas que fizeram o fado grande.</p>
+        <span class="nc-n">12 perguntas</span>
+      </div>
+      <div class="nivel-card nc-c" role="listitem" tabindex="0" data-nivel="c" aria-label="Nível Conhecedor — 14 anos ou mais — 14 perguntas">
+        <span class="nc-emoji" aria-hidden="true">🎸</span>
+        <p class="nc-nome">Conhecedor</p>
+        <span class="nc-age badge badge-vinho">14+ anos</span>
+        <p class="nc-desc">Datas, nomes e curiosidades para quem já sabe muito de fado.</p>
+        <span class="nc-n">14 perguntas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-area" role="main" aria-live="polite">
+    <div class="quiz-topbar">
+      <button class="quiz-nivel-pill" id="badge-nivel" onclick="voltarSelecao()" aria-label="Voltar à selecção de nível">← Mudar nível</button>
+      <span class="quiz-pts" id="prog-pts" aria-live="polite">0 pontos</span>
+    </div>
+    <div class="prog-row">
+      <span class="prog-label" id="prog-label">Pergunta 1</span>
+    </div>
+    <div class="prog-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="prog-bar-aria">
+      <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+    <div class="quiz-card">
+      <span class="q-num" id="q-num"></span>
+      <span class="q-emoji" id="q-emoji" aria-hidden="true"></span>
+      <p class="q-txt" id="q-txt"></p>
+      <ul class="opcoes" id="opcoes" role="list" aria-label="Opções de resposta"></ul>
+      <div class="feedback" id="feedback" role="alert" aria-live="assertive"></div>
+    </div>
+    <button class="btn btn-primary btn-prox" id="btn-prox">Próxima →</button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="resultado" role="main" aria-live="polite">
+    <span class="res-emoji" id="res-emoji" aria-hidden="true"></span>
+    <p class="res-pts" id="res-pts" aria-label="Pontuação"></p>
+    <p class="res-total" id="res-total"></p>
+    <p class="res-msg" id="res-msg"></p>
+    <div class="res-btns">
+      <button class="btn btn-primary" id="btn-outra-vez">Jogar outra vez</button>
+      <button class="btn btn-secondary" onclick="voltarSelecao()">Mudar de nível</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <a href="index.html" class="site-footer__logo">Casa da Adelaide</a>
+  <div class="site-footer__centre">
+    <span class="site-footer__centre-label">Uma iniciativa</span>
+    <a href="https://onofriana.pt" class="site-footer__centre-nome" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+  <span class="site-footer__copy">© 2025 Onofriana</span>
+</footer>
+
+<script>
+var NIVEIS = {
+  a: {
+    nome:'Principiante', emoji:'🌱', pill:'qnp-a', col:'res-col-a',
+    perguntas:[
+      {emoji:'🎵',txt:'O fado é um tipo de…',opcoes:['Dança portuguesa','Música portuguesa','Jogo tradicional','Instrumento musical'],certa:1,exp:'O fado é um género musical — uma canção cantada por uma só voz, acompanhada pela guitarra portuguesa e pela viola de fado.'},
+      {emoji:'📍',txt:'Em que cidade nasceu o fado?',opcoes:['Porto','Braga','Lisboa','Coimbra'],certa:2,exp:'O fado nasceu em Lisboa no século XIX, nos bairros populares da cidade — Alfama, Mouraria e Madragoa.'},
+      {emoji:'🎸',txt:'Como se chama o instrumento especial do fado, com 12 cordas metálicas?',opcoes:['Violino','Acordeão','Guitarra portuguesa','Piano'],certa:2,exp:'A guitarra portuguesa tem 12 cordas metálicas em 6 pares. O seu som brilhante e inconfundível é o coração do fado.'},
+      {emoji:'😢',txt:'No fado, a "saudade" é…',opcoes:['Alegria muito grande','Falta de alguém ou de algo','Raiva','Um instrumento musical'],certa:1,exp:'A saudade é um sentimento difícil de traduzir — é como ter falta de alguém que amamos, ou de um tempo que já passou. É um dos grandes temas do fado.'},
+      {emoji:'🧣',txt:'O pano negro que as fadistas usam nos ombros chama-se…',opcoes:['Véu','Manta','Xaile','Capa'],certa:2,exp:'O xaile negro é um símbolo da fadista. Diz-se que Maria Severa Onofriana — a primeira fadista da história — foi das primeiras a usá-lo.'},
+      {emoji:'🔢',txt:'Quantas cordas tem a guitarra portuguesa?',opcoes:['6','8','10','12'],certa:3,exp:'A guitarra portuguesa tem exatamente 12 cordas metálicas, organizadas em 6 pares chamados "cursos". É por isso que o seu som é tão cheio e brilhante.'},
+      {emoji:'🌍',txt:'A UNESCO é uma organização que…',opcoes:['Fabrica guitarras','Protege culturas do mundo','Ensina fado','Vende discos'],certa:1,exp:'A UNESCO é a organização das Nações Unidas para a Educação, Ciência e Cultura. Em 2011, reconheceu o fado como Património da Humanidade.'},
+      {emoji:'🏘️',txt:'Qual destes bairros de Lisboa é famoso pelo fado?',opcoes:['Belém','Alfama','Parque das Nações','Oeiras'],certa:1,exp:'Alfama é um dos bairros históricos de Lisboa onde o fado cresceu. Também a Mouraria e a Madragoa fazem parte desta história.'},
+      {emoji:'👩',txt:'Qual foi o nome da primeira fadista da história?',opcoes:['Amália Rodrigues','Maria Severa','Mariza','Celeste'],certa:1,exp:'Maria Severa Onofriana (1820–1846) é considerada a primeira fadista da história. Viveu na Mouraria e morreu aos 26 anos.'},
+      {emoji:'🎤',txt:'Amália Rodrigues foi a fadista mais famosa do século XX. Como era chamada?',opcoes:['Princesa do Fado','Rainha do Fado','Mãe do Fado','Estrela do Fado'],certa:1,exp:'Amália Rodrigues (1920–1999) ficou conhecida como a "Rainha do Fado". Levou o fado ao mundo inteiro e é a artista portuguesa mais conhecida de sempre.'},
+    ]
+  },
+  b: {
+    nome:'Explorador', emoji:'🎵', pill:'qnp-b', col:'res-col-b',
+    perguntas:[
+      {emoji:'📜',txt:'A palavra "fado" vem do latim. O que significa?',opcoes:['Canto','Destino','Saudade','Lisboa'],certa:1,exp:'A palavra "fado" vem do latim fatum, que significa destino ou sorte. Muitas letras de fado falam exatamente disso — da vida como um caminho traçado.'},
+      {emoji:'🎸',txt:'A guitarra portuguesa descende de que instrumento europeu antigo?',opcoes:['Alaúde árabe','Cistre europeu renascentista','Bandolim italiano','Cravo flamenco'],certa:1,exp:'A guitarra portuguesa é descendente direta do cistre europeu renascentista — um instrumento que existia em toda a Europa entre os séculos XVI e XVIII. (Nota: não do alaúde, que tem outra família instrumental.)'},
+      {emoji:'📅',txt:'Em que data morreu Amália Rodrigues?',opcoes:['6 de outubro de 1999','3 de setembro de 1995','12 de julho de 2001','6 de outubro de 2001'],certa:0,exp:'Amália Rodrigues morreu a 6 de outubro de 1999, em Lisboa. O governo português declarou três dias de luto nacional — uma homenagem raramente atribuída a artistas.'},
+      {emoji:'🏛️',txt:'Em que bairro de Lisboa fica o Museu do Fado?',opcoes:['Bairro Alto','Alfama','Madragoa','Belém'],certa:1,exp:'O Museu do Fado fica em Alfama, no coração histórico de Lisboa. Foi a Câmara Municipal de Lisboa, através do Museu do Fado, que coordenou a candidatura à UNESCO.'},
+      {emoji:'🎓',txt:'O Fado de Coimbra é diferente do de Lisboa. Qual a principal diferença?',opcoes:['É mais rápido','É cantado por estudantes universitários, tradição académica masculina','É cantado por crianças','Não usa guitarra'],certa:1,exp:'O Fado de Coimbra tem uma tradição académica ligada à Universidade de Coimbra — é cantado exclusivamente por homens, com um estilo mais solene e um repertório que inclui grandes poetas portugueses.'},
+      {emoji:'👩',txt:'Maria Severa Onofriana nasceu em que ano?',opcoes:['1800','1810','1820','1840'],certa:2,exp:'Maria Severa Onofriana nasceu a 26 de julho de 1820, na Madragoa, em Lisboa. O seu registo de baptismo na Paróquia dos Anjos confirma esta data (Museu do Fado).'},
+      {emoji:'🎬',txt:'O primeiro filme sonoro português (1931) foi sobre…',opcoes:['Amália Rodrigues','O Museu do Fado','A Severa — a primeira fadista','A guitarra portuguesa'],certa:2,exp:'O filme "A Severa" (1931), dirigido por Leitão de Barros, foi o primeiro filme sonoro português. Baseou-se no romance de Júlio Dantas (1901) sobre a vida de Maria Severa Onofriana.'},
+      {emoji:'🏆',txt:'Carlos do Carmo recebeu o Grammy Latino pelo conjunto da obra em…',opcoes:['2011','2014','2017','2020'],certa:2,exp:'Carlos do Carmo recebeu o Grammy Latino de Lifetime Achievement em 2017 — o primeiro fadista a receber este prémio. Ficou conhecido como o grande renovador do fado urbano de Lisboa.'},
+      {emoji:'🌍',txt:'A fadista Mariza nasceu em Moçambique, mas cresceu num bairro histórico do fado em Lisboa. Qual?',opcoes:['Alfama','Bairro Alto','Mouraria','Madragoa'],certa:2,exp:'Mariza cresceu na Mouraria — o mesmo bairro onde Maria Severa viveu no século XIX. Esta ligação ao território do fado é parte central da sua identidade artística.'},
+      {emoji:'💌',txt:'Quem foi o Conde de Vimioso na história de Maria Severa?',opcoes:['O guitarrista','O seu grande amor aristocrático','O seu pai','O compositor'],certa:1,exp:'Francisco de Paula Portugal e Castro, 13.º Conde de Vimioso, foi o grande amor de Maria Severa. A relação entre a fadista popular e o aristocrata tornou-se um dos grandes mitos da história do fado.'},
+      {emoji:'🎼',txt:'A fadista que modernizou o fado nos anos 1960, cantando poemas de grandes escritores, foi…',opcoes:['Celeste Rodrigues','Mariza','Amália Rodrigues','Ana Moura'],certa:2,exp:'Amália Rodrigues revolucionou o fado ao cantar poemas de escritores como Luís de Camões, David Mourão-Ferreira e Alain Oulman — elevando o fado à poesia erudita.'},
+      {emoji:'🏘️',txt:'Em que rua da Mouraria está a placa comemorativa da "Casa da Severa"?',opcoes:['Rua da Madragoa','Rua do Capelão','Rua Fernandes da Fonseca','Rua da Saudade'],certa:1,exp:'A Rua do Capelão, na Mouraria, tem o Largo da Severa — com uma placa na casa onde Maria Severa viveu e morreu. A placa foi inaugurada por Amália Rodrigues em 1989.'},
+    ]
+  },
+  c: {
+    nome:'Conhecedor', emoji:'🎸', pill:'qnp-c', col:'res-col-c',
+    perguntas:[
+      {emoji:'📚',txt:'Rui Vieira Nery é o mais importante estudioso do fado. O que afirmou sobre as origens históricas?',opcoes:['Que o fado vem de África','Que os únicos dados fiáveis remontam à tradição oral dos anos 1820–1830','Que o fado foi inventado por Amália','Que o fado vem do fado de Coimbra'],certa:1,exp:'Rui Vieira Nery, historiador do fado, afirmou que "a única informação fiável sobre a história do fado foi transmitida oralmente e remonta, na melhor das hipóteses, aos anos 1820 e 1830" — sublinhando o quanto as origens são incertas e mitificadas.'},
+      {emoji:'🎼',txt:'Alain Oulman foi determinante na obra de Amália. Quem foi?',opcoes:['Guitarrista português','Compositor francês preso pela PIDE','Poeta do século XIX','Guitarreiro de Lisboa'],certa:1,exp:'Alain Oulman (1929–1990) foi um compositor francês, de esquerda, que colaborou intensamente com Amália Rodrigues. Foi preso pela PIDE em 1966 e forçado ao exílio, mas continuou a compor para Amália. Compôs "Estranha Forma de Vida", "Povo que Lavas no Rio" e muitos outros.'},
+      {emoji:'📖',txt:'O romance "A Severa" de Júlio Dantas foi publicado em que ano?',opcoes:['1889','1901','1915','1931'],certa:1,exp:'O romance "A Severa" de Júlio Dantas foi publicado em 1901 — 55 anos após a morte de Maria Severa. Foi a partir desta obra que o mito de Severa se consolidou na cultura portuguesa.'},
+      {emoji:'🎭',txt:'Hermínia Silva, fadista das décadas de 1930–40, ficou famosa por combinar o fado com…',opcoes:['O jazz americano','O teatro de revista e a comédia','A ópera italiana','O flamenco espanhol'],certa:1,exp:'Hermínia Silva foi uma figura central do teatro de revista português — combinava o fado com a comédia e a interpretação teatral. Ficou conhecida como a "Dama do Fado" pela sua veia humorística e popular.'},
+      {emoji:'👑',txt:'Fernando Maurício (1933–2005) ficou conhecido por que alcunha?',opcoes:['Rei do Fado','Príncipe do Fado','Pai do Fado','Duque do Fado'],certa:1,exp:'Fernando Maurício ficou conhecido como "O Príncipe do Fado" — uma voz inconfundível do fado castiço de Lisboa. É uma das figuras mais importantes do fado masculino do século XX.'},
+      {emoji:'🎸',txt:'Pedro Caldeira Cabral foi fundamental para…',opcoes:['Criar o Museu do Fado','Divulgar a guitarra portuguesa como instrumento solista','Compor para Amália','Fundar a primeira casa de fado'],certa:1,exp:'Pedro Caldeira Cabral foi o principal responsável por dar à guitarra portuguesa um estatuto de instrumento solista de concerto — publicou "A Guitarra Portuguesa" (Ediclube, 1999) e expandiu o repertório muito além do acompanhamento do fado.'},
+      {emoji:'🌀',txt:'A roseta da guitarra de Lisboa tem que forma na cabeça (voluta)?',opcoes:['Caracol','Leque em forma de pêssego','Flor','Cruz'],certa:1,exp:'A guitarra de Lisboa tem a cabeça em forma de leque (também chamada fan headstock) com 12 cravelhas — 6 de cada lado. A de Coimbra tem uma cabeça em forma de caracol (voluta), o que as distingue visualmente.'},
+      {emoji:'🎵',txt:'A afinação mais usada no fado de Lisboa é chamada de…',opcoes:['Afinação de Coimbra','Afinação de Lisboa ou "do fado"','Afinação natural','Afinação árabe'],certa:1,exp:'A afinação de Lisboa — também chamada "afinação do fado" ou "afinação do fado corrido" — desenvolveu-se provavelmente no início do século XIX e tornou-se a mais usada pelos fadistas de Lisboa desde meados desse século.'},
+      {emoji:'🏛️',txt:'Que instituição liderou a candidatura do fado à UNESCO?',opcoes:['Fundação Amália','Câmara Municipal de Lisboa via EGEAC/Museu do Fado','Ministério da Cultura','Casa da Guitarra'],certa:1,exp:'A candidatura foi lançada pela Câmara Municipal de Lisboa em 2004 e apresentada pela CML/EGEAC/Museu do Fado em junho de 2010. A decisão da UNESCO foi tomada a 27 de novembro de 2011, em Bali.'},
+      {emoji:'🎤',txt:'Amália foi falsamente acusada após o 25 de Abril de 1974. De quê?',opcoes:['De ter cantado no estrangeiro','De ser agente da PIDE','De ter roubado letras','De não pagar impostos'],certa:1,exp:'Após a Revolução de Abril de 1974, Amália foi falsamente acusada de ser colaboradora da PIDE — a polícia política do regime. A acusação era injusta (ela apoiava o PCP financeiramente) e causou-lhe uma grave depressão.'},
+      {emoji:'📍',txt:'Em que cemitério foi sepultada Maria Severa Onofriana?',opcoes:['Cemitério dos Prazeres','Cemitério de Benfica','Cemitério do Alto de São João','Cemitério de Alfama'],certa:2,exp:'Maria Severa foi sepultada no Cemitério do Alto de São João — em vala comum, sem caixão, conforme era o seu desejo expresso nos seus próprios versos: "Quando eu morrer, meninas, não me lamentes."'},
+      {emoji:'🎼',txt:'Qual o nome completo da primeira fadista da história?',opcoes:['Maria Severa da Mouraria','Maria Severa Onofriana','Severa Maria de Portugal','Maria da Mouraria Severa'],certa:1,exp:'O nome completo era Maria Severa Onofriana (26 julho 1820 – 30 novembro 1846). A história guardou apenas "Severa" — o apelido "Onofriana" ficou esquecido durante décadas. A Onofriana homenageia exatamente esse nome recuperado.'},
+      {emoji:'🎭',txt:'O filme "A Severa" (1931) foi protagonizado por…',opcoes:['Amália Rodrigues','Dina Teresa','Celeste Rodrigues','Hermínia Silva'],certa:1,exp:'O filme "A Severa" (1931), dirigido por José Leitão de Barros, foi protagonizado por Dina Teresa no papel de Severa. Estreou em junho de 1931 no Teatro S. Luiz e foi visto por 200.000 espectadores.'},
+      {emoji:'🧩',txt:'A tradição oral do fado era transmitida principalmente…',opcoes:['Em escolas de música','Pelos mais velhos nos espaços tradicionais de fado, de geração em geração','Por partituras escritas','Pela rádio estatal'],certa:1,exp:'Segundo a UNESCO, o fado era transmitido informalmente pelos mais velhos nos espaços tradicionais — tascos, casas de fado, festas de bairro. Esta transmissão oral e presencial, de geração em geração, é um dos elementos centrais do seu reconhecimento como Património Imaterial.'},
+    ]
+  }
+};
+
+var nivelActual=null, estado={atual:0,pontos:0,respondida:false};
+
+function voltarSelecao(){
+  nivelActual=null;
+  document.body.className='';
+  document.getElementById('selecao').style.display='block';
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('resultado').style.display='none';
+}
+
+function comecarNivel(n){
+  nivelActual=n;
+  estado={atual:0,pontos:0,respondida:false};
+  var info=NIVEIS[n];
+  document.body.className='nivel-'+n;
+  document.getElementById('selecao').style.display='none';
+  document.getElementById('resultado').style.display='none';
+  var qa=document.getElementById('quiz-area');
+  qa.style.display='flex';
+  var badge=document.getElementById('badge-nivel');
+  badge.className='quiz-nivel-pill '+info.pill;
+  badge.innerHTML='← '+info.emoji+' '+info.nome;
+  mostrarPergunta();
+}
+
+function mostrarPergunta(){
+  var info=NIVEIS[nivelActual];
+  var total=info.perguntas.length;
+  var p=info.perguntas[estado.atual];
+  estado.respondida=false;
+  var pct=Math.round((estado.atual/total)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-bar-aria').setAttribute('aria-valuenow',pct);
+  document.getElementById('prog-label').textContent='Pergunta '+(estado.atual+1)+' de '+total;
+  document.getElementById('prog-pts').textContent=estado.pontos+(estado.pontos===1?' ponto':' pontos');
+  document.getElementById('q-num').textContent='Pergunta '+(estado.atual+1);
+  document.getElementById('q-emoji').textContent=p.emoji;
+  document.getElementById('q-txt').textContent=p.txt;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('feedback').innerHTML='';
+  document.getElementById('btn-prox').className='btn btn-primary btn-prox';
+  var letras=['A','B','C','D'];
+  document.getElementById('opcoes').innerHTML=p.opcoes.map(function(o,i){
+    return '<li><button class="opcao" data-i="'+i+'" aria-label="Opção '+letras[i]+': '+o+'"><span class="opcao-letra" aria-hidden="true">'+letras[i]+'</span>'+o+'</button></li>';
+  }).join('');
+  document.querySelectorAll('.opcao').forEach(function(btn){
+    btn.addEventListener('click',function(){responder(parseInt(this.dataset.i))});
+  });
+  var btnProx=document.getElementById('btn-prox');
+  btnProx.textContent=estado.atual===total-1?'Ver resultado →':'Próxima →';
+}
+
+function responder(idx){
+  if(estado.respondida)return;
+  estado.respondida=true;
+  var p=NIVEIS[nivelActual].perguntas[estado.atual];
+  var btns=document.querySelectorAll('.opcao');
+  btns.forEach(function(b){b.disabled=true});
+  var fb=document.getElementById('feedback');
+  var acertou=idx===p.certa;
+  if(acertou){
+    btns[idx].classList.add('certa');
+    estado.pontos++;
+    fb.className='feedback certa';
+    fb.innerHTML='<strong>✓ Correcto!</strong> '+p.exp;
+  } else {
+    btns[idx].classList.add('errada');
+    btns[p.certa].classList.add('certa');
+    fb.className='feedback errada';
+    fb.innerHTML='<strong>✗ Não foi desta.</strong> '+p.exp;
+  }
+  document.getElementById('prog-pts').textContent=estado.pontos+(estado.pontos===1?' ponto':' pontos');
+  document.getElementById('btn-prox').classList.add('vis');
+}
+
+function proximaPergunta(){
+  estado.atual++;
+  if(estado.atual>=NIVEIS[nivelActual].perguntas.length)mostrarResultado();
+  else mostrarPergunta();
+}
+
+function mostrarResultado(){
+  document.getElementById('quiz-area').style.display='none';
+  var info=NIVEIS[nivelActual];
+  var total=info.perguntas.length;
+  var pct=estado.pontos/total;
+  var ei=pct>=.9?4:pct>=.7?3:pct>=.5?2:pct>=.3?1:0;
+  var emojis=['😅','🙂','😊','🎉','🏆'];
+  var msgs=[
+    'O fado ainda tem muito para te contar. Começa pelo início — vale a pena.',
+    'Já sabes algumas coisas. Explora a Casa da Adelaide e volta a tentar.',
+    'Bom resultado. O fado já tem um lugar em ti.',
+    'Muito bem. Conheces o fado com profundidade.',
+    'Excelente. Sabes do fado como quem cresceu dentro dele.'
+  ];
+  document.getElementById('res-emoji').textContent=emojis[ei];
+  var rp=document.getElementById('res-pts');
+  rp.textContent=estado.pontos;
+  rp.className='res-pts '+info.col;
+  rp.setAttribute('aria-label',estado.pontos+' pontos em '+total);
+  document.getElementById('res-total').textContent='pontos em '+total;
+  document.getElementById('res-msg').textContent=msgs[ei];
+  document.getElementById('resultado').style.display='block';
+  document.getElementById('btn-outra-vez').onclick=function(){comecarNivel(nivelActual)};
+}
+
+document.querySelectorAll('.nivel-card').forEach(function(el){
+  el.addEventListener('click',function(){comecarNivel(this.dataset.nivel)});
+  el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();comecarNivel(this.dataset.nivel)}});
+});
+document.getElementById('btn-prox').addEventListener('click',proximaPergunta);
+
+// Reveal
+(function(){var els=document.querySelectorAll('.reveal');var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target)}})},{threshold:.06});els.forEach(function(el){obs.observe(el)})})();
+</script>
+</body>
+</html>

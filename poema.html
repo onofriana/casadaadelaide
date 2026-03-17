@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faz um Poema de Fado — Casa da Adelaide</title>
+<meta name="description" content="Constrói a tua quadra de fado com rima obrigatória. Banco de vocabulário do fado, validação automática da rima, e download em PDF com a tua assinatura.">
+<link rel="canonical" href="https://casadaadelaide.pt/poema.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="nav.css">
+<style>
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(144,96,224,.18) 0%,transparent 65%);pointer-events:none;z-index:0}
+
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+.page-hero{text-align:center;margin-bottom:40px}
+.page-hero h1{font-family:var(--font-title);font-size:clamp(2.2rem,7vw,4.2rem);background:linear-gradient(135deg,var(--roxo-c),#ff8060);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:10px 0 8px}
+.page-hero p{font-family:var(--font-display);font-style:italic;font-size:1.02rem;color:var(--cinza-1);max-width:480px;margin:0 auto;line-height:1.6}
+
+/* REGRA */
+.regra-box{background:var(--roxo-pale);border:1px solid rgba(144,96,224,.3);border-radius:12px;padding:18px 22px;margin-bottom:32px;display:flex;gap:14px;align-items:flex-start}
+.regra-box svg{flex-shrink:0;color:var(--roxo-c);margin-top:2px}
+.regra-box p{font-family:var(--font-display);font-size:.96rem;line-height:1.7;color:var(--cinza-1)}
+.regra-box strong{color:var(--roxo-c);font-weight:600}
+
+/* EXEMPLOS */
+.exemplos{margin-bottom:36px}
+.exemplos-titulo{font-family:var(--font-mono);font-size:.5rem;letter-spacing:.32em;text-transform:uppercase;color:var(--roxo-c);opacity:.65;margin-bottom:14px;display:block}
+.exemplos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ex-card{background:var(--preto-3);border:1px solid var(--borda);border-radius:12px;padding:18px}
+.ex-card h4{font-family:var(--font-mono);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--roxo-c);opacity:.6;margin-bottom:12px}
+.ex-verso{font-family:var(--font-display);font-style:italic;font-size:.9rem;color:var(--cinza-1);line-height:1.8;margin:0}
+.ex-verso .rima{color:var(--roxo-c);font-weight:600;font-style:normal}
+
+/* LAYOUT */
+.poema-layout{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+
+/* CONSTRUTOR */
+.constr-titulo{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:var(--roxo-c);opacity:.65;margin-bottom:20px;display:block}
+.verso-bloco{margin-bottom:16px}
+.verso-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.verso-lbl{font-family:var(--font-mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cinza-1);opacity:.5}
+.verso-st{font-family:var(--font-body);font-size:.6rem;font-weight:600;padding:2px 10px;border-radius:10px;transition:all .3s}
+.st-vazio{background:rgba(255,255,255,.05);color:rgba(255,255,255,.25)}
+.st-curto{background:var(--ambar-pale);color:var(--ambar-c)}
+.st-ok{background:var(--verde-pale);color:var(--verde-c)}
+.st-rima-ok{background:rgba(48,192,120,.2);color:var(--verde-c);border:1px solid rgba(48,192,120,.35)}
+.st-rima-fail{background:rgba(200,64,48,.15);color:#d06050}
+.verso-input{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);color:var(--branco);font-family:var(--font-display);font-style:italic;font-size:1.02rem;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .25s,background .25s;resize:none;line-height:1.5}
+.verso-input:focus{border-color:rgba(144,96,224,.45);background:rgba(255,255,255,.06)}
+.verso-input.ok{border-color:rgba(48,192,120,.4)}
+.verso-input.fail{border-color:rgba(200,64,48,.4)}
+.rima-hint{font-family:var(--font-display);font-style:italic;font-size:.78rem;color:var(--roxo-c);opacity:.55;margin-top:4px;min-height:18px;transition:opacity .3s}
+.val-geral{margin-top:14px;padding:12px 16px;border-radius:10px;font-family:var(--font-body);font-size:.72rem;font-weight:500;display:none;line-height:1.5}
+.val-geral.vis{display:block}
+.val-ok{background:rgba(48,192,120,.1);color:var(--verde-c);border:1px solid rgba(48,192,120,.25)}
+.val-fail{background:rgba(200,64,48,.1);color:#d06050;border:1px solid rgba(200,64,48,.2)}
+
+/* BANCO */
+.banco-titulo{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:var(--roxo-c);opacity:.65;margin-bottom:18px;display:block}
+.banco-cat{margin-bottom:18px}
+.banco-cat-titulo{font-family:var(--font-mono);font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cinza-1);opacity:.38;margin-bottom:8px}
+.banco-pals{display:flex;flex-wrap:wrap;gap:6px}
+.pal-btn{font-family:var(--font-body);font-size:.75rem;font-weight:400;color:var(--branco);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:5px 12px;border-radius:8px;cursor:pointer;transition:background .2s,border-color .2s,transform .15s}
+.pal-btn:hover{background:var(--roxo-pale);border-color:rgba(144,96,224,.35);transform:translateY(-1px)}
+.banco-nota{font-family:var(--font-display);font-style:italic;font-size:.78rem;color:var(--cinza-1);opacity:.35;margin-top:10px;line-height:1.5}
+
+/* RESULTADO */
+.resultado-wrap{grid-column:1/-1;margin-top:6px}
+.res-titulo{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ambar-c);opacity:.65;margin-bottom:16px;display:block}
+.poema-display{background:var(--preto-3);border:1px solid var(--borda-ambar);border-radius:16px;padding:40px 36px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;margin-bottom:20px}
+.poema-display::before{content:'\201C';position:absolute;top:14px;left:18px;font-family:var(--font-script);font-size:3.5rem;color:var(--ambar);opacity:.1;line-height:1}
+.pd-verso{font-family:var(--font-display);font-style:italic;font-size:clamp(1rem,2.2vw,1.25rem);line-height:2.1;color:var(--branco);opacity:.75;min-height:1.8em;transition:opacity .3s}
+.pd-verso.vazio{opacity:.15}
+.autoria-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.autoria-field label{font-family:var(--font-mono);font-size:.5rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;opacity:.4;display:block;margin-bottom:5px}
+.autoria-field input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:var(--branco);font-family:var(--font-display);font-size:.95rem;padding:9px 12px;border-radius:8px;outline:none;transition:border-color .25s}
+.autoria-field input:focus{border-color:rgba(245,176,64,.4)}
+.acoes{display:flex;gap:10px;flex-wrap:wrap}
+
+@media(max-width:740px){.poema-layout{grid-template-columns:1fr}.resultado-wrap{grid-column:1}.exemplos-grid{grid-template-columns:1fr}.autoria-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<div class="wrap" id="conteudo-principal">
+<div class="page-hero">
+  <p class="label reveal" style="opacity:.8">Sala IV · Criar</p>
+  <h1 class="reveal">Faz um Poema de Fado</h1>
+  <p class="reveal">Escreve a tua quadra com rima a sério. Quando estiver pronta, assina e guarda em PDF.</p>
+</div>
+
+<!-- REGRA -->
+<div class="regra-box reveal" role="note" aria-label="Como funciona a quadra de fado">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+  <p>Uma <strong>quadra de fado</strong> tem quatro versos. O <strong>2.º verso rima com o 4.º</strong> (esquema A·B·C·B). Cada verso precisa de pelo menos <strong>5 palavras</strong>. O poema só fica pronto quando a rima estiver correcta — e é assim que funciona no fado a sério.</p>
+</div>
+
+<!-- EXEMPLOS -->
+<div class="exemplos reveal" aria-label="Exemplos de quadras de fado">
+  <span class="exemplos-titulo">Exemplos de quadras tradicionais</span>
+  <div class="exemplos-grid" role="list">
+    <div class="ex-card" role="listitem">
+      <h4>Quadra I — Lisboa</h4>
+      <p class="ex-verso">
+        Lisboa bela, linda <span class="rima">cidade</span>,<br>
+        De noite és um grande <span class="rima">poema</span>.<br>
+        Tens beleza, tens <span class="rima">saudade</span>,<br>
+        Mesmo longe és sempre o <span class="rima">mesmo</span>.
+      </p>
+    </div>
+    <div class="ex-card" role="listitem">
+      <h4>Quadra II — O Fado</h4>
+      <p class="ex-verso">
+        Numa rua de <span class="rima">Lisboa</span>,<br>
+        Ouve-se um som a <span class="rima">cantar</span>.<br>
+        É a guitarra que <span class="rima">ressoa</span>,<br>
+        Histórias do fundo do <span class="rima">mar</span>.
+      </p>
+    </div>
+    <div class="ex-card" role="listitem">
+      <h4>Quadra III — Saudade</h4>
+      <p class="ex-verso">
+        Guitarra chora <span class="rima">baixinho</span>,<br>
+        Num canto da velha <span class="rima">rua</span>.<br>
+        Cada nota leva <span class="rima">longe</span><br>
+        A saudade que é <span class="rima">tua</span>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CONSTRUTOR -->
+<div class="poema-layout">
+  <div>
+    <span class="constr-titulo">Os teus quatro versos</span>
+
+    <div class="verso-bloco">
+      <div class="verso-header">
+        <span class="verso-lbl">1.º Verso — A</span>
+        <span class="verso-st st-vazio" id="st0">vazio</span>
+      </div>
+      <textarea class="verso-input" id="v0" rows="2" placeholder="Começa com uma imagem ou sentimento…" aria-label="Primeiro verso"></textarea>
+      <p class="rima-hint" id="hint0" aria-live="polite"></p>
+    </div>
+
+    <div class="verso-bloco">
+      <div class="verso-header">
+        <span class="verso-lbl">2.º Verso — B (vai rimar com o 4.º)</span>
+        <span class="verso-st st-vazio" id="st1">vazio</span>
+      </div>
+      <textarea class="verso-input" id="v1" rows="2" placeholder="Escolhe bem a última palavra…" aria-label="Segundo verso — deve rimar com o quarto"></textarea>
+      <p class="rima-hint" id="hint1" aria-live="polite"></p>
+    </div>
+
+    <div class="verso-bloco">
+      <div class="verso-header">
+        <span class="verso-lbl">3.º Verso — A</span>
+        <span class="verso-st st-vazio" id="st2">vazio</span>
+      </div>
+      <textarea class="verso-input" id="v2" rows="2" placeholder="Continua a ideia do primeiro verso…" aria-label="Terceiro verso"></textarea>
+      <p class="rima-hint" id="hint2" aria-live="polite"></p>
+    </div>
+
+    <div class="verso-bloco">
+      <div class="verso-header">
+        <span class="verso-lbl">4.º Verso — B (tem de rimar com o 2.º)</span>
+        <span class="verso-st st-vazio" id="st3">vazio</span>
+      </div>
+      <textarea class="verso-input" id="v3" rows="2" placeholder="Termina rimando com o 2.º verso…" aria-label="Quarto verso — deve rimar com o segundo"></textarea>
+      <p class="rima-hint" id="hint3" aria-live="polite"></p>
+    </div>
+
+    <div class="val-geral" id="val-geral" role="alert" aria-live="polite"></div>
+  </div>
+
+  <!-- BANCO -->
+  <div>
+    <span class="banco-titulo">Banco de palavras do fado</span>
+    <div id="banco" aria-label="Banco de palavras — clica para copiar"></div>
+    <p class="banco-nota">Clica numa palavra para a copiar. Cola-a (Ctrl+V) no verso que estás a escrever.</p>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-wrap">
+    <span class="res-titulo">A tua quadra</span>
+    <div class="poema-display" id="poema-display" aria-label="Pré-visualização da quadra" aria-live="polite">
+      <div id="pd-versos"></div>
+    </div>
+
+    <div class="autoria-row">
+      <div class="autoria-field">
+        <label for="autor-nome">O teu nome (autor/a)</label>
+        <input type="text" id="autor-nome" placeholder="O teu nome">
+      </div>
+      <div class="autoria-field">
+        <label for="data-auto">Data</label>
+        <input type="text" id="data-auto" readonly aria-label="Data actual (preenchida automaticamente)">
+      </div>
+    </div>
+
+    <div class="acoes">
+      <button class="btn btn-primary" id="btn-pdf" disabled aria-label="Descarregar poema em PDF (só disponível quando a rima estiver correcta)">📄 Descarregar PDF</button>
+      <button class="btn btn-secondary" id="btn-limpar" aria-label="Recomeçar o poema">Recomeçar</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <a href="index.html" class="site-footer__logo">Casa da Adelaide</a>
+  <div class="site-footer__centre">
+    <span class="site-footer__centre-label">Uma iniciativa</span>
+    <a href="https://onofriana.pt" class="site-footer__centre-nome" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+  <span class="site-footer__copy">© 2025 Onofriana</span>
+</footer>
+
+<script>
+// BANCO
+var BANCO=[
+  {cat:'Sentimentos do fado',pals:['saudade','mágoa','silêncio','ternura','saudoso','tristeza','alegria','memória','destino','solidão','espera','segredo']},
+  {cat:'Lisboa e os bairros',pals:['Lisboa','Mouraria','Alfama','Tejo','beco','rua','janela','varanda','largo','calçada','Madragoa','colina']},
+  {cat:'O fado e os seus instrumentos',pals:['guitarra','viola','fado','roseta','acorde','xaile','melodia','canção','verso','quadra','fadista','vozes']},
+  {cat:'Natureza e tempo',pals:['lua','chuva','vento','noite','madrugada','mar','rio','sol','sombra','silêncio','tempo','estrela']},
+  {cat:'Pares de rimas',pals:['cantar·mar','amor·cor','saudade·verdade','noite·açoite','coração·canção','alma·calma','chão·mão','sentir·partir','sonhar·voar','Lisboa·boa','guitarra·mara','fadista·conquista']},
+];
+var bancoEl=document.getElementById('banco');
+BANCO.forEach(function(cat){
+  var wrap=document.createElement('div');wrap.className='banco-cat';
+  var titulo=document.createElement('p');titulo.className='banco-cat-titulo';titulo.textContent=cat.cat;
+  wrap.appendChild(titulo);
+  var pals=document.createElement('div');pals.className='banco-pals';
+  cat.pals.forEach(function(p){
+    var btn=document.createElement('button');btn.className='pal-btn';btn.textContent=p;
+    btn.setAttribute('aria-label','Copiar "'+p+'"');
+    btn.addEventListener('click',function(){
+      navigator.clipboard&&navigator.clipboard.writeText(p.split('·')[0]);
+      btn.textContent='✓';
+      setTimeout(function(){btn.textContent=p},1200);
+    });
+    pals.appendChild(btn);
+  });
+  wrap.appendChild(pals);bancoEl.appendChild(wrap);
+});
+
+// DATA
+var meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+var hoje=new Date();
+document.getElementById('data-auto').value=hoje.getDate()+' de '+meses[hoje.getMonth()]+' de '+hoje.getFullYear();
+
+var versos=['','','',''];
+var MIN=5;
+
+function ultimaPalavra(s){var ws=s.trim().split(/\s+/);return ws[ws.length-1]||''}
+function sem(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]/g,'')}
+function terminacao(s){var c=sem(s);return c.length<=2?c:c.slice(-3)}
+function rima(a,b){if(!a||!b)return false;var ta=terminacao(a),tb=terminacao(b);if(ta===tb)return true;if(ta.slice(-2)===tb.slice(-2)&&ta.slice(-2).length>=2)return true;return false}
+function contarPalavras(s){return s.trim().split(/\s+/).filter(function(w){return w.length>0}).length}
+
+function validarVerso(idx){
+  var v=versos[idx];
+  var st=document.getElementById('st'+idx);
+  var inp=document.getElementById('v'+idx);
+  var hint=document.getElementById('hint'+idx);
+  if(!v.trim()){st.className='verso-st st-vazio';st.textContent='vazio';inp.className='verso-input';hint.textContent='';return false}
+  if(contarPalavras(v)<MIN){st.className='verso-st st-curto';st.textContent='muito curto';inp.className='verso-input';hint.textContent='Precisa de pelo menos '+MIN+' palavras.';return false}
+  if(idx===1||idx===3){
+    var up1=ultimaPalavra(versos[1]),up3=ultimaPalavra(versos[3]);
+    var v1ok=contarPalavras(versos[1])>=MIN,v3ok=contarPalavras(versos[3])>=MIN;
+    if(v1ok&&v3ok){
+      if(rima(up1,up3)){
+        st.className='verso-st st-rima-ok';st.textContent='✓ rima!';
+        inp.className='verso-input ok';
+        hint.textContent='Rima com "'+ultimaPalavra(idx===1?versos[3]:versos[1])+'"';
+        return true;
+      } else if(idx===3&&v1ok){
+        st.className='verso-st st-rima-fail';st.textContent='✗ não rima';
+        inp.className='verso-input fail';
+        hint.textContent='Tem de rimar com "…'+ultimaPalavra(versos[1])+'". Tenta outra palavra no final.';
+        return false;
+      }
+    }
+    if(idx===1&&!v3ok){hint.textContent='O 4.º verso terá de rimar com "…'+up1+'"'}
+    st.className='verso-st st-ok';st.textContent='✓ ok';inp.className='verso-input ok';return true;
+  }
+  st.className='verso-st st-ok';st.textContent='✓ ok';inp.className='verso-input ok';hint.textContent='';return true;
+}
+
+function tudoValido(){
+  for(var i=0;i<4;i++)if(contarPalavras(versos[i])<MIN)return false;
+  return rima(ultimaPalavra(versos[1]),ultimaPalavra(versos[3]));
+}
+
+function renderPoema(){
+  var el=document.getElementById('pd-versos');
+  var tem=versos.some(function(v){return v.trim()});
+  if(!tem){el.innerHTML='<p class="pd-verso vazio">O teu poema aparece aqui…</p>';return}
+  el.innerHTML=versos.map(function(v){return '<p class="pd-verso'+(v.trim()?'':' vazio')+'">'+(v.trim()||'—')+'</p>'}).join('');
+}
+
+function validarTudo(){
+  for(var i=0;i<4;i++)validarVerso(i);
+  var ok=tudoValido();
+  var vg=document.getElementById('val-geral');
+  var temTudo=versos.every(function(v){return v.trim()});
+  if(!temTudo){vg.classList.remove('vis')}
+  else if(ok){vg.className='val-geral vis val-ok';vg.textContent='✓ A tua quadra tem rima e está pronta! Assina e descarrega.'}
+  else{vg.className='val-geral vis val-fail';vg.textContent='O 2.º e o 4.º verso ainda não rimam. Muda a última palavra de um deles.'}
+  document.getElementById('btn-pdf').disabled=!ok;
+  renderPoema();
+}
+
+for(var i=0;i<4;i++){
+  (function(idx){document.getElementById('v'+idx).addEventListener('input',function(){versos[idx]=this.value;validarTudo()})})(i);
+}
+
+document.getElementById('btn-limpar').addEventListener('click',function(){
+  versos=['','','',''];
+  for(var i=0;i<4;i++){
+    document.getElementById('v'+i).value='';
+    document.getElementById('st'+i).className='verso-st st-vazio';
+    document.getElementById('st'+i).textContent='vazio';
+    document.getElementById('v'+i).className='verso-input';
+    document.getElementById('hint'+i).textContent='';
+  }
+  document.getElementById('val-geral').classList.remove('vis');
+  document.getElementById('btn-pdf').disabled=true;
+  renderPoema();
+});
+
+document.getElementById('btn-pdf').addEventListener('click',function(){
+  if(typeof window.jspdf==='undefined'){alert('A carregar jsPDF… tenta novamente.');return}
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({unit:'mm',format:'a5',orientation:'portrait'});
+  var W=148,H=210;
+  // Fundo
+  doc.setFillColor(245,240,232);doc.rect(0,0,W,H,'F');
+  // Bordas
+  doc.setDrawColor(107,16,32);doc.setLineWidth(.5);doc.rect(8,8,W-16,H-16);
+  doc.setLineWidth(.2);doc.rect(10,10,W-20,H-20);
+  // Cabeçalho
+  doc.setFont('times','italic');doc.setFontSize(8);doc.setTextColor(107,16,32);
+  doc.text('Casa da Adelaide · Onofriana',W/2,18,{align:'center'});
+  doc.setFontSize(13);doc.text('✦',W/2,27,{align:'center'});
+  // Versos
+  doc.setFont('times','italic');doc.setFontSize(13.5);doc.setTextColor(30,20,25);
+  var y=46;
+  versos.forEach(function(v,i){
+    var linhas=doc.splitTextToSize(v||'—',W-36);
+    linhas.forEach(function(l){doc.text(l,W/2,y,{align:'center'});y+=7});
+    if(i===1){doc.setLineWidth(.15);doc.setDrawColor(168,56,74);doc.line(W/2-18,y+1,W/2+18,y+1);y+=6}else y+=3;
+  });
+  // Autoria
+  var nome=document.getElementById('autor-nome').value.trim();
+  var dataVal=document.getElementById('data-auto').value;
+  y=Math.max(y+14,H-46);
+  doc.setLineWidth(.2);doc.setDrawColor(168,56,74);doc.line(22,y,W-22,y);y+=7;
+  doc.setFont('times','normal');doc.setFontSize(9);doc.setTextColor(80,60,65);
+  if(nome){doc.text(nome,W/2,y,{align:'center'});y+=5}
+  doc.setFontSize(8);doc.setTextColor(130,110,115);
+  doc.text(dataVal,W/2,y,{align:'center'});
+  // Rodapé
+  doc.setFontSize(6.5);doc.setTextColor(180,160,165);
+  doc.text('casadaadelaide.pt · onofriana.pt',W/2,H-11,{align:'center'});
+  var nomeFich=(nome?nome.replace(/\s+/g,'-')+'-':'')+'quadra-de-fado.pdf';
+  doc.save(nomeFich);
+});
+
+renderPoema();
+(function(){var els=document.querySelectorAll('.reveal');var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('visible');obs.unobserve(en.target)}})},{threshold:.06});els.forEach(function(el){obs.observe(el)})})();
+</script>
+</body>
+</html>

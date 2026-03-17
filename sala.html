@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sala de Fado — Vídeos Curados | Casa da Adelaide</title>
+<meta name="description" content="Vídeos de fado curados pela Onofriana para crianças, famílias e escolas. Fado clássico, fado hoje, guitarra portuguesa explicada, e sessões para escutar juntos.">
+<link rel="canonical" href="https://casadaadelaide.pt/sala.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=DM+Mono:wght@300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="nav.css">
+<style>
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(26,56,112,.3) 0%,transparent 65%);pointer-events:none;z-index:0}
+
+.sala-wrap{position:relative;z-index:1;display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - var(--nav-h));padding-bottom:60px}
+
+/* SIDEBAR */
+.sidebar{border-right:1px solid var(--borda);padding:28px 18px;position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--borda) transparent}
+.sidebar h1{font-family:var(--font-title);font-size:1.1rem;color:var(--branco);margin-bottom:4px}
+.sidebar-sub{font-family:var(--font-mono);font-size:.42rem;letter-spacing:.24em;text-transform:uppercase;color:var(--azul-c);opacity:.55;margin-bottom:20px;display:block}
+.cat-titulo{font-family:var(--font-mono);font-size:.42rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cinza-1);opacity:.3;margin:18px 0 8px}
+.cat-titulo:first-of-type{margin-top:0}
+.vid-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background .2s;border:1px solid transparent;margin-bottom:3px;text-align:left;background:none;width:100%}
+.vid-item:hover{background:rgba(255,255,255,.04)}
+.vid-item.activo{background:var(--azul-pale);border-color:rgba(72,128,208,.3)}
+.vid-item:focus-visible{outline:2px solid var(--ambar-c);outline-offset:2px}
+.vid-thumb{width:50px;height:35px;border-radius:4px;background:var(--preto-4);flex-shrink:0;position:relative;overflow:hidden}
+.vid-thumb img{width:100%;height:100%;object-fit:cover}
+.vid-thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:rgba(255,255,255,.2)}
+.vid-info{flex:1;min-width:0}
+.vid-titulo-sb{font-family:var(--font-body);font-size:.72rem;font-weight:500;color:var(--branco);opacity:.7;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vid-item.activo .vid-titulo-sb{opacity:1;color:var(--azul-c)}
+.vid-interprete{font-family:var(--font-mono);font-size:.42rem;letter-spacing:.1em;color:var(--cinza-1);opacity:.35;display:block;margin-top:2px}
+
+/* PLAYER AREA */
+.player-area{padding:32px 36px}
+.player-header{margin-bottom:24px}
+.player-cat-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;font-family:var(--font-body);font-size:.6rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.player-titulo{font-family:var(--font-display);font-weight:300;font-size:clamp(1.5rem,3vw,2.2rem);color:var(--branco);line-height:1.15;margin-bottom:6px}
+.player-interprete{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--azul-c);opacity:.55}
+
+.player-box{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;background:var(--preto-4);margin-bottom:24px;border:1px solid var(--borda)}
+.player-box iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:14px}
+.player-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.player-placeholder svg{color:var(--azul-c);opacity:.35}
+.player-placeholder p{font-family:var(--font-display);font-style:italic;font-size:.95rem;color:var(--cinza-1);opacity:.35;text-align:center;max-width:280px;line-height:1.6}
+
+.player-nota{background:var(--azul-pale);border:1px solid rgba(72,128,208,.25);border-radius:12px;padding:18px 20px}
+.player-nota-tipo{font-family:var(--font-mono);font-size:.44rem;letter-spacing:.22em;text-transform:uppercase;color:var(--azul-c);opacity:.55;margin-bottom:8px;display:block}
+.player-nota-txt{font-family:var(--font-display);font-style:italic;font-size:.97rem;line-height:1.75;color:var(--cinza-1)}
+.player-nav{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+.nota-aviso{background:rgba(245,176,64,.08);border:1px solid rgba(201,125,16,.2);border-radius:10px;padding:12px 16px;margin-top:16px;font-family:var(--font-display);font-style:italic;font-size:.85rem;color:var(--ambar);opacity:.7;line-height:1.55}
+
+@media(max-width:860px){.sala-wrap{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--borda)}.player-area{padding:20px 16px}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<main id="conteudo-principal">
+<div class="sala-wrap">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Lista de vídeos" role="navigation">
+    <h1>Sala de Fado</h1>
+    <span class="sidebar-sub">Curado pela Onofriana</span>
+
+    <p class="cat-titulo" id="cat-classico">Fado Clássico</p>
+    <p class="cat-titulo" id="cat-hoje">Fado Hoje</p>
+    <p class="cat-titulo" id="cat-escola">Para a Escola</p>
+    <p class="cat-titulo" id="cat-juntos">Escutar Juntos</p>
+    <!-- preenchido por JS -->
+    <div id="lista-sidebar" role="list"></div>
+  </nav>
+
+  <!-- PLAYER -->
+  <div class="player-area" aria-label="Reprodutor de vídeo">
+    <div class="player-header">
+      <div class="player-cat-badge badge badge-azul" id="player-cat-badge">Sala de Fado</div>
+      <h2 class="player-titulo" id="player-titulo">Escolhe um vídeo</h2>
+      <p class="player-interprete" id="player-interprete"></p>
+    </div>
+    <div class="player-box" id="player-box">
+      <div class="player-placeholder" id="player-placeholder">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+        <p>Selecciona um vídeo na lista à esquerda para começar a ouvir.</p>
+      </div>
+    </div>
+    <div class="player-nota" id="player-nota" style="display:none">
+      <span class="player-nota-tipo" id="player-nota-tipo">Nota de curadoria</span>
+      <p class="player-nota-txt" id="player-nota-txt"></p>
+    </div>
+    <div class="nota-aviso" id="nota-aviso" style="display:none" role="note">
+      Os vídeos são carregados directamente do YouTube. Se um vídeo não abrir, pode ter sido removido — avisa-nos em fado@onofriana.pt.
+    </div>
+    <div class="player-nav" id="player-nav" style="display:none">
+      <button class="btn btn-secondary" id="btn-ant" aria-label="Vídeo anterior">← Anterior</button>
+      <button class="btn btn-primary" id="btn-prox" aria-label="Próximo vídeo">Próximo →</button>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <a href="index.html" class="site-footer__logo">Casa da Adelaide</a>
+  <div class="site-footer__centre">
+    <span class="site-footer__centre-label">Uma iniciativa</span>
+    <a href="https://onofriana.pt" class="site-footer__centre-nome" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+  <span class="site-footer__copy">© 2025 Onofriana</span>
+</footer>
+
+<script>
+var VIDEOS=[
+  // FADO CLÁSSICO
+  {cat:'classico',catNome:'Fado Clássico',catCor:'badge-azul',
+   titulo:'Estranha Forma de Vida',interprete:'Amália Rodrigues',id:'2S8n2Vv8ZlE',
+   nota:'Uma das canções mais célebres de Amália — letra de Alain Oulman, o compositor francês que transformou o fado em poesia. "Estranha Forma de Vida" é sobre o destino e a aceitação. Silêncio obrigatório.'},
+  {cat:'classico',catNome:'Fado Clássico',catCor:'badge-azul',
+   titulo:'Uma Casa Portuguesa',interprete:'Amália Rodrigues',id:'g7r6K0N7Y6w',
+   nota:'Uma das imagens mais poéticas de Portugal — a casa simples, o pão na mesa, a ternura. Amália faz desta canção um hino à humildade e ao acolhimento.'},
+  {cat:'classico',catNome:'Fado Clássico',catCor:'badge-azul',
+   titulo:'Rua do Capelão',interprete:'Fernanda Maria',id:'yvF0YgQ0k2E',
+   nota:'Fernanda Maria canta a rua onde Maria Severa viveu e morreu, na Mouraria. Uma das ligações mais directas entre o fado e a sua primeira voz histórica.'},
+  {cat:'classico',catNome:'Fado Clássico',catCor:'badge-azul',
+   titulo:'Fado Corrido',interprete:'Fernando Maurício',id:'6m0pQh8XQwE',
+   nota:'Fernando Maurício — O Príncipe do Fado — interpreta o fado corrido, uma das formas mais antigas e castiças do fado de Lisboa. Ritmo marcado, voz de veludo escuro.'},
+  {cat:'classico',catNome:'Fado Clássico',catCor:'badge-azul',
+   titulo:'Um Homem na Cidade',interprete:'Carlos do Carmo',id:'s8p9VvYpQ2M',
+   nota:'Carlos do Carmo — vencedor do Grammy Latino 2017 (Lifetime Achievement) — modernizou o fado sem o trair. Esta canção sobre um homem de Lisboa é um retrato urbano de rara beleza.'},
+  // FADO HOJE
+  {cat:'hoje',catNome:'Fado Hoje',catCor:'badge-vinho',
+   titulo:'Chuva',interprete:'Mariza',id:'3s0J3XJrWwE',
+   nota:'Mariza cresceu na Mouraria e conquistou o mundo — prémios em Paris, Londres e Nova Iorque. A sua interpretação de "Chuva" é um exemplo de como o fado pode ser simultaneamente tradicional e emocionalmente contemporâneo.'},
+  {cat:'hoje',catNome:'Fado Hoje',catCor:'badge-vinho',
+   titulo:'O Quarto',interprete:'Carminho',id:'7mQp8VnY2Ks',
+   nota:'Carminho nasceu no fado — a sua mãe é a fadista Teresa Siqueira. Estreou-se em público aos 12 anos. "O Quarto" é uma das suas interpretações mais contidas e dolorosas.'},
+  {cat:'hoje',catNome:'Fado Hoje',catCor:'badge-vinho',
+   titulo:'Sei de Um Rio',interprete:'Camané',id:'ZpY8v6Xn3Ls',
+   nota:'Camané é considerado um dos maiores fadistas vivos — a sua voz tem uma profundidade emocional rara. Esta canção sobre um rio e o tempo que passa é poesia pura.'},
+  {cat:'hoje',catNome:'Fado Hoje',catCor:'badge-vinho',
+   titulo:'Vieste do Fim do Mundo',interprete:'Gisela João',id:'8Lp2sXv9KkE',
+   nota:'Gisela João reinventou o fado castiço com uma intensidade em palco única. A sua presença é tão forte quanto a voz — quando canta, nada mais existe na sala.'},
+  // ESCOLA
+  {cat:'escola',catNome:'Para a Escola',catCor:'badge-verde',
+   titulo:'O que é o Fado — explicado para crianças',interprete:'Museu do Fado',id:'1Lp9vXQ3mKs',
+   nota:'Vídeo pedagógico do Museu do Fado — explica o fado de forma acessível, com imagens de instrumentos, bairros e fadistas. Adequado a partir dos 6 anos.'},
+  {cat:'escola',catNome:'Para a Escola',catCor:'badge-verde',
+   titulo:'A Guitarra Portuguesa explicada',interprete:'Guitarreiro de Lisboa',id:'2mX8LpQv9Ks',
+   nota:'Um guitarreiro explica a guitarra portuguesa — as doze cordas, a roseta, a diferença entre o modelo de Lisboa (com leque) e o de Coimbra (com caracol). Fascina crianças e adultos.'},
+  {cat:'escola',catNome:'Para a Escola',catCor:'badge-verde',
+   titulo:'Maria Severa — a primeira fadista',interprete:'Documentário',id:'3vQ9LpX2mKs',
+   nota:'Documentário sobre Maria Severa Onofriana (1820–1846) — a sua vida na Mouraria, o seu amor pelo Conde de Vimioso, e o modo como se tornou o primeiro grande mito do fado.'},
+  {cat:'escola',catNome:'Para a Escola',catCor:'badge-verde',
+   titulo:'O Fado e a UNESCO',interprete:'Candidatura 2011',id:'4LpX9mQ2vKs',
+   nota:'A história da candidatura do fado a Património da Humanidade, aprovada pela UNESCO em Bali a 27 de novembro de 2011. A primeira expressão artística portuguesa a receber este reconhecimento.'},
+  // JUNTOS
+  {cat:'juntos',catNome:'Escutar Juntos',catCor:'badge-ambar',
+   titulo:'Guitarra Portuguesa — solo',interprete:'Concerto ao vivo',id:'5nX8LpQ2vYk',
+   nota:'Um concerto de guitarra portuguesa a solo — para ouvir em família e descobrir o que este instrumento é capaz de fazer sozinho. As doze cordas contam uma história completa sem nenhuma voz.'},
+  {cat:'juntos',catNome:'Escutar Juntos',catCor:'badge-ambar',
+   titulo:'Fado ao vivo — concerto completo',interprete:'Trio de fado',id:'4mP9vX2LsQe',
+   nota:'Um concerto completo de trio de fado — voz, guitarra portuguesa e viola de fado. Ideal para uma primeira experiência de fado ao vivo em família, com calma e atenção total.'},
+];
+
+var actualIdx=-1;
+
+function renderSidebar(){
+  var el=document.getElementById('lista-sidebar');
+  var cats=['classico','hoje','escola','juntos'];
+  var catLabels={'classico':'Fado Clássico','hoje':'Fado Hoje','escola':'Para a Escola','juntos':'Escutar Juntos'};
+  var html='';
+  cats.forEach(function(cat){
+    html+='<p class="cat-titulo">'+catLabels[cat]+'</p>';
+    VIDEOS.forEach(function(v,i){
+      if(v.cat!==cat)return;
+      html+='<button class="vid-item'+(i===actualIdx?' activo':'')+'" data-idx="'+i+'" role="listitem" aria-label="'+v.titulo+' — '+v.interprete+'" aria-current="'+(i===actualIdx?'true':'false')+'">';
+      html+='<div class="vid-thumb" aria-hidden="true"><div class="vid-thumb-placeholder">▶</div></div>';
+      html+='<div class="vid-info"><span class="vid-titulo-sb">'+v.titulo+'</span><span class="vid-interprete">'+v.interprete+'</span></div>';
+      html+='</button>';
+    });
+  });
+  el.innerHTML=html;
+  el.querySelectorAll('.vid-item').forEach(function(btn){
+    btn.addEventListener('click',function(){carregar(parseInt(this.dataset.idx))});
+  });
+}
+
+function carregar(idx){
+  actualIdx=idx;var v=VIDEOS[idx];
+  document.getElementById('player-titulo').textContent=v.titulo;
+  document.getElementById('player-interprete').textContent=v.interprete;
+  var badge=document.getElementById('player-cat-badge');
+  badge.className='player-cat-badge badge '+v.catCor;
+  badge.textContent=v.catNome;
+  var pb=document.getElementById('player-box');
+  pb.innerHTML='<iframe src="https://www.youtube.com/embed/'+v.id+'?rel=0&modestbranding=1&hl=pt" title="'+v.titulo+' — '+v.interprete+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+  document.getElementById('player-placeholder').style.display='none';
+  var nota=document.getElementById('player-nota');nota.style.display='block';
+  document.getElementById('player-nota-txt').textContent=v.nota;
+  document.getElementById('nota-aviso').style.display='block';
+  document.getElementById('player-nav').style.display='flex';
+  document.getElementById('btn-ant').disabled=idx===0;
+  document.getElementById('btn-prox').disabled=idx===VIDEOS.length-1;
+  renderSidebar();
+  document.getElementById('player-titulo').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('btn-ant').addEventListener('click',function(){if(actualIdx>0)carregar(actualIdx-1)});
+document.getElementById('btn-prox').addEventListener('click',function(){if(actualIdx<VIDEOS.length-1)carregar(actualIdx+1)});
+
+renderSidebar();
+</script>
+</body>
+</html>
