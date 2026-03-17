@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa da Adelaide — O fado para crescer</title>
+<meta name="description" content="Casa da Adelaide — o portal de fado para crianças, apresentado pela Onofriana. Jogos, histórias, músicas e actividades para descobrir o fado.">
+<meta property="og:title" content="Casa da Adelaide — O fado para crescer">
+<meta property="og:description" content="O portal de fado para crianças, apresentado pela Onofriana.">
+<meta property="og:url" content="https://casadaadelaide.pt">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --preto:     #080507;
+  --escuro:    #110d0f;
+  --vinho:     #6b1020;
+  --vinho-c:   #a8384a;
+  --ambar:     #d4820a;
+  --ambar-c:   #f0a830;
+  --terracota: #c24e2a;
+  --creme:     #f5f0e8;
+  --verde:     #2d6b4a;
+  --azul:      #1a4a7a;
+  --branco:    #faf7f3;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--preto);
+  color: var(--branco);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(8,5,7,0.97), transparent);
+  transition: background 0.4s, backdrop-filter 0.4s;
+}
+nav.scrolled {
+  background: rgba(8,5,7,0.97);
+  backdrop-filter: blur(10px);
+}
+
+.nav-logo { text-decoration: none; display: flex; flex-direction: column; gap: 2px; }
+.nav-logo-main {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.45rem;
+  color: var(--ambar-c);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.nav-logo-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--branco);
+  opacity: 0.4;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--branco);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 0.3s, color 0.3s;
+}
+.nav-links a:hover { opacity: 1; color: var(--ambar-c); }
+
+.nav-onofriana {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--vinho-c);
+  text-decoration: none;
+  opacity: 0.65;
+  border-bottom: 1px solid rgba(168,56,74,0.3);
+  padding-bottom: 2px;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+.nav-onofriana:hover { opacity: 1; }
+
+/* ── HERO ── */
+#inicio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+}
+
+#inicio::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 680px; height: 680px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,130,10,0.07);
+  box-shadow: 0 0 0 50px rgba(212,130,10,0.025), 0 0 0 140px rgba(107,16,32,0.03);
+  pointer-events: none;
+}
+
+.hero-apresentado {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--vinho-c);
+  opacity: 0.8;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+.hero-apresentado a {
+  color: var(--vinho-c);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(168,56,74,0.4);
+  transition: opacity 0.3s;
+}
+.hero-apresentado a:hover { opacity: 0.65; }
+
+.hero-de {
+  display: block;
+  font-family: 'Petit Formal Script', cursive;
+  font-size: clamp(1rem, 2.5vw, 1.7rem);
+  color: var(--branco);
+  opacity: 0.45;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.hero-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  color: var(--ambar-c);
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  position: relative;
+  z-index: 1;
+  animation: golden-pulse 4s ease-in-out infinite;
+}
+
+@keyframes golden-pulse {
+  0%, 100% { text-shadow: 0 4px 40px rgba(212,130,10,0.2); }
+  50%       { text-shadow: 0 4px 70px rgba(212,130,10,0.45); }
+}
+
+.hero-sub {
+  margin-top: 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+  color: var(--branco);
+  opacity: 0.6;
+  max-width: 440px;
+  line-height: 1.55;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-ornamento {
+  margin: 32px auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.hero-ornamento span {
+  display: block;
+  height: 1px;
+  width: 55px;
+  background: linear-gradient(to right, transparent, var(--ambar));
+}
+.hero-ornamento span:last-child { background: linear-gradient(to left, transparent, var(--ambar)); }
+.hero-ornamento-dot {
+  color: var(--ambar);
+  opacity: 0.5;
+  font-size: 1rem;
+}
+
+.hero-publico {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.3;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SALAS ── */
+#salas {
+  position: relative;
+  z-index: 1;
+  padding: 80px 48px 100px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ambar);
+  opacity: 0.5;
+  text-align: center;
+  margin-bottom: 52px;
+}
+
+.salas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.sala-card {
+  position: relative;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(212,130,10,0.1);
+  padding: 32px 26px 28px;
+  text-decoration: none;
+  color: var(--branco);
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  overflow: hidden;
+  display: block;
+}
+.sala-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--acento, var(--ambar));
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s;
+}
+.sala-card:hover {
+  background: rgba(255,255,255,0.045);
+  border-color: var(--acento, var(--ambar));
+  transform: translateY(-2px);
+}
+.sala-card:hover::before { transform: scaleY(1); }
+
+.sala-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--acento, var(--ambar));
+  opacity: 0.5;
+  margin-bottom: 10px;
+}
+.sala-icone {
+  font-size: 1.9rem;
+  display: block;
+  margin-bottom: 14px;
+}
+.sala-nome {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.sala-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  opacity: 0.45;
+  line-height: 1.5;
+}
+.sala-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acento, var(--ambar));
+  opacity: 0.65;
+}
+
+/* card largo — para escolas */
+.sala-card.largo {
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 32px;
+}
+.sala-card.largo .sala-icone { margin: 0; font-size: 2.4rem; }
+.sala-card.largo .sala-desc { margin: 0; }
+.sala-card.largo .sala-link { margin: 0; }
+
+/* ── SOBRE ── */
+#sobre {
+  position: relative;
+  z-index: 1;
+  padding: 80px 48px 90px;
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+  border-top: 1px solid rgba(212,130,10,0.08);
+}
+
+.sobre-titulo {
+  font-family: 'Petit Formal Script', cursive;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  color: var(--ambar-c);
+  opacity: 0.85;
+  margin-bottom: 36px;
+}
+
+.sobre-p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: var(--branco);
+  opacity: 0.65;
+  margin-bottom: 18px;
+}
+.sobre-p em { font-style: italic; color: var(--ambar-c); opacity: 1; }
+
+.sobre-onofriana-bloco {
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(107,16,32,0.18);
+}
+.sobre-onofriana-bloco p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--vinho-c);
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+.sobre-onofriana-bloco a {
+  font-family: 'Petit Formal Script', cursive;
+  font-size: 1.9rem;
+  color: var(--branco);
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+.sobre-onofriana-bloco a:hover { opacity: 0.85; }
+
+/* ── ADELAIDE ── */
+#adelaide {
+  position: relative;
+  z-index: 1;
+  padding: 70px 48px 80px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  border-top: 1px solid rgba(212,130,10,0.07);
+}
+
+.adelaide-h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+  color: var(--ambar-c);
+  margin-bottom: 6px;
+}
+.adelaide-datas {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--vinho-c);
+  opacity: 0.55;
+  margin-bottom: 28px;
+}
+.adelaide-p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: var(--branco);
+  opacity: 0.6;
+  margin-bottom: 14px;
+}
+.adelaide-cit {
+  margin-top: 6px;
+  font-style: italic;
+  opacity: 0.38;
+  font-size: 0.95rem;
+}
+
+.adelaide-ascii {
+  font-family: 'Courier New', monospace;
+  font-size: 0.48rem;
+  line-height: 1.12;
+  color: var(--ambar);
+  opacity: 0.28;
+  white-space: pre;
+  text-align: center;
+  user-select: none;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(107,16,32,0.18);
+  padding: 44px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-logo-link {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  color: var(--ambar-c);
+  text-decoration: none;
+}
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  opacity: 0.3;
+}
+.footer-ono {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vinho-c);
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+.footer-ono:hover { opacity: 0.9; }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s, transform 0.7s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  nav { padding: 18px 24px; }
+  .nav-links { display: none; }
+  .salas-grid { grid-template-columns: 1fr 1fr; }
+  .sala-card.largo { grid-column: span 2; grid-template-columns: auto 1fr; }
+  .sala-card.largo .sala-link { display: none; }
+  #adelaide { grid-template-columns: 1fr; gap: 36px; }
+  .adelaide-ascii { display: none; }
+  #salas, #sobre, #adelaide { padding-left: 24px; padding-right: 24px; }
+  footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+}
+@media (max-width: 520px) {
+  .salas-grid { grid-template-columns: 1fr; }
+  .sala-card.largo { grid-column: span 1; grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Navegação principal">
+  <a href="index.html" class="nav-logo" aria-label="Casa da Adelaide — início">
+    <span class="nav-logo-main">Casa da Adelaide</span>
+    <span class="nav-logo-sub">Onofriana apresenta</span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="colorir.html">Colorir</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+    <li><a href="sopa.html">Sopa de Letras</a></li>
+    <li><a href="poema.html">Faz um Poema</a></li>
+    <li><a href="sala.html">Sala de Fado</a></li>
+    <li><a href="workshop.html">Workshop</a></li>
+    <li><a href="escola.html">Escolas</a></li>
+  </ul>
+  <a href="https://onofriana.pt" class="nav-onofriana" target="_blank" rel="noopener">← onofriana.pt</a>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section id="inicio" aria-label="Início">
+  <p class="hero-apresentado">
+    <a href="https://onofriana.pt" target="_blank" rel="noopener">Onofriana</a> apresenta
+  </p>
+  <h1 class="hero-title">
+    <span class="hero-de">a</span>
+    Casa da Adelaide
+  </h1>
+  <p class="hero-sub">O fado tem raízes. Aqui crescem.</p>
+  <div class="hero-ornamento" aria-hidden="true">
+    <span></span>
+    <span class="hero-ornamento-dot">✦</span>
+    <span></span>
+  </div>
+  <p class="hero-publico">Para crianças · Para famílias · Para escolas</p>
+</section>
+
+<!-- SALAS -->
+<section id="salas" aria-label="O que há na Casa da Adelaide">
+  <p class="section-label">Entra e explora</p>
+  <div class="salas-grid">
+
+    <a href="colorir.html" class="sala-card reveal" style="--acento: var(--terracota);">
+      <p class="sala-num">I</p>
+      <span class="sala-icone" aria-hidden="true">🎨</span>
+      <h2 class="sala-nome">Para Colorir</h2>
+      <p class="sala-desc">Guitarra portuguesa, fadista, roseta, Mouraria. Imprime e pinta.</p>
+      <span class="sala-link">Imprimir</span>
+    </a>
+
+    <a href="quiz.html" class="sala-card reveal" style="--acento: var(--ambar-c);">
+      <p class="sala-num">II</p>
+      <span class="sala-icone" aria-hidden="true">🎵</span>
+      <h2 class="sala-nome">Quiz do Fado</h2>
+      <p class="sala-desc">Dez perguntas para pôr os teus conhecimentos à prova.</p>
+      <span class="sala-link">Jogar</span>
+    </a>
+
+    <a href="sopa.html" class="sala-card reveal" style="--acento: #3a9b6a;">
+      <p class="sala-num">III</p>
+      <span class="sala-icone" aria-hidden="true">🔍</span>
+      <h2 class="sala-nome">Sopa de Letras</h2>
+      <p class="sala-desc">Encontra as palavras escondidas do mundo do fado.</p>
+      <span class="sala-link">Jogar</span>
+    </a>
+
+    <a href="poema.html" class="sala-card reveal" style="--acento: var(--vinho-c);">
+      <p class="sala-num">IV</p>
+      <span class="sala-icone" aria-hidden="true">✍️</span>
+      <h2 class="sala-nome">Faz um Poema</h2>
+      <p class="sala-desc">Escolhe palavras, constrói a tua quadra. O teu fado começa aqui.</p>
+      <span class="sala-link">Criar</span>
+    </a>
+
+    <a href="sala.html" class="sala-card reveal" style="--acento: #4a7abf;">
+      <p class="sala-num">V</p>
+      <span class="sala-icone" aria-hidden="true">🎬</span>
+      <h2 class="sala-nome">Sala de Fado</h2>
+      <p class="sala-desc">Vídeos curados pela Onofriana. Para ouvir, ver e sentir.</p>
+      <span class="sala-link">Ver &amp; Ouvir</span>
+    </a>
+
+    <a href="workshop.html" class="sala-card reveal" style="--acento: var(--ambar);">
+      <p class="sala-num">VI</p>
+      <span class="sala-icone" aria-hidden="true">📄</span>
+      <h2 class="sala-nome">Workshop em Casa</h2>
+      <p class="sala-desc">Fichas de actividades com um adulto. Descarrega e faz.</p>
+      <span class="sala-link">Descarregar</span>
+    </a>
+
+    <a href="escola.html" class="sala-card largo reveal" style="--acento: var(--vinho-c);">
+      <span class="sala-icone" aria-hidden="true">🏫</span>
+      <div>
+        <p class="sala-num">VII</p>
+        <h2 class="sala-nome">Para Escolas &amp; Instituições</h2>
+        <p class="sala-desc">Espetáculos e workshops para escolas, câmaras e famílias. Apresentados pela Onofriana.</p>
+      </div>
+      <span class="sala-link">Saber mais →</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre" aria-label="O que é a Casa da Adelaide">
+  <h2 class="sobre-titulo reveal">O que é a Casa da Adelaide</h2>
+  <p class="sobre-p reveal">
+    A Casa da Adelaide é um lugar para crescer com o fado.
+    Não para aprender o fado como se aprende uma matéria —
+    mas para sentir que ele existe, que tem história, que tem voz,
+    que pertence a toda a gente.
+  </p>
+  <p class="sobre-p reveal">
+    Adelaide da Volta foi fadista no século XIX.
+    Cantou antes de haver casas de fado, antes de haver gravações,
+    antes de haver palavras para dizer o que o fado é.
+    <em>O nome ficou.</em>
+  </p>
+  <p class="sobre-p reveal">
+    Aqui, o fado apresenta-se às crianças como o que sempre foi:
+    uma herança viva. Com jogos, com histórias, com música
+    e com papel para colorir.
+  </p>
+  <div class="sobre-onofriana-bloco reveal">
+    <p>Uma iniciativa</p>
+    <a href="https://onofriana.pt" target="_blank" rel="noopener">Onofriana</a>
+  </div>
+</section>
+
+<!-- ADELAIDE -->
+<section id="adelaide" aria-label="Quem foi Adelaide da Volta">
+  <div class="adelaide-texto">
+    <h2 class="adelaide-h2 reveal">Adelaide da Volta</h2>
+    <p class="adelaide-datas reveal">Século XIX · Lisboa</p>
+    <p class="adelaide-p reveal">
+      Adelaide da Volta foi uma das primeiras fadistas de que há memória.
+      Cantou na Mouraria, na Madragoa, nos lugares onde o fado cresceu
+      antes de ter nome.
+    </p>
+    <p class="adelaide-p reveal">
+      Ninguém a ouviu gravar. Não há fotografias.
+      Ficou nos relatos de quem a ouviu cantar —
+      e no nome que esta casa escolheu.
+    </p>
+    <p class="adelaide-p adelaide-cit reveal">
+      O fado guarda os nomes que a história esqueceu.
+    </p>
+  </div>
+  <div aria-hidden="true">
+    <pre class="adelaide-ascii reveal">
+         .  *    .    *   .
+      *    .   *   .    *
+    .   ╔══════════════╗   .
+      * ║   ♪   ♫   ♪  ║ *
+    .   ║              ║   .
+      * ║  Adelaide    ║ *
+    .   ║  da Volta    ║   .
+      * ║              ║ *
+    .   ║ ♫   ♪   ♫   ║   .
+      * ╚══════════════╝ *
+    .      ████████      .
+      *   ██      ██   *
+    .   ████████████████   .
+      * ██▒▒▒▒▒▒▒▒▒▒▒▒██ *
+    .   ████████████████   .
+      *   *    .   *    *
+    .  *   .  * .   .  *  .
+    </pre>
+  </div>
+</section>
+
+</main>
+
+<footer role="contentinfo">
+  <a href="index.html" class="footer-logo-link">Casa da Adelaide</a>
+  <span class="footer-tagline">O fado tem raízes. Aqui crescem.</span>
+  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+</footer>
+
+<script>
+(function() {
+  /* Reveal on scroll */
+  var els = document.querySelectorAll('.reveal');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e, i) {
+      if (e.isIntersecting) {
+        setTimeout(function() { e.target.classList.add('visible'); }, i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(function(el) { obs.observe(el); });
+
+  /* Nav scroll */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+})();
+</script>
+</body>
+</html>

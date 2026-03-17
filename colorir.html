@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Colorir — Casa da Adelaide</title>
+<meta name="description" content="Imagens para imprimir e colorir: guitarra portuguesa, fadista, roseta e Mouraria. Casa da Adelaide pela Onofriana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<style>
+:root {
+  --preto:   #080507;
+  --vinho:   #6b1020;
+  --vinho-c: #a8384a;
+  --ambar:   #d4820a;
+  --ambar-c: #f0a830;
+  --terracota: #c24e2a;
+  --branco:  #faf7f3;
+  --creme:   #f5f0e8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--preto);
+  color: var(--branco);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.15;
+}
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(8,5,7,0.97); backdrop-filter:blur(10px);
+}
+.nav-logo { text-decoration:none; }
+.nav-logo span {
+  font-family:'Fredoka One',cursive;
+  font-size:1.3rem; color:var(--ambar-c);
+}
+.nav-back {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--branco); opacity:0.45; text-decoration:none;
+  transition:opacity 0.3s;
+}
+.nav-back:hover { opacity:0.9; }
+
+/* HERO */
+.page-hero {
+  padding: 110px 48px 64px;
+  text-align:center;
+  position:relative; z-index:1;
+}
+.page-hero-label {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase;
+  color:var(--terracota); opacity:0.7; margin-bottom:18px;
+}
+.page-hero-title {
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2.4rem,7vw,5rem);
+  color:var(--ambar-c); letter-spacing:0.02em; line-height:1;
+  margin-bottom:16px;
+}
+.page-hero-sub {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.1rem;
+  opacity:0.5; max-width:460px; margin:0 auto; line-height:1.6;
+}
+
+/* INSTRUÇÃO */
+.instrucao {
+  position:relative; z-index:1;
+  max-width:700px; margin:0 auto 56px;
+  padding:0 48px;
+  display:flex; gap:40px; align-items:flex-start;
+  flex-wrap:wrap;
+}
+.passo {
+  flex:1; min-width:140px; text-align:center;
+}
+.passo-num {
+  font-family:'Fredoka One',cursive;
+  font-size:2rem; color:var(--ambar); opacity:0.4;
+  line-height:1;
+}
+.passo-texto {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.78rem; font-weight:400;
+  color:var(--branco); opacity:0.55;
+  margin-top:6px; line-height:1.4;
+}
+
+/* GRELHA DE IMAGENS */
+.colorir-grid {
+  position:relative; z-index:1;
+  max-width:1100px; margin:0 auto;
+  padding:0 48px 100px;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:32px;
+}
+
+.colorir-card {
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(212,130,10,0.12);
+  padding:32px;
+  display:flex; flex-direction:column;
+  align-items:center; gap:24px;
+}
+
+.colorir-titulo {
+  font-family:'Fredoka One',cursive;
+  font-size:1.2rem; color:var(--ambar-c);
+  text-align:center; letter-spacing:0.02em;
+}
+.colorir-subtitulo {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:0.82rem;
+  color:var(--branco); opacity:0.38;
+  text-align:center; margin-top:-16px;
+}
+
+.ascii-img {
+  font-family:'Courier New',Courier,monospace;
+  font-size:0.58rem; line-height:1.18;
+  color:var(--ambar-c);
+  white-space:pre;
+  text-align:center;
+  user-select:none;
+  opacity:0.75;
+  letter-spacing:0.04em;
+}
+
+.btn-imprimir {
+  display:inline-block;
+  font-family:'Fredoka',sans-serif;
+  font-size:0.68rem; font-weight:500;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--preto);
+  background:var(--ambar-c);
+  border:none; padding:10px 24px;
+  cursor:pointer;
+  transition:background 0.3s, transform 0.2s;
+  text-decoration:none;
+}
+.btn-imprimir:hover {
+  background:var(--ambar);
+  transform:translateY(-1px);
+}
+
+/* FOOTER */
+footer {
+  position:relative; z-index:1;
+  border-top:1px solid rgba(107,16,32,0.18);
+  padding:36px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:16px;
+}
+.footer-logo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--ambar-c); text-decoration:none; }
+.footer-ono { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--vinho-c); opacity:0.5; text-decoration:none; transition:opacity 0.3s; }
+.footer-ono:hover { opacity:0.9; }
+
+/* PRINT */
+@media print {
+  nav, .instrucao, .btn-imprimir, footer, .page-hero-sub, .colorir-subtitulo { display:none !important; }
+  body { background:#fff !important; color:#000 !important; }
+  body::before { display:none; }
+  .page-hero { padding:20px; }
+  .page-hero-title { color:#000 !important; font-size:2rem; }
+  .page-hero-label { color:#555 !important; }
+  .colorir-grid { grid-template-columns:1fr 1fr; padding:0 20px; gap:20px; }
+  .colorir-card { border:1px solid #ccc; background:#fff; break-inside:avoid; }
+  .colorir-titulo { color:#000; }
+  .ascii-img { color:#000 !important; opacity:1 !important; font-size:0.55rem; }
+}
+
+@media (max-width:768px) {
+  nav { padding:16px 20px; }
+  .page-hero { padding:90px 24px 48px; }
+  .colorir-grid { grid-template-columns:1fr; padding:0 24px 80px; }
+  .instrucao { padding:0 24px; }
+  footer { padding:28px 24px; flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegação">
+  <a href="index.html" class="nav-logo"><span>Casa da Adelaide</span></a>
+  <a href="index.html" class="nav-back">← Voltar</a>
+</nav>
+
+<main>
+<section class="page-hero">
+  <p class="page-hero-label">I · Actividade</p>
+  <h1 class="page-hero-title">Para Colorir</h1>
+  <p class="page-hero-sub">Quatro imagens do mundo do fado para imprimir, colorir e guardar.</p>
+</section>
+
+<div class="instrucao" aria-label="Como usar">
+  <div class="passo">
+    <p class="passo-num">1</p>
+    <p class="passo-texto">Escolhe a imagem que gostas mais</p>
+  </div>
+  <div class="passo">
+    <p class="passo-num">2</p>
+    <p class="passo-texto">Clica em "Imprimir" ou usa Ctrl+P</p>
+  </div>
+  <div class="passo">
+    <p class="passo-num">3</p>
+    <p class="passo-texto">Pega nos lápis e pinta à tua maneira</p>
+  </div>
+</div>
+
+<div class="colorir-grid">
+
+  <!-- GUITARRA PORTUGUESA -->
+  <div class="colorir-card">
+    <h2 class="colorir-titulo">Guitarra Portuguesa</h2>
+    <p class="colorir-subtitulo">O instrumento do fado</p>
+    <pre class="ascii-img" aria-label="Guitarra portuguesa para colorir">
+         ___________
+        /     |     \
+       /   oo|oo    \
+      |   o  |  o    |
+      |  o   |   o   |
+       \  ooooooo   /
+        \    |    /
+         \   |   /
+          \  |  /
+     ______\ | /______
+    |        \|/       |
+    |    .---.-.---.   |
+    |   /    | |    \  |
+    |  | ~~~~|~~~~ |  |
+    |  | ~~~~|~~~~ |  |
+    |  | ~~~~|~~~~ |  |
+    |  | ~~~~|~~~~ |  |
+    |  | ~~~~|~~~~ |  |
+    |  | ~~~~|~~~~ |  |
+    |   \    | |    /  |
+    |    '---'-'---'   |
+    |___________________|
+          |   |
+          |   |
+          |   |
+         _|___|_
+        /       \
+       |    *    |
+        \_______/
+    </pre>
+    <button class="btn-imprimir" onclick="window.print()">Imprimir</button>
+  </div>
+
+  <!-- FADISTA COM XAILE -->
+  <div class="colorir-card">
+    <h2 class="colorir-titulo">A Fadista</h2>
+    <p class="colorir-subtitulo">Com o xaile negro</p>
+    <pre class="ascii-img" aria-label="Fadista com xaile para colorir">
+              ___
+             /   \
+            | o o |
+             \___/
+           __/   \__
+          /    |    \
+         / ~~~~|~~~~ \
+        /  ~~~~|~~~~  \
+       |   ~~~~|~~~~   |
+       |  /    |    \  |
+       | / ~~~~|~~~~ \ |
+       |/ ~~~~~|~~~~~ \|
+       /  ~~~~~~~~~~~~ \
+      /  ~~~~~~~~~~~~~~  \
+     /  ~~~~~~~~~~~~~~~~  \
+    /  ~~~~~~~~~~~~~~~~~~  \
+   |   ~~~~~~~~~~~~~~~~~~   |
+   |   ~~~~   ~~~~   ~~~~   |
+   |   ~~~~ o    o ~~~~     |
+   |   ~~~~~~~~~~~~~~~~~   |
+    \  ~~~~~~~~~~~~~~~~~  /
+     \  _______________  /
+          |         |
+          |         |
+         _|_       _|_
+        |   |     |   |
+        |___|     |___|
+    </pre>
+    <button class="btn-imprimir" onclick="window.print()">Imprimir</button>
+  </div>
+
+  <!-- ROSETA -->
+  <div class="colorir-card">
+    <h2 class="colorir-titulo">A Roseta</h2>
+    <p class="colorir-subtitulo">O ornamento da guitarra portuguesa</p>
+    <pre class="ascii-img" aria-label="Roseta para colorir">
+              * * *
+           *         *
+         *    * * *    *
+        *   *       *   *
+       *  *    * *    *  *
+      *  *   *     *   *  *
+      * *   *   O   *   * *
+      *  *   *     *   *  *
+      *  *    * *    *  *
+        *   *       *   *
+         *    * * *    *
+           *         *
+              * * *
+
+         Pinta os pétalas
+         de muitas cores!
+
+        . - ~ ~ ~ - .
+      /               \
+     |   * * * * * *   |
+     |  *           *  |
+     |  * * * * * * *  |
+     |  *           *  |
+     |   * * * * * *   |
+      \               /
+        ' - . _ . - '
+    </pre>
+    <button class="btn-imprimir" onclick="window.print()">Imprimir</button>
+  </div>
+
+  <!-- MOURARIA -->
+  <div class="colorir-card">
+    <h2 class="colorir-titulo">A Mouraria</h2>
+    <p class="colorir-subtitulo">O bairro onde o fado nasceu</p>
+    <pre class="ascii-img" aria-label="Beco da Mouraria para colorir">
+          *        *   *
+       *     *  *     *
+      _______   _________
+     |  ___  | |  _____  |
+     | |   | | | |     | |
+     | | * | | | |  *  | |
+     | |___| | | |_____| |
+     |       | |         |
+     | _____ | |  _____  |
+     ||     || | |     | |
+     ||  *  || | |  *  | |
+     ||_____|| | |_____| |
+     |       | |         |
+     |_______| |_________|
+          |         |
+     _____|_________|_____
+    |  _   _   _   _   _  |
+    | | | | | | | | | | | |
+    | |_| |_| |_| |_| |_| |
+    |____________________ |
+    ~~~~~~~~~~~~~~~~~~~~~~
+    </pre>
+    <button class="btn-imprimir" onclick="window.print()">Imprimir</button>
+  </div>
+
+</div>
+</main>
+
+<footer role="contentinfo">
+  <a href="index.html" class="footer-logo">Casa da Adelaide</a>
+  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+</footer>
+
+</body>
+</html>
