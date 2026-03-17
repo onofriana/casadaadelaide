@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop em Casa — Casa da Adelaide</title>
+<meta name="description" content="Fichas de actividades de fado para fazer em casa com adultos. Descarrega e descobre. Casa da Adelaide pela Onofriana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<style>
+:root {
+  --preto:   #080507;
+  --vinho:   #6b1020;
+  --vinho-c: #a8384a;
+  --ambar:   #d4820a;
+  --ambar-c: #f0a830;
+  --branco:  #faf7f3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--preto); color:var(--branco);
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  overflow-x:hidden;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.15;
+}
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(8,5,7,0.97); backdrop-filter:blur(10px);
+}
+.nav-logo { text-decoration:none; font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--ambar-c); }
+.nav-back { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--branco); opacity:0.45; text-decoration:none; transition:opacity 0.3s; }
+.nav-back:hover { opacity:0.9; }
+
+.page-wrap {
+  position:relative; z-index:1;
+  padding:100px 48px 80px;
+  max-width:1000px; margin:0 auto;
+}
+
+.page-hero { text-align:center; margin-bottom:56px; }
+.page-label { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--ambar); opacity:0.6; margin-bottom:16px; }
+.page-title { font-family:'Fredoka One',cursive; font-size:clamp(2.2rem,6vw,4rem); color:var(--ambar-c); margin-bottom:14px; line-height:1; }
+.page-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; opacity:0.45; max-width:480px; margin:0 auto; line-height:1.6; }
+
+/* AVISO ADULTOS */
+.aviso {
+  background:rgba(212,130,10,0.06);
+  border:1px solid rgba(212,130,10,0.18);
+  padding:20px 28px;
+  margin-bottom:52px;
+  display:flex; gap:16px; align-items:flex-start;
+}
+.aviso-icone { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+.aviso p {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem; line-height:1.65; opacity:0.6;
+}
+.aviso strong { color:var(--ambar-c); font-weight:600; }
+
+/* FICHAS GRID */
+.fichas-grid {
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:24px;
+  margin-bottom:60px;
+}
+
+.ficha-card {
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(212,130,10,0.12);
+  padding:32px 28px;
+  display:flex; flex-direction:column; gap:16px;
+}
+
+.ficha-numero {
+  font-family:'Fredoka One',cursive;
+  font-size:2.5rem; color:var(--ambar); opacity:0.18;
+  line-height:1;
+}
+
+.ficha-titulo {
+  font-family:'Fredoka One',cursive;
+  font-size:1.25rem; color:var(--ambar-c);
+  line-height:1.2;
+}
+
+.ficha-desc {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.95rem; line-height:1.7;
+  opacity:0.55; flex:1;
+}
+
+.ficha-meta {
+  display:flex; gap:16px; flex-wrap:wrap;
+}
+.ficha-meta-item {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.62rem; font-weight:400;
+  letter-spacing:0.1em; text-transform:uppercase;
+  opacity:0.35;
+  display:flex; align-items:center; gap:5px;
+}
+
+.ficha-conteudo {
+  background:rgba(0,0,0,0.2);
+  border:1px solid rgba(255,255,255,0.05);
+  padding:16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.85rem; line-height:1.7;
+  opacity:0.5;
+}
+.ficha-conteudo ul {
+  list-style:none; padding:0;
+}
+.ficha-conteudo li::before {
+  content:'—  ';
+  color:var(--ambar); opacity:0.6;
+}
+
+.btn-download {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.68rem; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--preto); background:var(--ambar-c);
+  border:none; padding:11px 22px;
+  cursor:pointer; transition:background 0.3s;
+  text-decoration:none; display:inline-block;
+  text-align:center;
+  margin-top:auto;
+}
+.btn-download:hover { background:var(--ambar); }
+.btn-download.em-breve {
+  background:rgba(255,255,255,0.07);
+  color:var(--branco); opacity:0.3;
+  pointer-events:none;
+}
+
+/* NOTA FINAL */
+.nota-final {
+  border-top:1px solid rgba(212,130,10,0.1);
+  padding-top:48px;
+  text-align:center;
+}
+.nota-final h2 {
+  font-family:'Petit Formal Script',cursive;
+  font-size:clamp(1.5rem,3.5vw,2.2rem);
+  color:var(--ambar-c); opacity:0.8;
+  margin-bottom:20px;
+}
+.nota-final p {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem; line-height:1.75; opacity:0.5;
+  max-width:520px; margin:0 auto 12px;
+}
+.nota-final a {
+  color:var(--vinho-c); text-decoration:none;
+  border-bottom:1px solid rgba(168,56,74,0.3);
+}
+
+/* FOOTER */
+footer { position:relative; z-index:1; border-top:1px solid rgba(107,16,32,0.18); padding:32px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-top:60px; }
+.footer-logo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--ambar-c); text-decoration:none; }
+.footer-ono { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--vinho-c); opacity:0.5; text-decoration:none; transition:opacity 0.3s; }
+.footer-ono:hover { opacity:0.9; }
+
+@media (max-width:700px) {
+  nav { padding:16px 20px; }
+  .page-wrap { padding:90px 20px 60px; }
+  .fichas-grid { grid-template-columns:1fr; }
+  footer { padding:28px 20px; flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegação">
+  <a href="index.html" class="nav-logo">Casa da Adelaide</a>
+  <a href="index.html" class="nav-back">← Voltar</a>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="page-label">VI · Descarregar</p>
+    <h1 class="page-title">Workshop em Casa</h1>
+    <p class="page-sub">Fichas de actividades para fazer com um adulto. Imprime, senta-te à mesa e descobre o fado.</p>
+  </div>
+
+  <div class="aviso">
+    <span class="aviso-icone" aria-hidden="true">📌</span>
+    <p><strong>Para adultos e crianças juntos.</strong> Estas fichas foram pensadas para serem feitas em conjunto — um pai, uma mãe, um avô, um professor. O fado transmite-se de pessoa para pessoa.</p>
+  </div>
+
+  <div class="fichas-grid">
+
+    <div class="ficha-card">
+      <p class="ficha-numero">01</p>
+      <h2 class="ficha-titulo">O que é o fado?</h2>
+      <p class="ficha-desc">Uma introdução ao fado para crianças — o que é, de onde veio, onde se canta. Com texto simples, imagens para colorir e perguntas para conversar.</p>
+      <div class="ficha-meta">
+        <span class="ficha-meta-item">📄 4 páginas</span>
+        <span class="ficha-meta-item">👶 6–10 anos</span>
+        <span class="ficha-meta-item">⏱ 30–45 min</span>
+      </div>
+      <div class="ficha-conteudo">
+        <ul>
+          <li>História do fado em linguagem simples</li>
+          <li>Mapa dos bairros do fado em Lisboa</li>
+          <li>Espaço para desenhar o que imaginas</li>
+          <li>Perguntas para conversar em família</li>
+        </ul>
+      </div>
+      <a href="fichas/ficha-01-o-que-e-o-fado.pdf" class="btn-download" download>Descarregar — PDF</a>
+    </div>
+
+    <div class="ficha-card">
+      <p class="ficha-numero">02</p>
+      <h2 class="ficha-titulo">A guitarra portuguesa</h2>
+      <p class="ficha-desc">Conhece o instrumento do fado. Como é feita, quantas cordas tem, como se toca. Com diagrama para legendar e actividade de construção em papel.</p>
+      <div class="ficha-meta">
+        <span class="ficha-meta-item">📄 3 páginas</span>
+        <span class="ficha-meta-item">👶 7–12 anos</span>
+        <span class="ficha-meta-item">⏱ 20–30 min</span>
+      </div>
+      <div class="ficha-conteudo">
+        <ul>
+          <li>Diagrama da guitarra portuguesa para legendar</li>
+          <li>Curiosidades sobre as doze cordas</li>
+          <li>Molde de guitarra para recortar e montar</li>
+        </ul>
+      </div>
+      <a href="fichas/ficha-02-guitarra-portuguesa.pdf" class="btn-download" download>Descarregar — PDF</a>
+    </div>
+
+    <div class="ficha-card">
+      <p class="ficha-numero">03</p>
+      <h2 class="ficha-titulo">Maria Severa Onofriana</h2>
+      <p class="ficha-desc">A história da primeira fadista. Nascida em 1820, morta aos 26 anos. Quem foi, onde viveu, porque é que o fado a guarda na memória.</p>
+      <div class="ficha-meta">
+        <span class="ficha-meta-item">📄 4 páginas</span>
+        <span class="ficha-meta-item">👶 8–13 anos</span>
+        <span class="ficha-meta-item">⏱ 40–50 min</span>
+      </div>
+      <div class="ficha-conteudo">
+        <ul>
+          <li>Biografia acessível de Maria Severa</li>
+          <li>Linha do tempo para completar</li>
+          <li>Exercício — escrever uma carta para Severa</li>
+          <li>Imagem para colorir</li>
+        </ul>
+      </div>
+      <a href="fichas/ficha-03-maria-severa.pdf" class="btn-download" download>Descarregar — PDF</a>
+    </div>
+
+    <div class="ficha-card">
+      <p class="ficha-numero">04</p>
+      <h2 class="ficha-titulo">Escreve a tua quadra</h2>
+      <p class="ficha-desc">O fado canta em quadras de quatro versos. Esta ficha ensina a estrutura e guia a criança a escrever a sua primeira quadra de fado.</p>
+      <div class="ficha-meta">
+        <span class="ficha-meta-item">📄 3 páginas</span>
+        <span class="ficha-meta-item">👶 8–14 anos</span>
+        <span class="ficha-meta-item">⏱ 30–45 min</span>
+      </div>
+      <div class="ficha-conteudo">
+        <ul>
+          <li>Explicação da estrutura da quadra</li>
+          <li>Exemplos de quadras clássicas</li>
+          <li>Banco de palavras e rimas</li>
+          <li>Espaço para escrever e ilustrar</li>
+        </ul>
+      </div>
+      <a href="fichas/ficha-04-escreve-a-tua-quadra.pdf" class="btn-download" download>Descarregar — PDF</a>
+    </div>
+
+    <div class="ficha-card">
+      <p class="ficha-numero">05</p>
+      <h2 class="ficha-titulo">Fado e a UNESCO</h2>
+      <p class="ficha-desc">Em 2011, o fado foi reconhecido como Património Cultural Imaterial da Humanidade. O que significa isso? Porque importa?</p>
+      <div class="ficha-meta">
+        <span class="ficha-meta-item">📄 3 páginas</span>
+        <span class="ficha-meta-item">👶 9–14 anos</span>
+        <span class="ficha-meta-item">⏱ 30–40 min</span>
+      </div>
+      <div class="ficha-conteudo">
+        <ul>
+          <li>O que é o Património Cultural Imaterial</li>
+          <li>Outros exemplos de todo o mundo</li>
+          <li>Discussão — o que guardamos e porquê</li>
+        </ul>
+      </div>
+      <span class="btn-download em-breve">Em breve</span>
+    </div>
+
+    <div class="ficha-card">
+      <p class="ficha-numero">06</p>
+      <h2 class="ficha-titulo">Kit de Guia para Adultos</h2>
+      <p class="ficha-desc">Um guia completo para pais, avós e educadores que querem acompanhar as actividades da Casa da Adelaide. Com contexto histórico, sugestões de conversas e recursos adicionais.</p>
+      <div class="ficha-meta">
+        <span class="ficha-meta-item">📄 8 páginas</span>
+        <span class="ficha-meta-item">🧑 Para adultos</span>
+        <span class="ficha-meta-item">⏱ Referência</span>
+      </div>
+      <div class="ficha-conteudo">
+        <ul>
+          <li>Contexto histórico e cultural do fado</li>
+          <li>Como falar de saudade com crianças</li>
+          <li>Sugestões de ouvir juntos</li>
+          <li>Recursos e leituras adicionais</li>
+        </ul>
+      </div>
+      <span class="btn-download em-breve">Em breve</span>
+    </div>
+
+  </div>
+
+  <div class="nota-final">
+    <h2>O fado aprende-se a ouvir.</h2>
+    <p>
+      Estas fichas são um ponto de partida, não um programa.
+      O que fica de uma tarde a falar de fado não cabe em papel.
+    </p>
+    <p>
+      Para espetáculos e workshops presenciais nas escolas,
+      visita <a href="escola.html">a página de escolas</a>
+      ou contacta a <a href="https://onofriana.pt" target="_blank" rel="noopener">Onofriana</a> directamente.
+    </p>
+  </div>
+</div>
+
+<footer role="contentinfo">
+  <a href="index.html" class="footer-logo">Casa da Adelaide</a>
+  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+</footer>
+
+</body>
+</html>

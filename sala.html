@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sala de Fado — Casa da Adelaide</title>
+<meta name="description" content="Sala de vídeos de fado para crianças, curada pela Onofriana. Casa da Adelaide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --preto:   #080507;
+  --vinho:   #6b1020;
+  --vinho-c: #a8384a;
+  --ambar:   #d4820a;
+  --ambar-c: #f0a830;
+  --azul:    #1a4a7a;
+  --azul-c:  #4a7abf;
+  --branco:  #faf7f3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--preto); color:var(--branco);
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  overflow-x:hidden;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.15;
+}
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(8,5,7,0.97); backdrop-filter:blur(10px);
+}
+.nav-logo { text-decoration:none; font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--ambar-c); }
+.nav-back { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--branco); opacity:0.45; text-decoration:none; transition:opacity 0.3s; }
+.nav-back:hover { opacity:0.9; }
+
+.page-wrap {
+  position:relative; z-index:1;
+  padding:100px 48px 80px;
+  max-width:1100px; margin:0 auto;
+}
+
+.page-hero { text-align:center; margin-bottom:56px; }
+.page-label { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--azul-c); opacity:0.7; margin-bottom:16px; }
+.page-title { font-family:'Fredoka One',cursive; font-size:clamp(2.2rem,6vw,4rem); color:var(--ambar-c); margin-bottom:14px; line-height:1; }
+.page-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; opacity:0.45; max-width:440px; margin:0 auto; line-height:1.6; }
+
+/* PLAYER PRINCIPAL */
+.player-principal {
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(212,130,10,0.14);
+  margin-bottom:40px;
+}
+
+.player-video {
+  position:relative;
+  padding-bottom:56.25%;
+  height:0; overflow:hidden;
+  background:#000;
+}
+.player-video iframe {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  border:0;
+}
+
+.player-info {
+  padding:24px 28px;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  gap:20px; flex-wrap:wrap;
+}
+.player-titulo {
+  font-family:'Fredoka',sans-serif;
+  font-size:1.15rem; font-weight:500;
+  color:var(--branco); margin-bottom:4px;
+}
+.player-desc {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:0.9rem;
+  opacity:0.45; line-height:1.5;
+  max-width:480px;
+}
+.player-tag {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.6rem; font-weight:500;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--azul-c); opacity:0.7;
+  white-space:nowrap;
+}
+
+/* GRELHA DE VÍDEOS */
+.section-label {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase;
+  color:var(--ambar); opacity:0.45; margin-bottom:28px;
+}
+
+.videos-grid {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:18px;
+  margin-bottom:60px;
+}
+
+.video-card {
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(212,130,10,0.1);
+  cursor:pointer;
+  transition:background 0.25s, border-color 0.25s, transform 0.2s;
+  overflow:hidden;
+}
+.video-card:hover {
+  background:rgba(255,255,255,0.05);
+  border-color:rgba(212,130,10,0.3);
+  transform:translateY(-2px);
+}
+.video-card.ativo { border-color:var(--ambar-c); }
+
+.video-thumb {
+  position:relative;
+  padding-bottom:56.25%; height:0;
+  background:#111;
+  overflow:hidden;
+}
+.video-thumb img {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  object-fit:cover; opacity:0.75;
+}
+.video-thumb .play-overlay {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.3);
+  transition:background 0.2s;
+}
+.video-card:hover .play-overlay { background:rgba(0,0,0,0.1); }
+.play-icon {
+  width:40px; height:40px;
+  background:rgba(212,130,10,0.85);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.play-icon svg { fill:var(--preto); width:16px; height:16px; margin-left:2px; }
+
+.video-info { padding:14px 16px; }
+.video-titulo {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.85rem; font-weight:500;
+  color:var(--branco); margin-bottom:4px;
+  line-height:1.3;
+}
+.video-canal {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.78rem; opacity:0.38;
+}
+
+/* NOTA DE CURADORIA */
+.nota-curadoria {
+  background:rgba(107,16,32,0.1);
+  border:1px solid rgba(107,16,32,0.2);
+  padding:24px 28px;
+  text-align:center;
+}
+.nota-curadoria p {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.85rem; line-height:1.65; opacity:0.5;
+}
+.nota-curadoria a { color:var(--vinho-c); opacity:1; }
+
+/* FOOTER */
+footer { position:relative; z-index:1; border-top:1px solid rgba(107,16,32,0.18); padding:32px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+.footer-logo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--ambar-c); text-decoration:none; }
+.footer-ono { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--vinho-c); opacity:0.5; text-decoration:none; transition:opacity 0.3s; }
+.footer-ono:hover { opacity:0.9; }
+
+@media (max-width:768px) {
+  nav { padding:16px 20px; }
+  .page-wrap { padding:90px 20px 60px; }
+  .videos-grid { grid-template-columns:1fr 1fr; }
+  footer { padding:28px 20px; flex-direction:column; text-align:center; }
+}
+@media (max-width:480px) {
+  .videos-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegação">
+  <a href="index.html" class="nav-logo">Casa da Adelaide</a>
+  <a href="index.html" class="nav-back">← Voltar</a>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="page-label">V · Ver &amp; Ouvir</p>
+    <h1 class="page-title">Sala de Fado</h1>
+    <p class="page-sub">Vídeos escolhidos pela Onofriana para ouvir, ver e sentir o fado.</p>
+  </div>
+
+  <!-- PLAYER PRINCIPAL -->
+  <div class="player-principal">
+    <div class="player-video">
+      <iframe
+        id="player-iframe"
+        src="https://www.youtube.com/embed/QRJG2NhMkpU?rel=0"
+        title="Fado para crianças"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+    <div class="player-info">
+      <div>
+        <p class="player-titulo" id="player-titulo">Amália Rodrigues — Estranha Forma de Vida</p>
+        <p class="player-desc" id="player-desc">Uma das mais famosas canções de fado, cantada pela maior fadista de todos os tempos.</p>
+      </div>
+      <span class="player-tag" id="player-tag">Fado Clássico</span>
+    </div>
+  </div>
+
+  <!-- LISTA DE VÍDEOS -->
+  <p class="section-label">Mais para ver</p>
+
+  <div class="videos-grid" id="videos-grid"></div>
+
+  <div class="nota-curadoria">
+    <p>
+      Estes vídeos foram escolhidos pela <a href="https://onofriana.pt" target="_blank" rel="noopener">Onofriana</a>
+      como uma introdução ao fado para crianças e famílias.
+      Para mais música, visita o canal <a href="https://youtube.com/@onofriana" target="_blank" rel="noopener">youtube.com/@onofriana</a>.
+    </p>
+  </div>
+</div>
+
+<footer role="contentinfo">
+  <a href="index.html" class="footer-logo">Casa da Adelaide</a>
+  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+</footer>
+
+<script>
+var VIDEOS = [
+  {
+    id: 'QRJG2NhMkpU',
+    titulo: 'Amália Rodrigues — Estranha Forma de Vida',
+    canal: 'Fado Clássico',
+    desc: 'Uma das mais famosas canções de fado, cantada pela maior fadista de todos os tempos.',
+    tag: 'Fado Clássico'
+  },
+  {
+    id: 'DW6LSNS3pIo',
+    titulo: 'Mariza — Chuva',
+    canal: 'Fado Contemporâneo',
+    desc: 'Mariza é uma das vozes mais reconhecidas do fado actual. Chuva é um dos seus temas mais conhecidos.',
+    tag: 'Fado Contemporâneo'
+  },
+  {
+    id: 'V2b1oVFyAew',
+    titulo: 'Ana Moura — Desfado',
+    canal: 'Fado Contemporâneo',
+    desc: 'Ana Moura explora novas sonoridades dentro da tradição do fado.',
+    tag: 'Fado Contemporâneo'
+  },
+  {
+    id: 'pnb44cVqKPI',
+    titulo: 'Camané — Uma Casa Portuguesa',
+    canal: 'Tradição',
+    desc: 'Uma das canções mais tradicionais do repertório português, interpretada por Camané.',
+    tag: 'Tradição'
+  },
+  {
+    id: 'JBF2Kf5GDLM',
+    titulo: 'Guitarra Portuguesa — Demonstração',
+    canal: 'Instrumento',
+    desc: 'Uma demonstração das sonoridades únicas da guitarra portuguesa, o instrumento central do fado.',
+    tag: 'Instrumento'
+  },
+  {
+    id: 'k1lJACOHIiU',
+    titulo: 'O Fado — Documentário UNESCO',
+    canal: 'Aprender',
+    desc: 'Uma introdução ao fado e ao seu reconhecimento como Património Cultural Imaterial da Humanidade.',
+    tag: 'Aprender'
+  }
+];
+
+var videoActivo = 0;
+
+function renderGrid() {
+  var el = document.getElementById('videos-grid');
+  el.innerHTML = '';
+  VIDEOS.forEach(function(v, i) {
+    if (i === 0) return; // O primeiro está no player principal
+    var card = document.createElement('div');
+    card.className = 'video-card' + (i === videoActivo ? ' ativo' : '');
+    card.innerHTML = [
+      '<div class="video-thumb">',
+      '<img src="https://img.youtube.com/vi/' + v.id + '/mqdefault.jpg" alt="' + v.titulo + '" loading="lazy">',
+      '<div class="play-overlay"><div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div>',
+      '</div>',
+      '<div class="video-info">',
+      '<p class="video-titulo">' + v.titulo + '</p>',
+      '<p class="video-canal">' + v.canal + '</p>',
+      '</div>'
+    ].join('');
+    card.addEventListener('click', function() { carregarVideo(i); });
+    el.appendChild(card);
+  });
+}
+
+function carregarVideo(idx) {
+  var v = VIDEOS[idx];
+  videoActivo = idx;
+  document.getElementById('player-iframe').src = 'https://www.youtube.com/embed/' + v.id + '?rel=0&autoplay=1';
+  document.getElementById('player-titulo').textContent = v.titulo;
+  document.getElementById('player-desc').textContent = v.desc;
+  document.getElementById('player-tag').textContent = v.tag;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderGrid();
+}
+
+renderGrid();
+</script>
+</body>
+</html>

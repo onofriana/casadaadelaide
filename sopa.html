@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sopa de Letras — Casa da Adelaide</title>
+<meta name="description" content="Sopa de letras do fado para crianças. Encontra as palavras escondidas. Casa da Adelaide pela Onofriana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --preto:   #080507;
+  --vinho-c: #a8384a;
+  --ambar:   #d4820a;
+  --ambar-c: #f0a830;
+  --verde-c: #3ab56e;
+  --branco:  #faf7f3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--preto); color:var(--branco);
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  overflow-x:hidden; min-height:100vh;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.15;
+}
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(8,5,7,0.97); backdrop-filter:blur(10px);
+}
+.nav-logo { text-decoration:none; font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--ambar-c); }
+.nav-back { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--branco); opacity:0.45; text-decoration:none; transition:opacity 0.3s; }
+.nav-back:hover { opacity:0.9; }
+
+.page-wrap {
+  position:relative; z-index:1;
+  padding:100px 48px 80px;
+  max-width:1100px; margin:0 auto;
+}
+
+.page-hero { text-align:center; margin-bottom:52px; }
+.page-label { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--ambar); opacity:0.6; margin-bottom:16px; }
+.page-title { font-family:'Fredoka One',cursive; font-size:clamp(2.2rem,6vw,4rem); color:var(--ambar-c); margin-bottom:12px; line-height:1; }
+.page-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; opacity:0.45; max-width:420px; margin:0 auto; line-height:1.55; }
+
+.jogo-layout {
+  display:grid;
+  grid-template-columns:1fr 280px;
+  gap:48px;
+  align-items:start;
+}
+
+/* GRELHA */
+.grelha-wrap { overflow-x:auto; }
+.grelha {
+  display:inline-grid;
+  grid-template-columns:repeat(14, 1fr);
+  gap:2px;
+  user-select:none;
+}
+.cell {
+  width:36px; height:36px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fredoka',sans-serif;
+  font-size:1rem; font-weight:500;
+  color:var(--branco);
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:background 0.15s, color 0.15s, border-color 0.15s;
+  text-transform:uppercase;
+  border-radius:2px;
+}
+.cell:hover { background:rgba(212,130,10,0.15); border-color:rgba(212,130,10,0.3); }
+.cell.selected { background:rgba(212,130,10,0.25); border-color:var(--ambar); color:var(--ambar-c); }
+.cell.found { background:rgba(58,181,110,0.18); border-color:var(--verde-c); color:var(--verde-c); }
+
+/* LISTA DE PALAVRAS */
+.palavras-panel {
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(212,130,10,0.12);
+  padding:28px 24px;
+}
+.palavras-titulo {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--ambar); opacity:0.55; margin-bottom:20px;
+}
+.palavra-item {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.88rem; font-weight:400;
+  color:var(--branco); opacity:0.6;
+  padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:opacity 0.3s, color 0.3s;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+.palavra-item.encontrada {
+  color:var(--verde-c);
+  opacity:0.85;
+  text-decoration:line-through;
+  text-decoration-color:rgba(58,181,110,0.5);
+}
+.palavra-item:last-child { border-bottom:none; }
+
+.progresso-palavras {
+  margin-top:16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase;
+  opacity:0.35;
+}
+
+/* MENSAGEM FINAL */
+.msg-final {
+  margin-top:32px;
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.1rem;
+  color:var(--verde-c); opacity:0;
+  transition:opacity 0.6s;
+}
+.msg-final.visible { opacity:0.85; }
+
+.btn-novo {
+  margin-top:12px;
+  font-family:'Fredoka',sans-serif;
+  font-size:0.68rem; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--preto); background:var(--ambar-c);
+  border:none; padding:10px 22px;
+  cursor:pointer; transition:background 0.3s;
+  display:none;
+}
+.btn-novo.visible { display:inline-block; }
+.btn-novo:hover { background:var(--ambar); }
+
+/* FOOTER */
+footer { position:relative; z-index:1; border-top:1px solid rgba(107,16,32,0.18); padding:32px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+.footer-logo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--ambar-c); text-decoration:none; }
+.footer-ono { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--vinho-c); opacity:0.5; text-decoration:none; transition:opacity 0.3s; }
+.footer-ono:hover { opacity:0.9; }
+
+@media (max-width:820px) {
+  nav { padding:16px 20px; }
+  .page-wrap { padding:90px 20px 60px; }
+  .jogo-layout { grid-template-columns:1fr; }
+  .grelha { grid-template-columns:repeat(14, 1fr); }
+  .cell { width:26px; height:26px; font-size:0.72rem; }
+  footer { padding:28px 20px; flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegação">
+  <a href="index.html" class="nav-logo">Casa da Adelaide</a>
+  <a href="index.html" class="nav-back">← Voltar</a>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <p class="page-label">III · Jogo</p>
+    <h1 class="page-title">Sopa de Letras</h1>
+    <p class="page-sub">Clica na primeira letra, depois na última. Encontra todas as palavras do fado.</p>
+  </div>
+
+  <div class="jogo-layout">
+    <div>
+      <div class="grelha-wrap">
+        <div class="grelha" id="grelha" role="grid" aria-label="Sopa de letras"></div>
+      </div>
+      <p class="msg-final" id="msg-final">Encontraste todas as palavras do fado.</p>
+      <button class="btn-novo" id="btn-novo">Jogar outra vez</button>
+    </div>
+    <div class="palavras-panel">
+      <p class="palavras-titulo">Palavras a encontrar</p>
+      <div id="lista-palavras"></div>
+      <p class="progresso-palavras" id="prog-palavras">0 de 10 encontradas</p>
+    </div>
+  </div>
+</div>
+
+<footer role="contentinfo">
+  <a href="index.html" class="footer-logo">Casa da Adelaide</a>
+  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+</footer>
+
+<script>
+// Palavras e a sua posição na grelha 14×14
+var PALAVRAS = [
+  "FADO", "GUITARRA", "MOURARIA", "SAUDADE",
+  "VOZ", "XAILE", "ALFAMA", "ROSETA",
+  "SEVERA", "VERSO"
+];
+
+// Grelha predefinida 14×14 com as palavras inseridas
+// As palavras estão em maiúsculas; as restantes células são letras aleatórias
+
+var GRID_DATA = [
+  // 0         1    2    3    4    5    6    7    8    9   10   11   12   13
+  ['F','A','D','O','R','A','V','O','Z','X','M','L','P','Q'],  // 0
+  ['G','L','F','S','E','V','E','R','A','A','O','F','A','D'],  // 1
+  ['U','F','A','D','O','X','R','A','L','I','U','A','D','O'],  // 2
+  ['I','A','M','O','U','R','A','R','I','A','R','D','O','F'],  // 3
+  ['T','D','A','L','F','A','M','A','R','L','A','O','R','A'],  // 4
+  ['A','O','R','O','S','E','T','A','X','E','R','S','E','D'],  // 5
+  ['R','L','I','V','E','R','S','O','A','G','I','A','M','O'],  // 6
+  ['R','S','A','U','D','A','D','E','X','U','A','U','A','Z'],  // 7
+  ['A','A','X','A','I','L','E','F','A','I','Z','D','R','F'],  // 8
+  ['M','U','O','V','O','Z','F','A','D','T','A','A','A','A'],  // 9
+  ['O','D','F','A','D','O','R','M','O','A','D','D','R','D'],  // 10
+  ['U','A','A','L','F','A','M','A','V','R','E','E','I','O'],  // 11
+  ['R','D','D','O','F','G','U','I','T','A','R','R','A','F'],  // 12
+  ['A','O','O','S','A','U','D','A','D','E','O','A','V','Z']   // 13
+];
+
+// Posições exactas de cada palavra [linha, col, direcção]
+var POSICOES = {
+  'FADO':     { cells: [[0,0],[0,1],[0,2],[0,3]] },
+  'GUITARRA': { cells: [[12,2],[12,3],[12,4],[12,5],[12,6],[12,7],[12,8],[12,9]] },
+  'mouraria': { cells: [[3,1],[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[3,9]] },
+  'SAUDADE':  { cells: [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6],[7,7],[7,8]] },
+  'VOZ':      { cells: [[0,6],[0,7],[0,8]] },
+  'XAILE':    { cells: [[8,1],[8,2],[8,3],[8,4],[8,5]] },
+  'ALFAMA':   { cells: [[4,1],[4,2],[4,3],[4,4],[4,5],[4,6]] },
+  'ROSETA':   { cells: [[5,1],[5,2],[5,3],[5,4],[5,5],[5,6]] },
+  'SEVERA':   { cells: [[1,1],[1,2],[1,3],[1,4],[1,5],[1,6]] },
+  'VERSO':    { cells: [[6,1],[6,2],[6,3],[6,4],[6,5]] }
+};
+
+// Reconstruir GRID_DATA correctamente com todas as palavras
+// Usamos uma grelha de trabalho
+var N = 14;
+var grid = [];
+var i, j;
+for (i = 0; i < N; i++) {
+  grid.push([]);
+  for (j = 0; j < N; j++) {
+    grid[i].push('');
+  }
+}
+
+// Colocar as palavras nas posições definidas
+function colocarPalavra(palavra, cells) {
+  for (var k = 0; k < cells.length; k++) {
+    grid[cells[k][0]][cells[k][1]] = palavra[k];
+  }
+}
+
+var LETRAS_ALT = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function letraAleat() {
+  return LETRAS_ALT[Math.floor(Math.random() * LETRAS_ALT.length)];
+}
+
+// Colocar palavras
+colocarPalavra('FADO',     [[0,0],[0,1],[0,2],[0,3]]);
+colocarPalavra('GUITARRA', [[12,2],[12,3],[12,4],[12,5],[12,6],[12,7],[12,8],[12,9]]);
+colocarPalavra('MOURARIA', [[3,1],[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[3,9]]);
+colocarPalavra('SAUDADE',  [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6],[7,7],[7,8]]);
+colocarPalavra('VOZ',      [[0,6],[0,7],[0,8]]);
+colocarPalavra('XAILE',    [[8,1],[8,2],[8,3],[8,4],[8,5]]);
+colocarPalavra('ALFAMA',   [[4,1],[4,2],[4,3],[4,4],[4,5],[4,6]]);
+colocarPalavra('ROSETA',   [[5,1],[5,2],[5,3],[5,4],[5,5],[5,6]]);
+colocarPalavra('SEVERA',   [[1,1],[1,2],[1,3],[1,4],[1,5],[1,6]]);
+colocarPalavra('VERSO',    [[6,1],[6,2],[6,3],[6,4],[6,5]]);
+
+// Preencher com letras aleatórias
+for (i = 0; i < N; i++) {
+  for (j = 0; j < N; j++) {
+    if (!grid[i][j]) grid[i][j] = letraAleat();
+  }
+}
+
+// Estado do jogo
+var selInicio = null;
+var selFim = null;
+var encontradas = {};
+var totalEncontradas = 0;
+
+function chave(r, c) { return r + ',' + c; }
+
+function renderGrelha() {
+  var el = document.getElementById('grelha');
+  el.innerHTML = '';
+  for (var r = 0; r < N; r++) {
+    for (var c = 0; c < N; c++) {
+      var cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.textContent = grid[r][c];
+      cell.dataset.r = r;
+      cell.dataset.c = c;
+      cell.addEventListener('click', clicarCell);
+      el.appendChild(cell);
+    }
+  }
+}
+
+function renderLista() {
+  var el = document.getElementById('lista-palavras');
+  el.innerHTML = '';
+  PALAVRAS.forEach(function(p) {
+    var div = document.createElement('div');
+    div.className = 'palavra-item' + (encontradas[p] ? ' encontrada' : '');
+    div.textContent = p;
+    div.id = 'palavra-' + p;
+    el.appendChild(div);
+  });
+}
+
+function atualizarProg() {
+  document.getElementById('prog-palavras').textContent =
+    totalEncontradas + ' de ' + PALAVRAS.length + ' encontrada' + (totalEncontradas !== 1 ? 's' : '');
+}
+
+function celulasEntre(r1, c1, r2, c2) {
+  var cells = [];
+  var dr = 0, dc = 0;
+  if (r2 > r1) dr = 1;
+  else if (r2 < r1) dr = -1;
+  if (c2 > c1) dc = 1;
+  else if (c2 < c1) dc = -1;
+  var r = r1, c = c1;
+  while (true) {
+    cells.push([r, c]);
+    if (r === r2 && c === c2) break;
+    r += dr; c += dc;
+    if (cells.length > 20) break;
+  }
+  return cells;
+}
+
+function extrairTexto(cells) {
+  return cells.map(function(rc) { return grid[rc[0]][rc[1]]; }).join('');
+}
+
+function clicarCell(e) {
+  var r = parseInt(e.target.dataset.r);
+  var c = parseInt(e.target.dataset.c);
+
+  if (!selInicio) {
+    selInicio = [r, c];
+    e.target.classList.add('selected');
+    return;
+  }
+
+  selFim = [r, c];
+  var cells = celulasEntre(selInicio[0], selInicio[1], selFim[0], selFim[1]);
+  var texto = extrairTexto(cells);
+  var textoRev = texto.split('').reverse().join('');
+
+  // Limpar selecções anteriores (não encontradas)
+  document.querySelectorAll('.cell.selected').forEach(function(el) {
+    el.classList.remove('selected');
+  });
+
+  var match = null;
+  PALAVRAS.forEach(function(p) {
+    if (!encontradas[p] && (texto === p || textoRev === p)) {
+      match = p;
+    }
+  });
+
+  if (match) {
+    encontradas[match] = true;
+    totalEncontradas++;
+    cells.forEach(function(rc) {
+      var idx = rc[0] * N + rc[1];
+      document.querySelectorAll('.cell')[idx].classList.add('found');
+    });
+    document.getElementById('palavra-' + match).classList.add('encontrada');
+    atualizarProg();
+
+    if (totalEncontradas === PALAVRAS.length) {
+      setTimeout(function() {
+        document.getElementById('msg-final').classList.add('visible');
+        document.getElementById('btn-novo').classList.add('visible');
+      }, 400);
+    }
+  }
+
+  selInicio = null;
+  selFim = null;
+}
+
+document.getElementById('btn-novo').addEventListener('click', function() {
+  encontradas = {};
+  totalEncontradas = 0;
+  // Regenerar letras aleatórias
+  for (var r = 0; r < N; r++) {
+    for (var c = 0; c < N; c++) {
+      grid[r][c] = letraAleat();
+    }
+  }
+  colocarPalavra('FADO',     [[0,0],[0,1],[0,2],[0,3]]);
+  colocarPalavra('GUITARRA', [[12,2],[12,3],[12,4],[12,5],[12,6],[12,7],[12,8],[12,9]]);
+  colocarPalavra('MOURARIA', [[3,1],[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[3,9]]);
+  colocarPalavra('SAUDADE',  [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6],[7,7],[7,8]]);
+  colocarPalavra('VOZ',      [[0,6],[0,7],[0,8]]);
+  colocarPalavra('XAILE',    [[8,1],[8,2],[8,3],[8,4],[8,5]]);
+  colocarPalavra('ALFAMA',   [[4,1],[4,2],[4,3],[4,4],[4,5],[4,6]]);
+  colocarPalavra('ROSETA',   [[5,1],[5,2],[5,3],[5,4],[5,5],[5,6]]);
+  colocarPalavra('SEVERA',   [[1,1],[1,2],[1,3],[1,4],[1,5],[1,6]]);
+  colocarPalavra('VERSO',    [[6,1],[6,2],[6,3],[6,4],[6,5]]);
+  document.getElementById('msg-final').classList.remove('visible');
+  document.getElementById('btn-novo').classList.remove('visible');
+  renderGrelha();
+  renderLista();
+  atualizarProg();
+});
+
+renderGrelha();
+renderLista();
+atualizarProg();
+</script>
+</body>
+</html>

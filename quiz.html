@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz do Fado — Casa da Adelaide</title>
+<meta name="description" content="Quiz sobre fado para crianças. Dez perguntas para descobrir o que já sabes. Casa da Adelaide pela Onofriana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --preto:   #080507;
+  --vinho:   #6b1020;
+  --vinho-c: #a8384a;
+  --ambar:   #d4820a;
+  --ambar-c: #f0a830;
+  --verde:   #2d8a56;
+  --verde-c: #3ab56e;
+  --erro:    #c24e2a;
+  --branco:  #faf7f3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--preto); color:var(--branco);
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  overflow-x:hidden; min-height:100vh;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.15;
+}
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 48px;
+  display:flex; justify-content:space-between; align-items:center;
+  background:rgba(8,5,7,0.97); backdrop-filter:blur(10px);
+}
+.nav-logo { text-decoration:none; font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--ambar-c); }
+.nav-back { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--branco); opacity:0.45; text-decoration:none; transition:opacity 0.3s; }
+.nav-back:hover { opacity:0.9; }
+
+/* QUIZ CONTAINER */
+.quiz-wrap {
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:100px 24px 80px;
+}
+
+/* INTRO */
+.intro {
+  text-align:center; max-width:520px;
+}
+.intro-label {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase;
+  color:var(--ambar); opacity:0.6; margin-bottom:20px;
+}
+.intro-title {
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2.4rem,7vw,4.2rem);
+  color:var(--ambar-c); margin-bottom:16px; line-height:1;
+}
+.intro-sub {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.08rem;
+  opacity:0.5; line-height:1.6; margin-bottom:36px;
+}
+.btn-start {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.8rem; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--preto); background:var(--ambar-c);
+  border:none; padding:14px 36px;
+  cursor:pointer; transition:background 0.3s, transform 0.2s;
+}
+.btn-start:hover { background:var(--ambar); transform:translateY(-2px); }
+
+/* PROGRESSO */
+.quiz-progress {
+  width:100%; max-width:560px;
+  margin-bottom:36px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.progress-label {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.7rem; font-weight:400; letter-spacing:0.12em;
+  text-transform:uppercase; opacity:0.4;
+  display:flex; justify-content:space-between;
+}
+.progress-bar {
+  height:3px; background:rgba(255,255,255,0.08);
+  width:100%; position:relative; overflow:hidden;
+}
+.progress-fill {
+  height:100%; background:var(--ambar-c);
+  transition:width 0.5s ease;
+}
+
+/* PERGUNTA */
+.quiz-card {
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(212,130,10,0.14);
+  padding:40px 40px 32px;
+  max-width:560px; width:100%;
+  transition:opacity 0.3s;
+}
+
+.pergunta-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--ambar); opacity:0.5; margin-bottom:16px;
+}
+.pergunta-texto {
+  font-family:'Fredoka',sans-serif;
+  font-size:1.25rem; font-weight:500;
+  color:var(--branco); line-height:1.4;
+  margin-bottom:28px;
+}
+
+.opcoes {
+  display:flex; flex-direction:column; gap:10px;
+}
+.opcao {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.92rem; font-weight:400;
+  text-align:left;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--branco);
+  padding:14px 18px;
+  cursor:pointer;
+  transition:background 0.25s, border-color 0.25s, transform 0.15s;
+}
+.opcao:hover:not(:disabled) {
+  background:rgba(212,130,10,0.1);
+  border-color:rgba(212,130,10,0.35);
+  transform:translateX(3px);
+}
+.opcao.certa {
+  background:rgba(45,138,86,0.2);
+  border-color:var(--verde-c);
+  color:var(--verde-c);
+}
+.opcao.errada {
+  background:rgba(194,78,42,0.15);
+  border-color:var(--erro);
+  color:var(--erro);
+}
+.opcao:disabled { cursor:default; }
+
+.feedback {
+  margin-top:18px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:0.98rem;
+  opacity:0.65; line-height:1.5;
+  min-height:24px;
+}
+.feedback.certa { color:var(--verde-c); opacity:0.85; }
+.feedback.errada { color:#e08060; opacity:0.85; }
+
+.btn-prox {
+  margin-top:24px;
+  font-family:'Fredoka',sans-serif;
+  font-size:0.7rem; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--preto); background:var(--ambar-c);
+  border:none; padding:12px 28px;
+  cursor:pointer; transition:background 0.3s;
+  display:none;
+}
+.btn-prox:hover { background:var(--ambar); }
+.btn-prox.visible { display:inline-block; }
+
+/* RESULTADO */
+.resultado {
+  text-align:center; max-width:500px;
+  display:none;
+}
+.resultado.visible { display:block; }
+.resultado-pontos {
+  font-family:'Fredoka One',cursive;
+  font-size:5rem; color:var(--ambar-c);
+  line-height:1; margin-bottom:8px;
+}
+.resultado-total {
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.65rem; letter-spacing:0.28em; text-transform:uppercase;
+  opacity:0.4; margin-bottom:28px;
+}
+.resultado-msg {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:1.2rem;
+  opacity:0.65; line-height:1.6; margin-bottom:36px;
+}
+.btn-reiniciar {
+  font-family:'Fredoka',sans-serif;
+  font-size:0.7rem; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--preto); background:var(--ambar-c);
+  border:none; padding:12px 28px;
+  cursor:pointer; transition:background 0.3s; margin-right:12px;
+}
+.btn-reiniciar:hover { background:var(--ambar); }
+
+/* FOOTER */
+footer { position:relative; z-index:1; border-top:1px solid rgba(107,16,32,0.18); padding:32px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+.footer-logo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--ambar-c); text-decoration:none; }
+.footer-ono { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--vinho-c); opacity:0.5; text-decoration:none; transition:opacity 0.3s; }
+.footer-ono:hover { opacity:0.9; }
+
+@media (max-width:600px) {
+  nav { padding:16px 20px; }
+  .quiz-card { padding:28px 22px 24px; }
+  footer { padding:28px 20px; flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Navegação">
+  <a href="index.html" class="nav-logo">Casa da Adelaide</a>
+  <a href="index.html" class="nav-back">← Voltar</a>
+</nav>
+
+<div class="quiz-wrap">
+  <!-- INTRO -->
+  <div class="intro" id="intro">
+    <p class="intro-label">II · Jogo</p>
+    <h1 class="intro-title">Quiz do Fado</h1>
+    <p class="intro-sub">Dez perguntas sobre o fado, a sua história e as suas vozes. Quantas sabes responder?</p>
+    <button class="btn-start" id="btn-start">Começar</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-area" style="width:100%;max-width:560px;display:none;flex-direction:column;align-items:center;">
+    <div class="quiz-progress">
+      <div class="progress-label">
+        <span id="prog-label">Pergunta 1 de 10</span>
+        <span id="pontos-label">0 pontos</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="quiz-card" id="quiz-card">
+      <p class="pergunta-num" id="perg-num">Pergunta 1</p>
+      <p class="pergunta-texto" id="perg-texto"></p>
+      <div class="opcoes" id="opcoes"></div>
+      <p class="feedback" id="feedback"></p>
+      <button class="btn-prox" id="btn-prox">Próxima →</button>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado" id="resultado">
+    <p class="resultado-pontos" id="res-pontos">0</p>
+    <p class="resultado-total">pontos em 10</p>
+    <p class="resultado-msg" id="res-msg"></p>
+    <button class="btn-reiniciar" id="btn-reiniciar">Jogar outra vez</button>
+    <a href="index.html" class="btn-reiniciar" style="text-decoration:none;display:inline-block;">Voltar à casa</a>
+  </div>
+</div>
+
+<footer role="contentinfo">
+  <a href="index.html" class="footer-logo">Casa da Adelaide</a>
+  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+</footer>
+
+<script>
+var perguntas = [
+  {
+    texto: "Como se chama o instrumento mais característico do fado, com doze cordas metálicas?",
+    opcoes: ["Viola baixo", "Guitarra portuguesa", "Bandolim", "Guitarra clássica"],
+    certa: 1,
+    explicacao: "A guitarra portuguesa tem doze cordas em seis pares e uma cabeça em forma de leque. É o instrumento mais característico do fado."
+  },
+  {
+    texto: "Em que bairro de Lisboa nasceu o fado?",
+    opcoes: ["Belém", "Chiado", "Mouraria", "Parque das Nações"],
+    certa: 2,
+    explicacao: "O fado cresceu na Mouraria, na Madragoa e em Alfama — bairros antigos de Lisboa junto ao Tejo."
+  },
+  {
+    texto: "Em que ano foi o fado inscrito no Património Cultural Imaterial da Humanidade pela UNESCO?",
+    opcoes: ["2001", "2007", "2011", "2015"],
+    certa: 2,
+    explicacao: "O fado foi inscrito na Lista do Património Cultural Imaterial da Humanidade pela UNESCO em 2011."
+  },
+  {
+    texto: "Qual era o nome completo da primeira fadista conhecida da história?",
+    opcoes: ["Maria Amália Rodrigues", "Maria Severa Onofriana", "Adelaide da Volta", "Lucília do Carmo"],
+    certa: 1,
+    explicacao: "Maria Severa Onofriana (1820–1846) é considerada a primeira fadista da história. Nasceu na Madragoa e morreu na Rua do Capelão, na Mouraria."
+  },
+  {
+    texto: "Como se chama o ornamento redondo no centro da guitarra portuguesa?",
+    opcoes: ["Roseta", "Palheta", "Cravelha", "Espelho"],
+    certa: 0,
+    explicacao: "A roseta é o ornamento decorativo no centro da guitarra portuguesa. É geralmente muito trabalhada e é uma das marcas do instrumento."
+  },
+  {
+    texto: "Qual destas palavras descreve melhor o fado?",
+    opcoes: ["Alegre e dançante", "Ligeiro e rápido", "Com saudade e memória", "Sempre triste e silencioso"],
+    certa: 2,
+    explicacao: "O fado expressa saudade, memória e emoção profunda — mas pode ser alegre, dramático ou contemplativo. É acima de tudo uma forma de dizer o que as palavras sozinhas não chegam."
+  },
+  {
+    texto: "Como se chama o pano preto que as fadistas usam frequentemente nos ombros?",
+    opcoes: ["Mantilha", "Xaile", "Capote", "Véu"],
+    certa: 1,
+    explicacao: "O xaile negro é parte da imagem clássica da fadista. Maria Severa Onofriana foi das primeiras a usá-lo."
+  },
+  {
+    texto: "Qual destes bairros de Lisboa é famoso pelo fado?",
+    opcoes: ["Belém", "Alfama", "Restelo", "Expo"],
+    certa: 1,
+    explicacao: "Alfama, a Mouraria e a Madragoa são os bairros históricos do fado em Lisboa."
+  },
+  {
+    texto: "O fado é cantado em que língua?",
+    opcoes: ["Espanhol", "Latim", "Português", "Árabe"],
+    certa: 2,
+    explicacao: "O fado é cantado em português. A língua faz parte da sua identidade — a sonoridade do português é inseparável da música."
+  },
+  {
+    texto: "Qual destas cantoras é uma das fadistas mais famosas de sempre?",
+    opcoes: ["Dulce Pontes", "Amália Rodrigues", "Mísia", "Ana Moura"],
+    certa: 1,
+    explicacao: "Amália Rodrigues (1920–1999) é a fadista mais reconhecida internacionalmente. Levou o fado ao mundo todo."
+  }
+];
+
+var estado = {
+  atual: 0,
+  pontos: 0,
+  respondida: false
+};
+
+function init() {
+  document.getElementById('btn-start').addEventListener('click', comecar);
+  document.getElementById('btn-prox').addEventListener('click', proxima);
+  document.getElementById('btn-reiniciar').addEventListener('click', reiniciar);
+}
+
+function comecar() {
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'flex';
+  mostrarPergunta();
+}
+
+function mostrarPergunta() {
+  var p = perguntas[estado.atual];
+  estado.respondida = false;
+
+  document.getElementById('perg-num').textContent = 'Pergunta ' + (estado.atual + 1);
+  document.getElementById('perg-texto').textContent = p.texto;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('btn-prox').classList.remove('visible');
+
+  var pct = (estado.atual / perguntas.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = 'Pergunta ' + (estado.atual + 1) + ' de ' + perguntas.length;
+  document.getElementById('pontos-label').textContent = estado.pontos + ' ponto' + (estado.pontos !== 1 ? 's' : '');
+
+  var opcoes = document.getElementById('opcoes');
+  opcoes.innerHTML = '';
+  p.opcoes.forEach(function(txt, i) {
+    var btn = document.createElement('button');
+    btn.className = 'opcao';
+    btn.textContent = txt;
+    btn.addEventListener('click', function() { responder(i); });
+    opcoes.appendChild(btn);
+  });
+}
+
+function responder(idx) {
+  if (estado.respondida) return;
+  estado.respondida = true;
+
+  var p = perguntas[estado.atual];
+  var btns = document.querySelectorAll('.opcao');
+
+  btns.forEach(function(b) { b.disabled = true; });
+
+  var feedback = document.getElementById('feedback');
+  if (idx === p.certa) {
+    btns[idx].classList.add('certa');
+    estado.pontos++;
+    feedback.textContent = '✓ Certo! ' + p.explicacao;
+    feedback.className = 'feedback certa';
+  } else {
+    btns[idx].classList.add('errada');
+    btns[p.certa].classList.add('certa');
+    feedback.textContent = '✗ ' + p.explicacao;
+    feedback.className = 'feedback errada';
+  }
+
+  document.getElementById('pontos-label').textContent = estado.pontos + ' ponto' + (estado.pontos !== 1 ? 's' : '');
+  document.getElementById('btn-prox').classList.add('visible');
+
+  if (estado.atual === perguntas.length - 1) {
+    document.getElementById('btn-prox').textContent = 'Ver resultado →';
+  }
+}
+
+function proxima() {
+  estado.atual++;
+  if (estado.atual >= perguntas.length) {
+    mostrarResultado();
+  } else {
+    mostrarPergunta();
+  }
+}
+
+function mostrarResultado() {
+  document.getElementById('quiz-area').style.display = 'none';
+  var res = document.getElementById('resultado');
+  res.classList.add('visible');
+
+  document.getElementById('res-pontos').textContent = estado.pontos;
+
+  var msgs = [
+    { min: 0, max: 3, msg: 'O fado espera por ti. Há muito para descobrir — começa aqui.' },
+    { min: 4, max: 6, msg: 'Já sabes algumas coisas sobre o fado. Continua a explorar a Casa da Adelaide.' },
+    { min: 7, max: 8, msg: 'Muito bem. O fado já tem um lugar em ti.' },
+    { min: 9, max: 10, msg: 'Parabéns. Conheces o fado como quem cresceu dentro dele.' }
+  ];
+
+  var msg = msgs.find(function(m) { return estado.pontos >= m.min && estado.pontos <= m.max; });
+  document.getElementById('res-msg').textContent = msg ? msg.msg : '';
+}
+
+function reiniciar() {
+  estado.atual = 0;
+  estado.pontos = 0;
+  estado.respondida = false;
+  document.getElementById('resultado').classList.remove('visible');
+  document.getElementById('quiz-area').style.display = 'flex';
+  mostrarPergunta();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
