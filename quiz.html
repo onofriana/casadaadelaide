@@ -4,449 +4,362 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz do Fado — Casa da Adelaide</title>
-<meta name="description" content="Quiz sobre fado para crianças. Dez perguntas para descobrir o que já sabes. Casa da Adelaide pela Onofriana.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="nav.css">
 <style>
-:root {
-  --preto:   #080507;
-  --vinho:   #6b1020;
-  --vinho-c: #a8384a;
-  --ambar:   #d4820a;
-  --ambar-c: #f0a830;
-  --verde:   #2d8a56;
-  --verde-c: #3ab56e;
-  --erro:    #c24e2a;
-  --branco:  #faf7f3;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body {
-  background:var(--preto); color:var(--branco);
-  font-family:'Cormorant Garamond',serif; font-weight:300;
-  overflow-x:hidden; min-height:100vh;
-}
-body::before {
-  content:''; position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:0; opacity:0.15;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#0d0a0b;color:var(--branco);font-family:'Cormorant Garamond',serif;overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.15;}
 
-nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
-  padding:18px 48px;
-  display:flex; justify-content:space-between; align-items:center;
-  background:rgba(8,5,7,0.97); backdrop-filter:blur(10px);
-}
-.nav-logo { text-decoration:none; font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--ambar-c); }
-.nav-back { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--branco); opacity:0.45; text-decoration:none; transition:opacity 0.3s; }
-.nav-back:hover { opacity:0.9; }
+/* fundo colorido por nível */
+body.nivel-a::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(45,180,120,.18) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body.nivel-b::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(212,130,10,.2) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body.nivel-c::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(107,16,32,.35) 0%,transparent 70%);pointer-events:none;z-index:0;}
 
-/* QUIZ CONTAINER */
-.quiz-wrap {
-  position:relative; z-index:1;
-  min-height:100vh;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  padding:100px 24px 80px;
-}
+.wrap{position:relative;z-index:1;min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px 60px;}
 
-/* INTRO */
-.intro {
-  text-align:center; max-width:520px;
-}
-.intro-label {
-  font-family:'Cormorant Garamond',serif;
-  font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase;
-  color:var(--ambar); opacity:0.6; margin-bottom:20px;
-}
-.intro-title {
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(2.4rem,7vw,4.2rem);
-  color:var(--ambar-c); margin-bottom:16px; line-height:1;
-}
-.intro-sub {
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic; font-size:1.08rem;
-  opacity:0.5; line-height:1.6; margin-bottom:36px;
-}
-.btn-start {
-  font-family:'Fredoka',sans-serif;
-  font-size:0.8rem; font-weight:600;
-  letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--preto); background:var(--ambar-c);
-  border:none; padding:14px 36px;
-  cursor:pointer; transition:background 0.3s, transform 0.2s;
-}
-.btn-start:hover { background:var(--ambar); transform:translateY(-2px); }
+/* ── ECRÃ DE SELECÇÃO ── */
+#selecao{text-align:center;max-width:700px;width:100%;}
+.sel-label{font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ambar);opacity:.6;margin-bottom:16px;font-family:'Cormorant Garamond',serif;}
+.sel-title{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,7vw,4.5rem);background:linear-gradient(135deg,var(--ambar-c),#ff8c42);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.sel-sub{font-style:italic;font-size:1.05rem;opacity:.5;margin-bottom:48px;line-height:1.6;}
 
-/* PROGRESSO */
-.quiz-progress {
-  width:100%; max-width:560px;
-  margin-bottom:36px;
-  display:flex; flex-direction:column; gap:8px;
-}
-.progress-label {
-  font-family:'Fredoka',sans-serif;
-  font-size:0.7rem; font-weight:400; letter-spacing:0.12em;
-  text-transform:uppercase; opacity:0.4;
-  display:flex; justify-content:space-between;
-}
-.progress-bar {
-  height:3px; background:rgba(255,255,255,0.08);
-  width:100%; position:relative; overflow:hidden;
-}
-.progress-fill {
-  height:100%; background:var(--ambar-c);
-  transition:width 0.5s ease;
-}
+.niveis{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:0;}
 
-/* PERGUNTA */
-.quiz-card {
-  background:rgba(255,255,255,0.025);
-  border:1px solid rgba(212,130,10,0.14);
-  padding:40px 40px 32px;
-  max-width:560px; width:100%;
-  transition:opacity 0.3s;
+.nivel-card{
+  border-radius:14px;padding:28px 20px;cursor:pointer;
+  border:2px solid transparent;
+  transition:transform .25s,box-shadow .25s,border-color .25s;
+  position:relative;overflow:hidden;
+  text-align:center;
 }
+.nivel-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.5);}
+.nivel-a-card{background:linear-gradient(135deg,#0d2a1a,#1a4a2a);}
+.nivel-a-card:hover{border-color:#60d4a0;}
+.nivel-b-card{background:linear-gradient(135deg,#2a1a00,#4a3200);}
+.nivel-b-card:hover{border-color:var(--ambar-c);}
+.nivel-c-card{background:linear-gradient(135deg,#2a0a10,#4a1020);}
+.nivel-c-card:hover{border-color:var(--vinho-c);}
 
-.pergunta-num {
-  font-family:'Cormorant Garamond',serif;
-  font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase;
-  color:var(--ambar); opacity:0.5; margin-bottom:16px;
-}
-.pergunta-texto {
-  font-family:'Fredoka',sans-serif;
-  font-size:1.25rem; font-weight:500;
-  color:var(--branco); line-height:1.4;
-  margin-bottom:28px;
-}
+.nivel-emoji{font-size:2.8rem;display:block;margin-bottom:12px;}
+.nivel-nome{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--branco);margin-bottom:6px;}
+.nivel-age{font-family:'Fredoka',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.12em;padding:3px 12px;border-radius:12px;display:inline-block;margin-bottom:10px;}
+.age-a{background:rgba(96,212,160,.2);color:#60d4a0;}
+.age-b{background:rgba(240,168,48,.2);color:var(--ambar-c);}
+.age-c{background:rgba(168,56,74,.2);color:#e08090;}
+.nivel-desc{font-style:italic;font-size:.88rem;opacity:.5;line-height:1.5;}
+.nivel-n{position:absolute;top:12px;right:14px;font-family:'Fredoka',sans-serif;font-size:.62rem;font-weight:600;opacity:.35;}
 
-.opcoes {
-  display:flex; flex-direction:column; gap:10px;
-}
-.opcao {
-  font-family:'Fredoka',sans-serif;
-  font-size:0.92rem; font-weight:400;
-  text-align:left;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--branco);
-  padding:14px 18px;
-  cursor:pointer;
-  transition:background 0.25s, border-color 0.25s, transform 0.15s;
-}
-.opcao:hover:not(:disabled) {
-  background:rgba(212,130,10,0.1);
-  border-color:rgba(212,130,10,0.35);
-  transform:translateX(3px);
-}
-.opcao.certa {
-  background:rgba(45,138,86,0.2);
-  border-color:var(--verde-c);
-  color:var(--verde-c);
-}
-.opcao.errada {
-  background:rgba(194,78,42,0.15);
-  border-color:var(--erro);
-  color:var(--erro);
-}
-.opcao:disabled { cursor:default; }
+/* ── QUIZ ── */
+#quiz-area{width:100%;max-width:580px;display:none;flex-direction:column;align-items:center;}
 
-.feedback {
-  margin-top:18px;
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic; font-size:0.98rem;
-  opacity:0.65; line-height:1.5;
-  min-height:24px;
-}
-.feedback.certa { color:var(--verde-c); opacity:0.85; }
-.feedback.errada { color:#e08060; opacity:0.85; }
+.quiz-header{width:100%;margin-bottom:28px;}
+.quiz-nivel-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 8px;border-radius:20px;margin-bottom:16px;font-family:'Fredoka',sans-serif;font-size:.72rem;font-weight:500;cursor:pointer;transition:opacity .2s;}
+.quiz-nivel-badge:hover{opacity:.7;}
+.qnb-a{background:rgba(96,212,160,.15);color:#60d4a0;}
+.qnb-b{background:rgba(240,168,48,.15);color:var(--ambar-c);}
+.qnb-c{background:rgba(168,56,74,.15);color:#e08090;}
 
-.btn-prox {
-  margin-top:24px;
-  font-family:'Fredoka',sans-serif;
-  font-size:0.7rem; font-weight:600;
-  letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--preto); background:var(--ambar-c);
-  border:none; padding:12px 28px;
-  cursor:pointer; transition:background 0.3s;
-  display:none;
-}
-.btn-prox:hover { background:var(--ambar); }
-.btn-prox.visible { display:inline-block; }
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.prog-label{font-family:'Fredoka',sans-serif;font-size:.68rem;font-weight:400;letter-spacing:.08em;opacity:.4;}
+.prog-pts{font-family:'Fredoka',sans-serif;font-size:.72rem;font-weight:600;color:var(--ambar-c);}
+.prog-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.08);width:100%;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--ambar),#ff8c42);border-radius:2px;transition:width .4s ease;}
 
-/* RESULTADO */
-.resultado {
-  text-align:center; max-width:500px;
-  display:none;
+.quiz-card{
+  width:100%;
+  border-radius:14px;padding:32px 28px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.07);
+  margin-bottom:20px;
 }
-.resultado.visible { display:block; }
-.resultado-pontos {
-  font-family:'Fredoka One',cursive;
-  font-size:5rem; color:var(--ambar-c);
-  line-height:1; margin-bottom:8px;
+.perg-num{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;opacity:.4;margin-bottom:12px;font-family:'Cormorant Garamond',serif;}
+.perg-emoji{font-size:2rem;display:block;margin-bottom:12px;}
+.perg-txt{font-family:'Fredoka',sans-serif;font-size:1.18rem;font-weight:500;line-height:1.4;color:var(--branco);margin-bottom:24px;}
+.opcoes{display:flex;flex-direction:column;gap:10px;}
+.opcao{
+  font-family:'Fredoka',sans-serif;font-size:.92rem;font-weight:400;
+  text-align:left;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);color:var(--branco);
+  padding:14px 18px;border-radius:8px;cursor:pointer;
+  transition:background .2s,border-color .2s,transform .15s;
+  display:flex;align-items:center;gap:10px;
 }
-.resultado-total {
-  font-family:'Cormorant Garamond',serif;
-  font-size:0.65rem; letter-spacing:0.28em; text-transform:uppercase;
-  opacity:0.4; margin-bottom:28px;
-}
-.resultado-msg {
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic; font-size:1.2rem;
-  opacity:0.65; line-height:1.6; margin-bottom:36px;
-}
-.btn-reiniciar {
-  font-family:'Fredoka',sans-serif;
-  font-size:0.7rem; font-weight:600;
-  letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--preto); background:var(--ambar-c);
-  border:none; padding:12px 28px;
-  cursor:pointer; transition:background 0.3s; margin-right:12px;
-}
-.btn-reiniciar:hover { background:var(--ambar); }
+.opcao:hover:not(:disabled){background:rgba(240,168,48,.12);border-color:rgba(240,168,48,.35);transform:translateX(3px);}
+.opcao.certa{background:rgba(96,212,160,.18);border-color:#60d4a0;color:#60d4a0;}
+.opcao.errada{background:rgba(194,78,42,.15);border-color:#c24e2a;color:#e08060;}
+.opcao:disabled{cursor:default;}
+.opcao-letra{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;flex-shrink:0;}
 
-/* FOOTER */
-footer { position:relative; z-index:1; border-top:1px solid rgba(107,16,32,0.18); padding:32px 48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
-.footer-logo { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--ambar-c); text-decoration:none; }
-.footer-ono { font-family:'Cormorant Garamond',serif; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--vinho-c); opacity:0.5; text-decoration:none; transition:opacity 0.3s; }
-.footer-ono:hover { opacity:0.9; }
+.feedback{margin-top:16px;font-style:italic;font-size:.95rem;opacity:.7;line-height:1.5;padding:12px 16px;border-radius:8px;min-height:20px;display:none;}
+.feedback.certa{background:rgba(96,212,160,.1);color:#60d4a0;border-left:3px solid #60d4a0;display:block;}
+.feedback.errada{background:rgba(194,78,42,.1);color:#e08060;border-left:3px solid #c24e2a;display:block;}
 
-@media (max-width:600px) {
-  nav { padding:16px 20px; }
-  .quiz-card { padding:28px 22px 24px; }
-  footer { padding:28px 20px; flex-direction:column; text-align:center; }
+.btn-prox{
+  margin-top:16px;align-self:flex-end;
+  font-family:'Fredoka',sans-serif;font-size:.7rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:#0d0a0b;background:var(--ambar-c);border:none;
+  padding:12px 28px;border-radius:8px;cursor:pointer;
+  transition:background .3s,transform .2s;display:none;
 }
+.btn-prox.vis{display:inline-block;}
+.btn-prox:hover{background:var(--ambar);transform:translateY(-1px);}
+
+/* ── RESULTADO ── */
+#resultado{text-align:center;max-width:480px;display:none;}
+.res-emoji{font-size:4rem;display:block;margin-bottom:12px;}
+.res-pts{font-family:'Fredoka One',cursive;font-size:5.5rem;line-height:1;margin-bottom:4px;}
+.res-pts.col-a{color:#60d4a0;}.res-pts.col-b{color:var(--ambar-c);}.res-pts.col-c{color:#e08090;}
+.res-total{font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;opacity:.35;margin-bottom:24px;font-family:'Cormorant Garamond',serif;}
+.res-msg{font-style:italic;font-size:1.15rem;opacity:.65;line-height:1.7;margin-bottom:32px;max-width:380px;}
+.res-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.btn-outra-vez{font-family:'Fredoka',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#0d0a0b;background:var(--ambar-c);border:none;padding:11px 22px;border-radius:8px;cursor:pointer;transition:background .3s;}
+.btn-outra-vez:hover{background:var(--ambar);}
+.btn-trocar{font-family:'Fredoka',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--branco);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:11px 22px;border-radius:8px;cursor:pointer;transition:opacity .3s;}
+.btn-trocar:hover{opacity:.7;}
+
+footer{position:relative;z-index:1;border-top:1px solid rgba(107,16,32,.2);padding:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.f-logo{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--ambar-c);text-decoration:none;}
+.f-ono{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--vinho-c);opacity:.5;text-decoration:none;transition:opacity .3s;font-family:'Cormorant Garamond',serif;}
+.f-ono:hover{opacity:.9;}
+
+@media(max-width:600px){.niveis{grid-template-columns:1fr;}.quiz-card{padding:22px 18px;}.wrap{padding:24px 16px 40px;}}
 </style>
 </head>
 <body>
+<script src="nav.js"></script>
 
-<nav aria-label="Navegação">
-  <a href="index.html" class="nav-logo">Casa da Adelaide</a>
-  <a href="index.html" class="nav-back">← Voltar</a>
-</nav>
-
-<div class="quiz-wrap">
-  <!-- INTRO -->
-  <div class="intro" id="intro">
-    <p class="intro-label">II · Jogo</p>
-    <h1 class="intro-title">Quiz do Fado</h1>
-    <p class="intro-sub">Dez perguntas sobre o fado, a sua história e as suas vozes. Quantas sabes responder?</p>
-    <button class="btn-start" id="btn-start">Começar</button>
+<div class="wrap">
+  <!-- SELECÇÃO DE NÍVEL -->
+  <div id="selecao">
+    <p class="sel-label">II · Jogo</p>
+    <h1 class="sel-title">Quiz do Fado</h1>
+    <p class="sel-sub">Escolhe o teu nível antes de começar.</p>
+    <div class="niveis">
+      <div class="nivel-card nivel-a-card" data-nivel="a">
+        <span class="nivel-emoji">🌱</span>
+        <p class="nivel-nome">Principiante</p>
+        <span class="nivel-age age-a">6–9 anos</span>
+        <p class="nivel-desc">Perguntas simples sobre o fado, os seus sons e os seus lugares.</p>
+        <span class="nivel-n">8 perguntas</span>
+      </div>
+      <div class="nivel-card nivel-b-card" data-nivel="b">
+        <span class="nivel-emoji">🎵</span>
+        <p class="nivel-nome">Explorador</p>
+        <span class="nivel-age age-b">10–13 anos</span>
+        <p class="nivel-desc">Conhece melhor o fado — a sua história, os instrumentos e as pessoas.</p>
+        <span class="nivel-n">10 perguntas</span>
+      </div>
+      <div class="nivel-card nivel-c-card" data-nivel="c">
+        <span class="nivel-emoji">🎸</span>
+        <p class="nivel-nome">Conhecedor</p>
+        <span class="nivel-age age-c">14+ anos</span>
+        <p class="nivel-desc">Para quem já sabe muito de fado — datas, nomes e curiosidades.</p>
+        <span class="nivel-n">12 perguntas</span>
+      </div>
+    </div>
   </div>
 
   <!-- QUIZ -->
-  <div id="quiz-area" style="width:100%;max-width:560px;display:none;flex-direction:column;align-items:center;">
-    <div class="quiz-progress">
-      <div class="progress-label">
-        <span id="prog-label">Pergunta 1 de 10</span>
-        <span id="pontos-label">0 pontos</span>
+  <div id="quiz-area">
+    <div class="quiz-header">
+      <div class="quiz-nivel-badge" id="badge-nivel" onclick="voltarSelecao()">← Mudar nível</div>
+      <div class="prog-row">
+        <span class="prog-label" id="prog-label">Pergunta 1</span>
+        <span class="prog-pts" id="prog-pts">0 pontos</span>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-      </div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     </div>
-
-    <div class="quiz-card" id="quiz-card">
-      <p class="pergunta-num" id="perg-num">Pergunta 1</p>
-      <p class="pergunta-texto" id="perg-texto"></p>
+    <div class="quiz-card">
+      <p class="perg-num" id="perg-num"></p>
+      <span class="perg-emoji" id="perg-emoji"></span>
+      <p class="perg-txt" id="perg-txt"></p>
       <div class="opcoes" id="opcoes"></div>
-      <p class="feedback" id="feedback"></p>
-      <button class="btn-prox" id="btn-prox">Próxima →</button>
+      <div class="feedback" id="feedback"></div>
     </div>
+    <button class="btn-prox" id="btn-prox">Próxima →</button>
   </div>
 
   <!-- RESULTADO -->
-  <div class="resultado" id="resultado">
-    <p class="resultado-pontos" id="res-pontos">0</p>
-    <p class="resultado-total">pontos em 10</p>
-    <p class="resultado-msg" id="res-msg"></p>
-    <button class="btn-reiniciar" id="btn-reiniciar">Jogar outra vez</button>
-    <a href="index.html" class="btn-reiniciar" style="text-decoration:none;display:inline-block;">Voltar à casa</a>
+  <div id="resultado">
+    <span class="res-emoji" id="res-emoji"></span>
+    <p class="res-pts" id="res-pts"></p>
+    <p class="res-total" id="res-total"></p>
+    <p class="res-msg" id="res-msg"></p>
+    <div class="res-btns">
+      <button class="btn-outra-vez" id="btn-outra-vez">Jogar outra vez</button>
+      <button class="btn-trocar" onclick="voltarSelecao()">Mudar de nível</button>
+    </div>
   </div>
 </div>
 
-<footer role="contentinfo">
-  <a href="index.html" class="footer-logo">Casa da Adelaide</a>
-  <a href="https://onofriana.pt" class="footer-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
+<footer>
+  <a href="index.html" class="f-logo">Casa da Adelaide</a>
+  <a href="https://onofriana.pt" class="f-ono" target="_blank" rel="noopener">Uma iniciativa Onofriana →</a>
 </footer>
 
 <script>
-var perguntas = [
-  {
-    texto: "Como se chama o instrumento mais característico do fado, com doze cordas metálicas?",
-    opcoes: ["Viola baixo", "Guitarra portuguesa", "Bandolim", "Guitarra clássica"],
-    certa: 1,
-    explicacao: "A guitarra portuguesa tem doze cordas em seis pares e uma cabeça em forma de leque. É o instrumento mais característico do fado."
+var NIVEIS = {
+  a: {
+    nome:'Principiante', emoji:'🌱', classe:'qnb-a', cor:'col-a',
+    perguntas: [
+      { emoji:'🏠', txt:'O fado é música de que país?', opcoes:['França','Portugal','Espanha','Itália'], certa:1, exp:'O fado é música portuguesa — nasceu em Lisboa há mais de 200 anos.' },
+      { emoji:'🎸', txt:'Qual é o instrumento especial do fado com muitas cordas?', opcoes:['Violino','Acordeão','Guitarra portuguesa','Flauta'], certa:2, exp:'A guitarra portuguesa tem 12 cordas metálicas e uma forma especial — é o instrumento mais característico do fado.' },
+      { emoji:'🌆', txt:'Em que cidade nasceu o fado?', opcoes:['Porto','Braga','Lisboa','Faro'], certa:2, exp:'O fado nasceu em Lisboa, na Mouraria, em Alfama e na Madragoa — bairros antigos junto ao rio Tejo.' },
+      { emoji:'😢', txt:'Uma palavra muito importante no fado. Como se chama o sentimento de ter saudades?', opcoes:['Alegria','Saudade','Raiva','Preguiça'], certa:1, exp:'A saudade é um sentimento muito especial — é como ter saudades de alguém ou de um lugar que amamos.' },
+      { emoji:'🧣', txt:'As fadistas usam um pano especial nos ombros. Como se chama?', opcoes:['Véu','Xaile','Manta','Capa'], certa:1, exp:'O xaile negro é parte da imagem da fadista. A primeira fadista da história, Maria Severa, foi uma das primeiras a usá-lo.' },
+      { emoji:'🌙', txt:'O fado canta sobre muitos temas. Qual destes é mais típico do fado?', opcoes:['Dinossauros','Saudade e amor','Tecnologia','Desporto'], certa:1, exp:'O fado canta sobre o amor, a saudade, Lisboa, o mar, a vida — os sentimentos mais profundos.' },
+      { emoji:'🔵', txt:'Quantas cordas tem a guitarra portuguesa?', opcoes:['6','8','12','16'], certa:2, exp:'A guitarra portuguesa tem 12 cordas metálicas organizadas em 6 pares — é por isso que soa de forma tão especial!' },
+      { emoji:'🏅', txt:'A UNESCO reconheceu o fado como algo muito importante em 2011. O que é a UNESCO?', opcoes:['Um clube de futebol','Uma organização da ONU que protege culturas','Uma escola de música','Um festival de fado'], certa:1, exp:'A UNESCO é uma organização das Nações Unidas que protege o património cultural do mundo. Em 2011, reconheceu o fado como uma herança importante da humanidade.' },
+    ]
   },
-  {
-    texto: "Em que bairro de Lisboa nasceu o fado?",
-    opcoes: ["Belém", "Chiado", "Mouraria", "Parque das Nações"],
-    certa: 2,
-    explicacao: "O fado cresceu na Mouraria, na Madragoa e em Alfama — bairros antigos de Lisboa junto ao Tejo."
+  b: {
+    nome:'Explorador', emoji:'🎵', classe:'qnb-b', cor:'col-b',
+    perguntas: [
+      { emoji:'🎤', txt:'Qual era o nome completo da primeira fadista da história?', opcoes:['Amália Rodrigues','Maria Severa Onofriana','Adelaide da Volta','Mariza'], certa:1, exp:'Maria Severa Onofriana (1820–1846) nasceu na Madragoa e morreu na Rua do Capelão, na Mouraria. É a primeira fadista de que há memória.' },
+      { emoji:'🏘️', txt:'Qual destes bairros de Lisboa é um dos berços do fado?', opcoes:['Belém','Alfama','Parque das Nações','Benfica'], certa:1, exp:'Alfama, a Mouraria e a Madragoa são os bairros históricos onde o fado cresceu — ruas antigas de Lisboa com muito fado e muita memória.' },
+      { emoji:'🏆', txt:'Em que ano o fado foi reconhecido pela UNESCO como Património Cultural Imaterial?', opcoes:['2001','2005','2011','2018'], certa:2, exp:'Em 2011, o fado foi inscrito na Lista do Património Cultural Imaterial da Humanidade pela UNESCO.' },
+      { emoji:'🎸', txt:'Como se chama o ornamento redondo no corpo da guitarra portuguesa?', opcoes:['Palheta','Roseta','Cravelha','Cavalete'], certa:1, exp:'A roseta é o ornamento decorativo no centro da guitarra portuguesa — geralmente muito trabalhado e bonito.' },
+      { emoji:'👑', txt:'Qual é considerada a fadista mais famosa de todos os tempos?', opcoes:['Mariza','Celeste Rodrigues','Amália Rodrigues','Ana Moura'], certa:2, exp:'Amália Rodrigues (1920–1999) é a fadista mais reconhecida internacionalmente. Levou o fado ao mundo inteiro.' },
+      { emoji:'🎼', txt:'Como se chama a forma poética mais comum no fado, com quatro versos?', opcoes:['Soneto','Quadra','Haiku','Décima'], certa:1, exp:'A quadra tem quatro versos — geralmente o 2.º rima com o 4.º. É a forma mais comum na poesia do fado.' },
+      { emoji:'🌊', txt:'O fado é frequentemente associado a que grande elemento natural?', opcoes:['As montanhas','O deserto','O mar','A floresta'], certa:2, exp:'O fado e o mar estão profundamente ligados — Lisboa é uma cidade à beira do Tejo e perto do oceano, e o fado canta as partidas, as esperas e os regressos.' },
+      { emoji:'🎻', txt:'Além da guitarra portuguesa, qual é outro instrumento fundamental no fado?', opcoes:['O piano','A viola baixo','A bateria','O saxofone'], certa:1, exp:'A viola baixo (ou viola de fado) é o outro instrumento essencial do fado, dando a base harmónica ao conjunto.' },
+      { emoji:'🌟', txt:'Amália Rodrigues nasceu em que ano?', opcoes:['1900','1920','1940','1960'], certa:1, exp:'Amália Rodrigues nasceu em 1920, em Lisboa. Tornou-se a voz mais reconhecida do fado no mundo inteiro.' },
+      { emoji:'🗓️', txt:'Maria Severa Onofriana viveu apenas 26 anos. Quando nasceu?', opcoes:['1800','1810','1820','1830'], certa:2, exp:'Maria Severa Onofriana nasceu em 1820 e morreu em 1846, com apenas 26 anos. Apesar da vida curta, ficou na história do fado para sempre.' },
+    ]
   },
-  {
-    texto: "Em que ano foi o fado inscrito no Património Cultural Imaterial da Humanidade pela UNESCO?",
-    opcoes: ["2001", "2007", "2011", "2015"],
-    certa: 2,
-    explicacao: "O fado foi inscrito na Lista do Património Cultural Imaterial da Humanidade pela UNESCO em 2011."
-  },
-  {
-    texto: "Qual era o nome completo da primeira fadista conhecida da história?",
-    opcoes: ["Maria Amália Rodrigues", "Maria Severa Onofriana", "Adelaide da Volta", "Lucília do Carmo"],
-    certa: 1,
-    explicacao: "Maria Severa Onofriana (1820–1846) é considerada a primeira fadista da história. Nasceu na Madragoa e morreu na Rua do Capelão, na Mouraria."
-  },
-  {
-    texto: "Como se chama o ornamento redondo no centro da guitarra portuguesa?",
-    opcoes: ["Roseta", "Palheta", "Cravelha", "Espelho"],
-    certa: 0,
-    explicacao: "A roseta é o ornamento decorativo no centro da guitarra portuguesa. É geralmente muito trabalhada e é uma das marcas do instrumento."
-  },
-  {
-    texto: "Qual destas palavras descreve melhor o fado?",
-    opcoes: ["Alegre e dançante", "Ligeiro e rápido", "Com saudade e memória", "Sempre triste e silencioso"],
-    certa: 2,
-    explicacao: "O fado expressa saudade, memória e emoção profunda — mas pode ser alegre, dramático ou contemplativo. É acima de tudo uma forma de dizer o que as palavras sozinhas não chegam."
-  },
-  {
-    texto: "Como se chama o pano preto que as fadistas usam frequentemente nos ombros?",
-    opcoes: ["Mantilha", "Xaile", "Capote", "Véu"],
-    certa: 1,
-    explicacao: "O xaile negro é parte da imagem clássica da fadista. Maria Severa Onofriana foi das primeiras a usá-lo."
-  },
-  {
-    texto: "Qual destes bairros de Lisboa é famoso pelo fado?",
-    opcoes: ["Belém", "Alfama", "Restelo", "Expo"],
-    certa: 1,
-    explicacao: "Alfama, a Mouraria e a Madragoa são os bairros históricos do fado em Lisboa."
-  },
-  {
-    texto: "O fado é cantado em que língua?",
-    opcoes: ["Espanhol", "Latim", "Português", "Árabe"],
-    certa: 2,
-    explicacao: "O fado é cantado em português. A língua faz parte da sua identidade — a sonoridade do português é inseparável da música."
-  },
-  {
-    texto: "Qual destas cantoras é uma das fadistas mais famosas de sempre?",
-    opcoes: ["Dulce Pontes", "Amália Rodrigues", "Mísia", "Ana Moura"],
-    certa: 1,
-    explicacao: "Amália Rodrigues (1920–1999) é a fadista mais reconhecida internacionalmente. Levou o fado ao mundo todo."
+  c: {
+    nome:'Conhecedor', emoji:'🎸', classe:'qnb-c', cor:'col-c',
+    perguntas: [
+      { emoji:'📍', txt:'Em que rua de Lisboa morreu Maria Severa Onofriana?', opcoes:['Rua da Saudade','Rua do Capelão','Rua da Mouraria','Rua de Alfama'], certa:1, exp:'Maria Severa Onofriana morreu na Rua do Capelão, na Mouraria — um dos endereços mais carregados de história na memória do fado.' },
+      { emoji:'📅', txt:'Em que ano morreu Amália Rodrigues?', opcoes:['1995','1997','1999','2001'], certa:2, exp:'Amália Rodrigues morreu a 6 de outubro de 1999, em Lisboa. O país declarou três dias de luto nacional.' },
+      { emoji:'🎸', txt:'A guitarra portuguesa tem 12 cordas em quantos pares?', opcoes:['4','5','6','8'], certa:2, exp:'A guitarra portuguesa tem 12 cordas metálicas organizadas em 6 pares (cursos duplos) — daí o som tão característico.' },
+      { emoji:'🏛️', txt:'Qual é o nome do museu em Lisboa dedicado ao fado?', opcoes:['Museu Nacional do Fado','Museu do Fado','Casa do Fado','Museu do Som Português'], certa:1, exp:'O Museu do Fado fica na Rua do Arsenal, em Lisboa, e preserva a história e os objectos do fado desde as suas origens.' },
+      { emoji:'🌍', txt:'Em que país se realiza o Festival da Madrugada — um dos mais importantes festivais de fado fora de Portugal?', opcoes:['Brasil','França','Japão','Estados Unidos'], certa:2, exp:'O Japão tem uma comunidade de fado apaixonada. O Festival da Madrugada em Tóquio é um dos eventos de fado mais especiais fora de Portugal.' },
+      { emoji:'🎙️', txt:'Carlos do Carmo, uma das grandes vozes masculinas do fado, foi reconhecido como Embaixador do Fado pela UNESCO. Em que ano?', opcoes:['2011','2012','2013','2014'], certa:1, exp:'Carlos do Carmo recebeu o título de Embaixador do Fado da UNESCO em 2012, um ano após o fado ser inscrito na lista do Património Imaterial.' },
+      { emoji:'📜', txt:'Qual é o nome do estilo de fado mais ligado a Coimbra — geralmente cantado por homens, com tradição académica?', opcoes:['Fado de Lisboa','Fado de Coimbra','Fado Castiço','Fado Menor'], certa:1, exp:'O Fado de Coimbra tem características próprias — é cantado exclusivamente por homens, ligado à tradição académica da Universidade de Coimbra.' },
+      { emoji:'🎵', txt:'Qual destes fadistas é conhecido como "O Príncipe do Fado"?', opcoes:['Alfredo Marceneiro','Carlos do Carmo','Fernando Maurício','Camané'], certa:2, exp:'Fernando Maurício (1933–2005) foi conhecido como "O Príncipe do Fado" — uma voz muito característica do fado castiço de Lisboa.' },
+      { emoji:'🌹', txt:'A rosa é um símbolo recorrente no fado. Qual destas canções de Amália usa flores no título?', opcoes:['Lisboa Menina e Moça','Estranha Forma de Vida','Uma Casa Portuguesa','Flor de Lis'], certa:3, exp:'Flor de Lis é uma das mais célebres canções de Amália Rodrigues, com letra de Ary dos Santos.' },
+      { emoji:'🎭', txt:'A actriz e fadista Marina Mota tem carteira profissional de fadista desde que ano?', opcoes:['1973','1980','1985','1990'], certa:0, exp:'Marina Mota tem carteira profissional de fadista desde 1973, quando gravou o primeiro disco com apenas dez anos de idade.' },
+      { emoji:'🎓', txt:'Marta Rosa, fadista e guitarrista, onde se licenciou em Ciências Musicais?', opcoes:['Universidade de Lisboa','Universidade Nova de Lisboa','Universidade de Coimbra','Escola Superior de Música'], certa:1, exp:'Marta Rosa licenciou-se em Ciências Musicais pela Universidade Nova de Lisboa e depois em Canto pelo IPL (Instituto Politécnico de Lisboa).' },
+      { emoji:'🏆', txt:'Fernanda Maria recebeu o Prémio de Carreira do Prémio Amália em que ano?', opcoes:['2003','2005','2007','2009'], certa:2, exp:'Fernanda Maria recebeu o Prémio de Carreira do Prémio Amália em 2007. O júri descreveu a sua voz como "límpida e segura".' },
+    ]
   }
-];
-
-var estado = {
-  atual: 0,
-  pontos: 0,
-  respondida: false
 };
 
-function init() {
-  document.getElementById('btn-start').addEventListener('click', comecar);
-  document.getElementById('btn-prox').addEventListener('click', proxima);
-  document.getElementById('btn-reiniciar').addEventListener('click', reiniciar);
+var nivelActual = null;
+var estado = { atual:0, pontos:0, respondida:false };
+
+function voltarSelecao() {
+  nivelActual = null;
+  document.body.className = '';
+  document.getElementById('selecao').style.display = 'block';
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('resultado').style.display = 'none';
 }
 
-function comecar() {
-  document.getElementById('intro').style.display = 'none';
-  document.getElementById('quiz-area').style.display = 'flex';
+function comecarNivel(n) {
+  nivelActual = n;
+  estado = { atual:0, pontos:0, respondida:false };
+  var info = NIVEIS[n];
+  document.body.className = 'nivel-' + n;
+  document.getElementById('selecao').style.display = 'none';
+  document.getElementById('resultado').style.display = 'none';
+  var qa = document.getElementById('quiz-area');
+  qa.style.display = 'flex';
+  var badge = document.getElementById('badge-nivel');
+  badge.className = 'quiz-nivel-badge ' + info.classe;
+  badge.innerHTML = '← ' + info.emoji + ' ' + info.nome;
   mostrarPergunta();
 }
 
 function mostrarPergunta() {
-  var p = perguntas[estado.atual];
+  var info = NIVEIS[nivelActual];
+  var total = info.perguntas.length;
+  var p = info.perguntas[estado.atual];
   estado.respondida = false;
 
+  var pct = (estado.atual / total) * 100;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = 'Pergunta ' + (estado.atual + 1) + ' de ' + total;
+  document.getElementById('prog-pts').textContent = estado.pontos + (estado.pontos === 1 ? ' ponto' : ' pontos');
   document.getElementById('perg-num').textContent = 'Pergunta ' + (estado.atual + 1);
-  document.getElementById('perg-texto').textContent = p.texto;
-  document.getElementById('feedback').textContent = '';
+  document.getElementById('perg-emoji').textContent = p.emoji;
+  document.getElementById('perg-txt').textContent = p.txt;
   document.getElementById('feedback').className = 'feedback';
-  document.getElementById('btn-prox').classList.remove('visible');
-
-  var pct = (estado.atual / perguntas.length) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('prog-label').textContent = 'Pergunta ' + (estado.atual + 1) + ' de ' + perguntas.length;
-  document.getElementById('pontos-label').textContent = estado.pontos + ' ponto' + (estado.pontos !== 1 ? 's' : '');
-
-  var opcoes = document.getElementById('opcoes');
-  opcoes.innerHTML = '';
-  p.opcoes.forEach(function(txt, i) {
-    var btn = document.createElement('button');
-    btn.className = 'opcao';
-    btn.textContent = txt;
-    btn.addEventListener('click', function() { responder(i); });
-    opcoes.appendChild(btn);
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('btn-prox').className = 'btn-prox';
+  var letras = ['A','B','C','D'];
+  document.getElementById('opcoes').innerHTML = p.opcoes.map(function(o,i){
+    return '<button class="opcao" data-i="'+i+'"><span class="opcao-letra">'+letras[i]+'</span>'+o+'</button>';
+  }).join('');
+  document.querySelectorAll('.opcao').forEach(function(btn){
+    btn.addEventListener('click',function(){ responder(parseInt(this.dataset.i)); });
   });
+  var btn = document.getElementById('btn-prox');
+  if (estado.atual === NIVEIS[nivelActual].perguntas.length - 1) btn.textContent = 'Ver resultado →';
+  else btn.textContent = 'Próxima →';
 }
 
 function responder(idx) {
   if (estado.respondida) return;
   estado.respondida = true;
-
-  var p = perguntas[estado.atual];
+  var p = NIVEIS[nivelActual].perguntas[estado.atual];
   var btns = document.querySelectorAll('.opcao');
-
-  btns.forEach(function(b) { b.disabled = true; });
-
-  var feedback = document.getElementById('feedback');
+  btns.forEach(function(b){ b.disabled = true; });
+  var fb = document.getElementById('feedback');
   if (idx === p.certa) {
     btns[idx].classList.add('certa');
     estado.pontos++;
-    feedback.textContent = '✓ Certo! ' + p.explicacao;
-    feedback.className = 'feedback certa';
+    fb.className = 'feedback certa';
+    fb.textContent = '✓ Correcto! ' + p.exp;
   } else {
     btns[idx].classList.add('errada');
     btns[p.certa].classList.add('certa');
-    feedback.textContent = '✗ ' + p.explicacao;
-    feedback.className = 'feedback errada';
+    fb.className = 'feedback errada';
+    fb.textContent = '✗ ' + p.exp;
   }
-
-  document.getElementById('pontos-label').textContent = estado.pontos + ' ponto' + (estado.pontos !== 1 ? 's' : '');
-  document.getElementById('btn-prox').classList.add('visible');
-
-  if (estado.atual === perguntas.length - 1) {
-    document.getElementById('btn-prox').textContent = 'Ver resultado →';
-  }
+  document.getElementById('prog-pts').textContent = estado.pontos + (estado.pontos === 1 ? ' ponto' : ' pontos');
+  document.getElementById('btn-prox').classList.add('vis');
 }
 
 function proxima() {
   estado.atual++;
-  if (estado.atual >= perguntas.length) {
-    mostrarResultado();
-  } else {
-    mostrarPergunta();
-  }
+  if (estado.atual >= NIVEIS[nivelActual].perguntas.length) mostrarResultado();
+  else mostrarPergunta();
 }
 
 function mostrarResultado() {
   document.getElementById('quiz-area').style.display = 'none';
-  var res = document.getElementById('resultado');
-  res.classList.add('visible');
-
-  document.getElementById('res-pontos').textContent = estado.pontos;
-
+  var info = NIVEIS[nivelActual];
+  var total = info.perguntas.length;
+  var pct = estado.pontos / total;
+  var emojis = ['😅','🙂','😊','🎉','🏆'];
+  var ei = Math.floor(pct * 4);
   var msgs = [
-    { min: 0, max: 3, msg: 'O fado espera por ti. Há muito para descobrir — começa aqui.' },
-    { min: 4, max: 6, msg: 'Já sabes algumas coisas sobre o fado. Continua a explorar a Casa da Adelaide.' },
-    { min: 7, max: 8, msg: 'Muito bem. O fado já tem um lugar em ti.' },
-    { min: 9, max: 10, msg: 'Parabéns. Conheces o fado como quem cresceu dentro dele.' }
+    'O fado ainda tem muito para te contar. Começa pelo início — vai valer a pena.',
+    'Já sabes algumas coisas. Explora a Casa da Adelaide e volta a tentar.',
+    'Bom resultado. O fado já tem um lugar em ti.',
+    'Muito bem. Conheces o fado com profundidade.',
+    'Parabéns. Sabes do fado como quem cresceu dentro dele.'
   ];
-
-  var msg = msgs.find(function(m) { return estado.pontos >= m.min && estado.pontos <= m.max; });
-  document.getElementById('res-msg').textContent = msg ? msg.msg : '';
+  document.getElementById('res-emoji').textContent = emojis[ei];
+  var rp = document.getElementById('res-pts');
+  rp.textContent = estado.pontos;
+  rp.className = 'res-pts ' + info.cor;
+  document.getElementById('res-total').textContent = 'pontos em ' + total;
+  document.getElementById('res-msg').textContent = msgs[ei];
+  document.getElementById('resultado').style.display = 'block';
+  document.getElementById('btn-outra-vez').onclick = function(){ comecarNivel(nivelActual); };
 }
 
-function reiniciar() {
-  estado.atual = 0;
-  estado.pontos = 0;
-  estado.respondida = false;
-  document.getElementById('resultado').classList.remove('visible');
-  document.getElementById('quiz-area').style.display = 'flex';
-  mostrarPergunta();
-}
-
-document.addEventListener('DOMContentLoaded', init);
+document.querySelectorAll('.nivel-card').forEach(function(el){
+  el.addEventListener('click',function(){ comecarNivel(this.dataset.nivel); });
+});
+document.getElementById('btn-prox').addEventListener('click', proxima);
 </script>
 </body>
 </html>

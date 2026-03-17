@@ -1,0 +1,161 @@
+/* nav.css — Casa da Adelaide · navegação partilhada */
+:root {
+  --nav-h: 60px;
+  --preto:    #080507;
+  --vinho:    #6b1020;
+  --vinho-c:  #a8384a;
+  --ambar:    #d4820a;
+  --ambar-c:  #f0a830;
+  --terracota:#c24e2a;
+  --verde:    #2d6b4a;
+  --azul:     #1a4a7a;
+  --branco:   #faf7f3;
+  --creme:    #f5f0e8;
+}
+
+#nav-global {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  background: rgba(8,5,7,0.97);
+  backdrop-filter: blur(14px);
+  border-bottom: 2px solid var(--vinho);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 0;
+}
+
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-right: 24px;
+}
+.nav-logo-main {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.25rem;
+  color: var(--ambar-c);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.nav-logo-sub {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--branco);
+  opacity: 0.35;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2px;
+  flex: 1;
+  overflow: hidden;
+}
+.nav-links a {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--branco);
+  text-decoration: none;
+  opacity: 0.55;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: opacity 0.2s, background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { opacity: 1; background: rgba(255,255,255,0.07); }
+.nav-links a.nav-active {
+  opacity: 1;
+  color: var(--ambar-c);
+  background: rgba(240,168,48,0.12);
+}
+
+.nav-ono {
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vinho-c);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+  margin-left: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  white-space: nowrap;
+}
+.nav-ono:hover { opacity: 1; }
+
+/* BURGER — mobile */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin-left: auto;
+}
+.nav-burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--branco);
+  opacity: 0.7;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* DRAWER mobile */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  background: rgba(8,5,7,0.99);
+  border-bottom: 2px solid var(--vinho);
+  z-index: 199;
+  flex-direction: column;
+  padding: 12px 16px 20px;
+  gap: 4px;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: transform 0.25s, opacity 0.25s;
+  pointer-events: none;
+}
+.nav-drawer.open {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+.nav-drawer a {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--branco);
+  text-decoration: none;
+  opacity: 0.65;
+  padding: 10px 12px;
+  border-radius: 4px;
+  transition: opacity 0.2s, background 0.2s;
+}
+.nav-drawer a:hover { opacity: 1; background: rgba(255,255,255,0.06); }
+.nav-drawer a.drawer-active { opacity: 1; color: var(--ambar-c); }
+.drawer-ono { border-top: 1px solid rgba(255,255,255,0.08) !important; margin-top: 8px !important; padding-top: 14px !important; font-size: 0.75rem !important; color: var(--vinho-c) !important; opacity: 0.6 !important; }
+
+body { padding-top: var(--nav-h); }
+
+@media (max-width: 860px) {
+  .nav-links, .nav-ono { display: none; }
+  .nav-burger { display: flex; }
+}

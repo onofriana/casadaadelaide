@@ -7,20 +7,13 @@
 <meta name="description" content="Espetáculos e workshops de fado para escolas, câmaras municipais e famílias. Casa da Adelaide apresentada pela Onofriana.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Fredoka+One&family=Fredoka:wght@300;400;500;600&family=Josefin+Sans:wght@200;300;400&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="nav.css">
 <style>
-:root {
-  --preto:#080507;--vinho:#6b1020;--vinho-c:#a8384a;
-  --ambar:#d4820a;--ambar-c:#f0a830;--branco:#faf7f3;
-  --borda:rgba(107,16,32,0.28);
-}
+:root{--preto:#080507;--vinho:#6b1020;--vinho-c:#a8384a;--ambar:#d4820a;--ambar-c:#f0a830;--branco:#faf7f3;--borda:rgba(107,16,32,0.28);}
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{background:var(--preto);color:var(--branco);font-family:'Cormorant Garamond',serif;font-weight:300;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.15;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(8,5,7,0.97);backdrop-filter:blur(10px);}
-.nav-casa{text-decoration:none;font-family:'Fredoka One',cursive;font-size:1.25rem;color:var(--ambar-c);}
-.nav-back{font-family:'Cormorant Garamond',serif;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--branco);opacity:0.4;text-decoration:none;transition:opacity 0.3s;}
-.nav-back:hover{opacity:0.85;}
-#hero{min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:130px 48px 80px;position:relative;z-index:1;border-bottom:1px solid var(--borda);}
+#hero{min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 48px 80px;position:relative;z-index:1;border-bottom:1px solid var(--borda);}
 .hero-supra{font-family:'Josefin Sans',sans-serif;font-size:0.58rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--vinho-c);opacity:0.7;margin-bottom:24px;}
 .hero-supra a{color:var(--vinho-c);text-decoration:none;border-bottom:1px solid rgba(168,56,74,0.3);}
 .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.4rem,6vw,4.5rem);color:var(--branco);line-height:1.1;max-width:720px;margin-bottom:12px;}
@@ -63,22 +56,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--borda);padding:44p
 .f-copy{font-family:'Josefin Sans',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.2;}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s,transform 0.7s;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-@media(max-width:900px){
-  nav{padding:18px 24px;}
-  .sec{padding:60px 24px;}
-  #contacto{padding:60px 24px 80px;}
-  .propostas{grid-template-columns:1fr;}
-  .dest{grid-template-columns:1fr;}
-  .ono-bloco{grid-template-columns:1fr;gap:28px;padding:28px;}
-  footer{padding:32px 24px;flex-direction:column;text-align:center;}
-}
+@media(max-width:900px){.sec{padding:60px 24px;}#contacto{padding:60px 24px 80px;}.propostas{grid-template-columns:1fr;}.dest{grid-template-columns:1fr;}.ono-bloco{grid-template-columns:1fr;gap:28px;padding:28px;}footer{padding:32px 24px;flex-direction:column;text-align:center;}}
 </style>
 </head>
 <body>
-<nav aria-label="Navegação">
-  <a href="index.html" class="nav-casa">Casa da Adelaide</a>
-  <a href="index.html" class="nav-back">← Voltar à Casa</a>
-</nav>
+<script src="nav.js"></script>
 
 <section id="hero" aria-label="Para Escolas">
   <p class="hero-supra"><a href="https://onofriana.pt" target="_blank" rel="noopener">Onofriana</a> · Casa da Adelaide · Para Escolas</p>
@@ -93,24 +75,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--borda);padding:44p
   <p class="sec-p">A Casa da Adelaide é a forma como a Onofriana leva o fado às crianças. Não como entretenimento — como herança cultural que pertence a quem cresce em português.</p>
   <p class="sec-p">Cada sessão é concebida com rigor artístico e adaptada à faixa etária. O fado não se simplifica. Apresenta-se.</p>
   <div class="propostas">
-    <div class="prop reveal">
-      <p class="prop-num">I</p>
-      <h3 class="prop-titulo">Espetáculo Escolar</h3>
-      <p class="prop-desc">Um espetáculo de fado ao vivo, pensado para salas de aula ou auditórios. Fado, guitarra portuguesa e conversa com os artistas.</p>
-      <p class="prop-det">45–60 min · Todos os anos de escolaridade</p>
-    </div>
-    <div class="prop reveal">
-      <p class="prop-num">II</p>
-      <h3 class="prop-titulo">Workshop Participativo</h3>
-      <p class="prop-desc">Uma sessão interactiva onde as crianças ouvem, exploram e criam. Com actividades de escrita, ritmo e expressão a partir do fado.</p>
-      <p class="prop-det">60–90 min · 2.º e 3.º ciclo</p>
-    </div>
-    <div class="prop reveal">
-      <p class="prop-num">III</p>
-      <h3 class="prop-titulo">Sessão para Famílias</h3>
-      <p class="prop-desc">Um espetáculo e conversa para pais, filhos e avós juntos. Uma tarde de fado que atravessa gerações.</p>
-      <p class="prop-det">60 min · Todas as idades</p>
-    </div>
+    <div class="prop reveal"><p class="prop-num">I</p><h3 class="prop-titulo">Espetáculo Escolar</h3><p class="prop-desc">Um espetáculo de fado ao vivo, pensado para salas de aula ou auditórios. Fado, guitarra portuguesa e conversa com os artistas.</p><p class="prop-det">45–60 min · Todos os anos de escolaridade</p></div>
+    <div class="prop reveal"><p class="prop-num">II</p><h3 class="prop-titulo">Workshop Participativo</h3><p class="prop-desc">Uma sessão interactiva onde as crianças ouvem, exploram e criam. Com actividades de escrita, ritmo e expressão a partir do fado.</p><p class="prop-det">60–90 min · 2.º e 3.º ciclo</p></div>
+    <div class="prop reveal"><p class="prop-num">III</p><h3 class="prop-titulo">Sessão para Famílias</h3><p class="prop-desc">Um espetáculo e conversa para pais, filhos e avós juntos. Uma tarde de fado que atravessa gerações.</p><p class="prop-det">60 min · Todas as idades</p></div>
   </div>
 </div>
 
@@ -118,10 +85,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--borda);padding:44p
   <p class="sec-label">Para quem</p>
   <h2 class="sec-title">Escolas, câmaras, famílias.</h2>
   <div class="dest">
-    <div class="dest-item reveal"><span class="dest-i" aria-hidden="true">🏫</span><div><p class="dest-nome">Escolas públicas e privadas</p><p class="dest-desc">Do 1.º ao 3.º ciclo. Adequado ao currículo de Expressões, Língua Portuguesa e Educação Artística.</p></div></div>
-    <div class="dest-item reveal"><span class="dest-i" aria-hidden="true">🏛️</span><div><p class="dest-nome">Câmaras municipais</p><p class="dest-desc">Programação cultural de proximidade. Festas municipais, semanas culturais, iniciativas de bairro.</p></div></div>
-    <div class="dest-item reveal"><span class="dest-i" aria-hidden="true">🎪</span><div><p class="dest-nome">Festivais e programação cultural</p><p class="dest-desc">Sessões para crianças dentro de festivais de fado ou programas culturais de maior dimensão.</p></div></div>
-    <div class="dest-item reveal"><span class="dest-i" aria-hidden="true">👨‍👩‍👧</span><div><p class="dest-nome">Famílias e celebrações privadas</p><p class="dest-desc">Para famílias que querem oferecer uma tarde de fado com sentido — não um espetáculo, uma experiência com memória.</p></div></div>
+    <div class="dest-item reveal"><span class="dest-i">🏫</span><div><p class="dest-nome">Escolas públicas e privadas</p><p class="dest-desc">Do 1.º ao 3.º ciclo. Adequado ao currículo de Expressões, Língua Portuguesa e Educação Artística.</p></div></div>
+    <div class="dest-item reveal"><span class="dest-i">🏛️</span><div><p class="dest-nome">Câmaras municipais</p><p class="dest-desc">Programação cultural de proximidade. Festas municipais, semanas culturais, iniciativas de bairro.</p></div></div>
+    <div class="dest-item reveal"><span class="dest-i">🎪</span><div><p class="dest-nome">Festivais e programação cultural</p><p class="dest-desc">Sessões para crianças dentro de festivais de fado ou programas culturais de maior dimensão.</p></div></div>
+    <div class="dest-item reveal"><span class="dest-i">👨‍👩‍👧</span><div><p class="dest-nome">Famílias e celebrações privadas</p><p class="dest-desc">Para famílias que querem oferecer uma tarde de fado com sentido — não um espetáculo, uma experiência com memória.</p></div></div>
   </div>
 </div>
 
